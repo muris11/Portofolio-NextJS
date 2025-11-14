@@ -1,15 +1,8 @@
-"use client";
+﻿"use client";
 
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import Footer from "@/components/Footer";
+import Navbar from "@/components/Navbar";
 import { Input } from "@/components/ui/input";
-import { Loader2, Lock, Mail } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -32,120 +25,81 @@ export default function LoginPage() {
       });
 
       if (response.ok) {
-        // Check for redirect parameter
         const urlParams = new URLSearchParams(window.location.search);
         const redirectTo = urlParams.get("redirect") || "/admin";
         router.push(redirectTo);
       } else {
         const data = await response.json();
-        toast.error(data.error || "Login gagal");
+        toast.error(data.error || "Login failed");
       }
     } catch (error) {
-      toast.error("Terjadi kesalahan. Silakan coba lagi.");
+      toast.error("An error occurred. Please try again.");
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
-        <div className="text-center">
-          <div className="mx-auto h-12 w-12 bg-primary rounded-full flex items-center justify-center">
-            <Lock className="h-6 w-6 text-primary-foreground" />
+    <div>
+      <Navbar />
+      <div className="min-h-screen bg-slate-950 pt-16 flex items-center justify-center p-8">
+        <div className="max-w-md w-full space-y-8">
+          <div className="text-center">
+            <h2 className="text-3xl font-bold text-white mb-4">Admin Login</h2>
+            <p className="text-gray-400">
+              Enter your credentials to access the admin panel
+            </p>
           </div>
-          <h2 className="mt-6 text-3xl font-bold text-gray-900 dark:text-white">
-            Admin Login
-          </h2>
-          <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
-            Masukkan kredensial untuk mengakses admin panel
-          </p>
-        </div>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Masuk ke Admin Panel</CardTitle>
-            <CardDescription>
-              Gunakan email dan password yang valid
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
+          <div className="bg-white/5 backdrop-blur-xl rounded-3xl border border-white/10 p-8">
             <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="text-red-500 text-sm">{/* {error} */}</div>
-
               <div>
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-                >
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Email
                 </label>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <Mail className="h-5 w-5 text-gray-400" />
-                  </div>
-                  <Input
-                    id="email"
-                    name="email"
-                    type="email"
-                    autoComplete="email"
-                    required
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="pl-10"
-                    placeholder="admin@example.com"
-                  />
-                </div>
+                <Input
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="bg-white/5 border-white/20 text-white placeholder-gray-400"
+                  placeholder="admin@example.com"
+                />
               </div>
 
               <div>
-                <label
-                  htmlFor="password"
-                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-                >
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Password
                 </label>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <Lock className="h-5 w-5 text-gray-400" />
-                  </div>
-                  <Input
-                    id="password"
-                    name="password"
-                    type="password"
-                    autoComplete="current-password"
-                    required
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="pl-10"
-                    placeholder="••••••••"
-                  />
-                </div>
+                <Input
+                  type="password"
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="bg-white/5 border-white/20 text-white placeholder-gray-400"
+                  placeholder=""
+                />
               </div>
 
-              <Button type="submit" className="w-full" disabled={isLoading}>
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="w-full flex items-center justify-center px-6 py-3 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white rounded-xl font-medium transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+              >
                 {isLoading ? (
                   <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Masuk...
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                    Signing in...
                   </>
                 ) : (
-                  "Masuk"
+                  "Sign In"
                 )}
-              </Button>
+              </button>
             </form>
-          </CardContent>
-        </Card>
-
-        <div className="text-center">
-          <button
-            onClick={() => router.push("/")}
-            className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
-          >
-            ← Kembali ke Beranda
-          </button>
+          </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }

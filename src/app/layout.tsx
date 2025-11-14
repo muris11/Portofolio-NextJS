@@ -102,6 +102,38 @@ export default function RootLayout({
         <link rel="icon" href="/icon.svg" type="image/svg+xml" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <link rel="manifest" href="/site.webmanifest" />
+
+        {/* DNS Prefetch for external resources */}
+        <link rel="dns-prefetch" href="//fonts.gstatic.com" />
+        <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+
+        {/* Preconnect to external domains */}
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin=""
+        />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+
+        {/* Resource Hints for better performance */}
+        <link rel="prefetch" href="/contact" />
+        <link rel="prefetch" href="/projects" />
+        <link rel="prefetch" href="/resume" />
+
+        {/* Module Preloading for critical components */}
+        <link rel="modulepreload" href="/_next/static/chunks/webpack.js" />
+        <link rel="modulepreload" href="/_next/static/chunks/main.js" />
+
+        {/* Preload critical CSS */}
+        <link
+          rel="preload"
+          href="/_next/static/css/app/layout.css"
+          as="style"
+        />
+
+        {/* Preload critical images */}
+        <link rel="preload" href="/favicon.ico" as="image" />
+        <link rel="preload" href="/icon.svg" as="image" type="image/svg+xml" />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground font-sans`}
@@ -117,6 +149,59 @@ export default function RootLayout({
           <Footer />
           <Toaster />
         </ThemeProvider>
+
+        {/* Navigation Prefetching Script */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                // Prefetch pages on hover for better navigation performance
+                const prefetchUrls = ['/contact', '/projects', '/resume'];
+
+                function prefetchPage(url) {
+                  if (!document.querySelector('link[href="' + url + '"][rel="prefetch"]')) {
+                    const link = document.createElement('link');
+                    link.rel = 'prefetch';
+                    link.href = url;
+                    link.as = 'document';
+                    document.head.appendChild(link);
+                  }
+                }
+
+                // Add hover listeners to navigation links
+                function addHoverListeners() {
+                  const navLinks = document.querySelectorAll('a[href^="/"]');
+                  navLinks.forEach(link => {
+                    const href = link.getAttribute('href');
+                    if (prefetchUrls.includes(href)) {
+                      link.addEventListener('mouseenter', () => {
+                        prefetchPage(href);
+                      }, { once: true });
+                    }
+                  });
+                }
+
+                // Initialize after DOM is ready
+                if (document.readyState === 'loading') {
+                  document.addEventListener('DOMContentLoaded', addHoverListeners);
+                } else {
+                  addHoverListeners();
+                }
+
+                // Also prefetch on touchstart for mobile devices
+                document.addEventListener('touchstart', function(e) {
+                  const target = e.target.closest('a[href^="/"]');
+                  if (target) {
+                    const href = target.getAttribute('href');
+                    if (prefetchUrls.includes(href)) {
+                      prefetchPage(href);
+                    }
+                  }
+                }, { passive: true });
+              })();
+            `,
+          }}
+        />
       </body>
     </html>
   );

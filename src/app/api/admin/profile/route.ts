@@ -48,9 +48,58 @@ export async function PUT(request: NextRequest) {
         }
 
         // Validate file size (5MB max)
-        if (profileImage.size > 5 * 1024 * 1024) {
+        if (profileImage.size > 2 * 1024 * 1024) {
           return NextResponse.json(
-            { error: "File size too large. Maximum 5MB allowed." },
+            { error: "File size too large. Maximum 2MB allowed." },
+            { status: 400 }
+          );
+        }
+
+        // Additional security: check file extension matches MIME type
+        const profileFileExtension = profileImage.name
+          .split(".")
+          .pop()
+          ?.toLowerCase();
+        const allowedExtensions = ["jpg", "jpeg", "png", "gif", "webp"];
+        if (
+          !profileFileExtension ||
+          !allowedExtensions.includes(profileFileExtension)
+        ) {
+          return NextResponse.json(
+            { error: "Invalid file extension" },
+            { status: 400 }
+          );
+        }
+
+        // Check for malicious file signatures (basic check)
+        const profileBytes = await profileImage.arrayBuffer();
+        const profileBuffer = Buffer.from(profileBytes);
+        const magicBytes = profileBuffer.subarray(0, 4);
+
+        // JPEG: FF D8 FF
+        // PNG: 89 50 4E 47
+        // GIF: 47 49 46 38
+        // WebP: 52 49 46 46
+        const isValidImage =
+          (magicBytes[0] === 0xff &&
+            magicBytes[1] === 0xd8 &&
+            magicBytes[2] === 0xff) || // JPEG
+          (magicBytes[0] === 0x89 &&
+            magicBytes[1] === 0x50 &&
+            magicBytes[2] === 0x4e &&
+            magicBytes[3] === 0x47) || // PNG
+          (magicBytes[0] === 0x47 &&
+            magicBytes[1] === 0x49 &&
+            magicBytes[2] === 0x46 &&
+            magicBytes[3] === 0x38) || // GIF
+          (magicBytes[0] === 0x52 &&
+            magicBytes[1] === 0x49 &&
+            magicBytes[2] === 0x46 &&
+            magicBytes[3] === 0x46); // WebP
+
+        if (!isValidImage) {
+          return NextResponse.json(
+            { error: "Invalid image file" },
             { status: 400 }
           );
         }
@@ -64,14 +113,11 @@ export async function PUT(request: NextRequest) {
         }
 
         // Generate unique filename
-        const fileExtension = profileImage.name.split(".").pop();
-        const fileName = `profile-${Date.now()}.${fileExtension}`;
+        const fileName = `profile-${Date.now()}.${profileFileExtension}`;
         const filePath = join(uploadsDir, fileName);
 
         // Convert file to buffer and save
-        const bytes = await profileImage.arrayBuffer();
-        const buffer = Buffer.from(bytes);
-        await writeFile(filePath, buffer);
+        await writeFile(filePath, profileBuffer);
 
         profileImageUrl = `/uploads/${fileName}`;
       }

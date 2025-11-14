@@ -1,16 +1,16 @@
 "use client";
 
-import { useState } from "react";
 import {
-  Mail,
-  Phone,
-  MapPin,
-  Send,
-  Github,
-  Linkedin,
   AlertCircle,
   CheckCircle2,
+  Github,
+  Linkedin,
+  Mail,
+  MapPin,
+  Phone,
+  Send,
 } from "lucide-react";
+import { useState } from "react";
 
 interface FormData {
   name: string;
@@ -186,60 +186,121 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen relative overflow-hidden bg-slate-950">
+      {/* Enhanced Animated Background - Consistent with Homepage */}
+      <div className="fixed inset-0 -z-10">
+        {/* Primary gradient background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-950 via-blue-950 to-slate-950"></div>
+
+        {/* Animated mesh gradient */}
+        <div className="absolute inset-0 opacity-30">
+          <div className="absolute top-0 -left-4 w-96 h-96 bg-blue-600 rounded-full mix-blend-multiply filter blur-3xl animate-blob"></div>
+          <div className="absolute top-0 -right-4 w-96 h-96 bg-cyan-600 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-2000"></div>
+          <div className="absolute -bottom-8 left-20 w-96 h-96 bg-indigo-600 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-4000"></div>
+          <div className="absolute bottom-20 right-20 w-96 h-96 bg-sky-600 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-6000"></div>
+        </div>
+
+        {/* Floating particles */}
+        <div className="absolute inset-0 overflow-hidden">
+          {[...Array(60)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute w-1 h-1 bg-blue-400/20 rounded-full animate-float"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                animationDelay: `${Math.random() * 15}s`,
+                animationDuration: `${15 + Math.random() * 15}s`,
+              }}
+            ></div>
+          ))}
+        </div>
+
+        {/* Geometric patterns */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-20">
+          <div className="absolute top-20 left-10 w-40 h-40 border border-blue-500/20 rotate-45 animate-spin-slow"></div>
+          <div className="absolute top-40 right-20 w-32 h-32 border border-cyan-500/20 rotate-12 animate-spin-reverse"></div>
+          <div className="absolute bottom-32 left-1/4 w-24 h-24 border border-indigo-500/20 rotate-30 animate-spin-slow animation-delay-3000"></div>
+          <div className="absolute bottom-20 right-1/3 w-36 h-36 border border-sky-500/20 -rotate-45 animate-spin-reverse animation-delay-5000"></div>
+        </div>
+
+        {/* Grid overlay */}
+        <div
+          className="absolute inset-0 opacity-[0.15]"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2363b3ed' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='1.5'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+          }}
+        ></div>
+      </div>
+
       {/* Header Section */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-800">
-        <div className="max-w-7xl mx-auto text-center">
-          <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white mb-4">
-            Hubungi Saya
+      <section className="relative pt-24 pb-16 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-4xl mx-auto text-center">
+          <div className="inline-flex items-center px-6 py-3 rounded-full bg-gradient-to-r from-blue-600/10 to-cyan-600/10 border border-blue-500/30 backdrop-blur-sm mb-8 animate-scale-in shadow-lg shadow-blue-500/10">
+            <span className="relative flex h-3 w-3 mr-3">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-3 w-3 bg-gradient-to-r from-blue-400 to-cyan-400"></span>
+            </span>
+            <span className="text-sm font-semibold text-white tracking-wide">
+              Let's Connect
+            </span>
+          </div>
+
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-white via-blue-100 to-cyan-100 bg-clip-text text-transparent mb-6 animate-slide-in-left tracking-tight">
+            Get In Touch
           </h1>
-          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-            Saya selalu terbuka untuk diskusi tentang proyek baru, ide kreatif,
-            atau peluang kerja sama. Mari terhubung!
+          <p className="text-lg sm:text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed animate-slide-in-right animation-delay-300 font-light">
+            Ready to bring your ideas to life? Let's discuss your project and
+            create something amazing together.
           </p>
         </div>
       </section>
 
       {/* Contact Content */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8">
+      <section className="pb-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
             {/* Contact Form */}
-            <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
-                Kirim Pesan
-              </h2>
+            <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 lg:p-10 shadow-2xl animate-fade-in-up animation-delay-600">
+              <div className="mb-8">
+                <h2 className="text-2xl lg:text-3xl font-bold bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent mb-4">
+                  Send Message
+                </h2>
+                <p className="text-gray-300 leading-relaxed">
+                  Fill out the form below and I'll get back to you as soon as
+                  possible.
+                </p>
+              </div>
 
               {submitStatus === "success" && (
-                <div className="mb-6 p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg">
+                <div className="mb-6 p-4 bg-green-500/10 border border-green-500/20 rounded-2xl backdrop-blur-sm animate-fade-in-up">
                   <div className="flex items-center">
-                    <CheckCircle2 className="h-5 w-5 text-green-600 dark:text-green-400 mr-2" />
-                    <p className="text-green-800 dark:text-green-200">
-                      Pesan Anda telah berhasil dikirim! Saya akan segera
-                      menghubungi Anda.
+                    <CheckCircle2 className="h-5 w-5 text-green-400 mr-3" />
+                    <p className="text-green-200">
+                      Message sent successfully! I'll get back to you soon.
                     </p>
                   </div>
                 </div>
               )}
 
               {submitStatus === "error" && (
-                <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+                <div className="mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-2xl backdrop-blur-sm animate-fade-in-up">
                   <div className="flex items-center">
-                    <AlertCircle className="h-5 w-5 text-red-600 dark:text-red-400 mr-2" />
-                    <p className="text-red-800 dark:text-red-200">
-                      Terjadi kesalahan. Silakan coba lagi.
+                    <AlertCircle className="h-5 w-5 text-red-400 mr-3" />
+                    <p className="text-red-200">
+                      Something went wrong. Please try again.
                     </p>
                   </div>
                 </div>
               )}
 
               <form onSubmit={handleSubmit} className="space-y-6" noValidate>
-                <div>
+                <div className="animate-fade-in-up animation-delay-700">
                   <label
                     htmlFor="name"
-                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                    className="block text-sm font-semibold text-white mb-3"
                   >
-                    Nama Lengkap <span className="text-red-500">*</span>
+                    Full Name <span className="text-red-400">*</span>
                   </label>
                   <input
                     type="text"
@@ -248,28 +309,28 @@ export default function ContactPage() {
                     value={formData.name}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-colors ${
+                    className={`w-full px-4 py-4 bg-white/5 border rounded-2xl focus:ring-2 focus:ring-primary/50 focus:border-primary/50 outline-none transition-all duration-300 backdrop-blur-sm text-white placeholder-gray-400 ${
                       errors.name
-                        ? "border-red-500 dark:border-red-400 bg-red-50 dark:bg-red-900/20"
-                        : "border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                        ? "border-red-400/50 bg-red-500/5"
+                        : "border-white/20 hover:border-white/30 focus:bg-white/10"
                     }`}
                     placeholder="John Doe"
                     disabled={isSubmitting}
                   />
                   {errors.name && touched.has("name") && (
-                    <p className="mt-2 text-sm text-red-600 dark:text-red-400 flex items-center">
-                      <AlertCircle className="h-4 w-4 mr-1" />
+                    <p className="mt-2 text-sm text-red-400 flex items-center animate-fade-in-up">
+                      <AlertCircle className="h-4 w-4 mr-2" />
                       {errors.name}
                     </p>
                   )}
                 </div>
 
-                <div>
+                <div className="animate-fade-in-up animation-delay-800">
                   <label
                     htmlFor="email"
-                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                    className="block text-sm font-semibold text-white mb-3"
                   >
-                    Email <span className="text-red-500">*</span>
+                    Email <span className="text-red-400">*</span>
                   </label>
                   <input
                     type="email"
@@ -278,17 +339,17 @@ export default function ContactPage() {
                     value={formData.email}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-colors ${
+                    className={`w-full px-4 py-4 bg-white/5 border rounded-2xl focus:ring-2 focus:ring-primary/50 focus:border-primary/50 outline-none transition-all duration-300 backdrop-blur-sm text-white placeholder-gray-400 ${
                       errors.email
-                        ? "border-red-500 dark:border-red-400 bg-red-50 dark:bg-red-900/20"
-                        : "border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                        ? "border-red-400/50 bg-red-500/5"
+                        : "border-white/20 hover:border-white/30 focus:bg-white/10"
                     }`}
                     placeholder="john@example.com"
                     disabled={isSubmitting}
                   />
                   {errors.email && touched.has("email") && (
-                    <p className="mt-2 text-sm text-red-600 dark:text-red-400 flex items-center">
-                      <AlertCircle className="h-4 w-4 mr-1" />
+                    <p className="mt-2 text-sm text-red-400 flex items-center animate-fade-in-up">
+                      <AlertCircle className="h-4 w-4 mr-2" />
                       {errors.email}
                     </p>
                   )}
@@ -297,7 +358,7 @@ export default function ContactPage() {
                 <div>
                   <label
                     htmlFor="subject"
-                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                    className="block text-sm font-medium text-gray-300 mb-2"
                   >
                     Subjek <span className="text-red-500">*</span>
                   </label>
@@ -311,8 +372,8 @@ export default function ContactPage() {
                       onBlur={handleBlur}
                       className={`w-full px-4 py-3 pr-20 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-colors ${
                         errors.subject
-                          ? "border-red-500 dark:border-red-400 bg-red-50 dark:bg-red-900/20"
-                          : "border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                          ? "border-red-500 bg-red-50/50"
+                          : "border-white/20 bg-white/5 backdrop-blur-sm text-white placeholder-gray-400"
                       }`}
                       placeholder="Diskusi Proyek"
                       disabled={isSubmitting}
@@ -328,7 +389,7 @@ export default function ContactPage() {
                     </span>
                   </div>
                   {errors.subject && touched.has("subject") && (
-                    <p className="mt-2 text-sm text-red-600 dark:text-red-400 flex items-center">
+                    <p className="mt-2 text-sm text-red-400 flex items-center">
                       <AlertCircle className="h-4 w-4 mr-1" />
                       {errors.subject}
                     </p>
@@ -338,7 +399,7 @@ export default function ContactPage() {
                 <div>
                   <label
                     htmlFor="message"
-                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                    className="block text-sm font-medium text-gray-300 mb-2"
                   >
                     Pesan <span className="text-red-500">*</span>
                   </label>
@@ -352,8 +413,8 @@ export default function ContactPage() {
                       rows={6}
                       className={`w-full px-4 py-3 pr-20 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-colors resize-none ${
                         errors.message
-                          ? "border-red-500 dark:border-red-400 bg-red-50 dark:bg-red-900/20"
-                          : "border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                          ? "border-red-500 bg-red-50/50"
+                          : "border-white/20 bg-white/5 backdrop-blur-sm text-white placeholder-gray-400"
                       }`}
                       placeholder="Halo, saya tertarik untuk mendiskusikan..."
                       disabled={isSubmitting}
@@ -369,7 +430,7 @@ export default function ContactPage() {
                     </span>
                   </div>
                   {errors.message && touched.has("message") && (
-                    <p className="mt-2 text-sm text-red-600 dark:text-red-400 flex items-center">
+                    <p className="mt-2 text-sm text-red-400 flex items-center">
                       <AlertCircle className="h-4 w-4 mr-1" />
                       {errors.message}
                     </p>
@@ -399,59 +460,51 @@ export default function ContactPage() {
             {/* Contact Info */}
             <div className="space-y-8">
               {/* Contact Details */}
-              <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+              <div className="bg-white/5 backdrop-blur-xl p-8 rounded-lg shadow-sm border border-white/10">
+                <h2 className="text-2xl font-bold bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent mb-6">
                   Informasi Kontak
                 </h2>
 
                 <div className="space-y-4">
                   <div className="flex items-center">
-                    <div className="w-12 h-12 bg-primary/10 dark:bg-primary/20 rounded-lg flex items-center justify-center">
+                    <div className="w-12 h-12 bg-primary/20 rounded-lg flex items-center justify-center">
                       <Mail className="h-6 w-6 text-primary" />
                     </div>
                     <div>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">
-                        Email
-                      </p>
-                      <p className="text-gray-900 dark:text-white font-medium">
+                      <p className="text-sm text-gray-400">Email</p>
+                      <p className="text-white font-medium">
                         contact@example.com
                       </p>
                     </div>
                   </div>
 
                   <div className="flex items-center">
-                    <div className="w-12 h-12 bg-primary/10 dark:bg-primary/20 rounded-lg flex items-center justify-center">
+                    <div className="w-12 h-12 bg-primary/20 rounded-lg flex items-center justify-center">
                       <Phone className="h-6 w-6 text-primary" />
                     </div>
                     <div>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">
-                        Telepon
-                      </p>
-                      <p className="text-gray-900 dark:text-white font-medium">
+                      <p className="text-sm text-gray-400">Telepon</p>
+                      <p className="text-white font-medium">
                         +62 812-3456-7890
                       </p>
                     </div>
                   </div>
 
                   <div className="flex items-center">
-                    <div className="w-12 h-12 bg-primary/10 dark:bg-primary/20 rounded-lg flex items-center justify-center">
+                    <div className="w-12 h-12 bg-primary/20 rounded-lg flex items-center justify-center">
                       <MapPin className="h-6 w-6 text-primary" />
                     </div>
                     <div>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">
-                        Lokasi
-                      </p>
-                      <p className="text-gray-900 dark:text-white font-medium">
-                        Indonesia
-                      </p>
+                      <p className="text-sm text-gray-400">Lokasi</p>
+                      <p className="text-white font-medium">Indonesia</p>
                     </div>
                   </div>
                 </div>
               </div>
 
               {/* Social Links */}
-              <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+              <div className="bg-white/5 backdrop-blur-xl p-8 rounded-lg shadow-sm border border-white/10">
+                <h2 className="text-2xl font-bold bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent mb-6">
                   Media Sosial
                 </h2>
 
@@ -460,14 +513,14 @@ export default function ContactPage() {
                     href="https://github.com"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center space-x-4 p-4 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                    className="flex items-center space-x-4 p-4 rounded-lg border border-white/10 hover:bg-white/5 backdrop-blur-sm transition-colors"
                   >
-                    <Github className="h-6 w-6 text-gray-700 dark:text-gray-300" />
+                    <Github className="h-6 w-6 text-gray-300" />
                     <div>
-                      <p className="font-medium text-gray-900 dark:text-white">
+                      <p className="font-medium bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent">
                         GitHub
                       </p>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">
+                      <p className="text-sm text-gray-400">
                         Lihat proyek dan kode saya
                       </p>
                     </div>
@@ -477,14 +530,14 @@ export default function ContactPage() {
                     href="https://linkedin.com"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center space-x-4 p-4 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                    className="flex items-center space-x-4 p-4 rounded-lg border border-white/10 hover:bg-white/5 backdrop-blur-sm transition-colors"
                   >
-                    <Linkedin className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+                    <Linkedin className="h-6 w-6 text-blue-400" />
                     <div>
-                      <p className="font-medium text-gray-900 dark:text-white">
+                      <p className="font-medium bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent">
                         LinkedIn
                       </p>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">
+                      <p className="text-sm text-gray-400">
                         Hubungi profesional
                       </p>
                     </div>
@@ -493,11 +546,9 @@ export default function ContactPage() {
               </div>
 
               {/* Response Time */}
-              <div className="bg-primary/10 dark:bg-primary/20 p-6 rounded-lg">
-                <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
-                  Waktu Respon
-                </h3>
-                <p className="text-gray-700 dark:text-gray-300">
+              <div className="bg-primary/20 p-6 rounded-lg">
+                <h3 className="font-semibold text-white mb-2">Waktu Respon</h3>
+                <p className="text-gray-300">
                   Saya biasanya merespons pesan dalam 24-48 jam. Untuk keperluan
                   mendesak, silakan sebutkan dalam subjek email.
                 </p>

@@ -10,43 +10,43 @@ interface SkillIconProps {
 
 export default function SkillIcon({ skill }: SkillIconProps) {
   const getLevelColor = (level?: number) => {
-    if (!level) return "bg-gray-200 dark:bg-gray-700";
-    if (level >= 4) return "bg-green-500";
-    if (level >= 3) return "bg-blue-500";
-    if (level >= 2) return "bg-yellow-500";
-    return "bg-red-500";
+    if (!level) return "from-gray-400 to-gray-500";
+    if (level >= 4) return "from-green-400 to-green-500";
+    if (level >= 3) return "from-blue-400 to-blue-500";
+    if (level >= 2) return "from-yellow-400 to-yellow-500";
+    return "from-red-400 to-red-500";
   };
 
   return (
-    <div className="flex flex-col items-center p-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow">
+    <div className="flex flex-col items-center p-6 bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl shadow-2xl hover:shadow-primary/10 hover:border-primary/20 transition-all duration-500 group hover:-translate-y-1">
       {/* Icon Placeholder */}
       <div
-        className={`w-16 h-16 ${getLevelColor(
+        className={`w-16 h-16 bg-gradient-to-br ${getLevelColor(
           skill.level
-        )} rounded-lg flex items-center justify-center mb-3`}
+        )} rounded-2xl flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-transform duration-300`}
       >
         <span className="text-white font-bold text-xl">
           {skill.name.charAt(0).toUpperCase()}
         </span>
       </div>
 
-      <h4 className="text-sm font-medium text-gray-900 dark:text-white text-center mb-1">
+      <h4 className="text-sm font-semibold bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent text-center mb-2">
         {skill.name}
       </h4>
 
-      <p className="text-xs text-gray-500 dark:text-gray-400 text-center">
+      <p className="text-xs text-gray-400 text-center mb-3 capitalize">
         {skill.category}
       </p>
 
       {skill.level && (
-        <div className="flex mt-2">
+        <div className="flex">
           {[...Array(5)].map((_, i) => (
             <div
               key={i}
-              className={`w-2 h-2 rounded-full mx-0.5 ${
+              className={`w-2 h-2 rounded-full mx-0.5 transition-colors duration-300 ${
                 i < (skill.level || 0)
-                  ? "bg-yellow-400"
-                  : "bg-gray-300 dark:bg-gray-600"
+                  ? "bg-gradient-to-r from-yellow-400 to-yellow-500"
+                  : "bg-gray-600"
               }`}
             />
           ))}

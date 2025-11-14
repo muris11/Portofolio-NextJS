@@ -31,34 +31,38 @@ export default function ProjectCard({ project }: ProjectCardProps) {
   const isPlaceholder = project.imageUrl?.includes("via.placeholder.com");
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden group border border-gray-200 dark:border-gray-700 hover:border-primary/50">
-      {/* Project Image */}
-      <div className="relative h-48 sm:h-56 lg:h-48 bg-gray-100 dark:bg-gray-700 overflow-hidden">
+    <div className="bg-white/5 hover:bg-white/10 rounded-3xl shadow-lg hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-700 ease-out overflow-hidden group border border-white/10 hover:border-white/30 hover:-translate-y-2 hover:scale-[1.02] backdrop-blur-sm">
+      {/* Project Image - Full Size */}
+      <div className="relative h-64 sm:h-72 lg:h-80 xl:h-96 bg-gradient-to-br from-slate-800 to-slate-900 overflow-hidden">
         {project.imageUrl ? (
           isPlaceholder ? (
             <img
               src={project.imageUrl}
               alt={project.title}
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
+              loading="lazy"
             />
           ) : (
             <Image
               src={project.imageUrl}
               alt={project.title}
               fill
-              className="object-cover group-hover:scale-105 transition-transform duration-500"
+              className="object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
+              loading="lazy"
+              placeholder="blur"
+              blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R+IRjWjBqO6O2mhP//Z"
             />
           )
         ) : (
-          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-100 via-gray-50 to-gray-200 dark:from-gray-700 dark:via-gray-600 dark:to-gray-800">
+          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary/10 via-primary/20 to-primary/10">
             <div className="text-center">
-              <div className="w-16 h-16 bg-gray-200 dark:bg-gray-600 rounded-full flex items-center justify-center mx-auto mb-2">
-                <span className="text-gray-400 dark:text-gray-500 text-2xl font-bold">
+              <div className="w-16 h-16 bg-white/5 backdrop-blur-xl rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg border border-white/10">
+                <span className="text-primary text-2xl font-bold">
                   {project.title.charAt(0).toUpperCase()}
                 </span>
               </div>
-              <span className="text-gray-400 dark:text-gray-500 text-sm">
-                No Image
+              <span className="text-gray-400 text-sm font-medium">
+                Project Preview
               </span>
             </div>
           </div>
@@ -66,20 +70,20 @@ export default function ProjectCard({ project }: ProjectCardProps) {
 
         {/* Featured badge */}
         {project.featured && (
-          <div className="absolute top-3 left-3 bg-primary text-primary-foreground px-2 py-1 rounded-full text-xs font-medium shadow-lg">
-            Featured
+          <div className="absolute top-4 left-4 bg-gradient-to-r from-primary to-primary/80 text-white px-3 py-1.5 rounded-full text-xs font-semibold shadow-lg backdrop-blur-sm border border-white/20">
+            ⭐ Featured
           </div>
         )}
 
         {/* Overlay with links */}
-        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/60 transition-all duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
-          <div className="flex space-x-3 sm:space-x-4">
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 ease-out flex items-center justify-center">
+          <div className="flex space-x-4 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 ease-out delay-100">
             {project.liveUrl && (
               <Link
                 href={project.liveUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm text-gray-900 dark:text-white p-3 rounded-full hover:bg-white dark:hover:bg-gray-800 transition-all duration-200 shadow-lg hover:scale-110 touch-manipulation"
+                className="bg-white/5 backdrop-blur-xl text-white p-3.5 rounded-2xl hover:bg-white/10 hover:scale-110 transition-all duration-300 ease-out shadow-xl hover:shadow-2xl border border-white/10 hover:border-primary/50"
                 aria-label="View live project"
               >
                 <ExternalLink className="h-5 w-5" />
@@ -90,7 +94,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
                 href={project.githubUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm text-gray-900 dark:text-white p-3 rounded-full hover:bg-white dark:hover:bg-gray-800 transition-all duration-200 shadow-lg hover:scale-110 touch-manipulation"
+                className="bg-white/5 backdrop-blur-xl text-white p-3.5 rounded-2xl hover:bg-white/10 hover:scale-110 transition-all duration-300 ease-out shadow-xl hover:shadow-2xl border border-white/10 hover:border-primary/50"
                 aria-label="View source code"
               >
                 <Github className="h-5 w-5" />
@@ -101,27 +105,29 @@ export default function ProjectCard({ project }: ProjectCardProps) {
       </div>
 
       {/* Project Content */}
-      <div className="p-4 sm:p-6">
-        <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white mb-2 group-hover:text-primary transition-colors">
-          {project.title}
-        </h3>
-        <p className="text-gray-600 dark:text-gray-300 mb-4 line-clamp-3 leading-relaxed text-sm sm:text-base">
-          {project.description}
-        </p>
+      <div className="p-5 sm:p-6 space-y-4">
+        <div className="space-y-2">
+          <h3 className="text-lg sm:text-xl font-bold bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent group-hover:text-primary transition-colors duration-300 ease-out leading-tight">
+            {project.title}
+          </h3>
+          <p className="text-gray-300 leading-relaxed text-sm sm:text-base line-clamp-3">
+            {project.description}
+          </p>
+        </div>
 
         {/* Tech Stack */}
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2 pt-2">
           {techStack.slice(0, 4).map((tech: string, index: number) => (
             <span
               key={index}
-              className="px-2 py-1 sm:px-3 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-xs sm:text-sm rounded-full border border-gray-200 dark:border-gray-600 hover:bg-primary hover:text-primary-foreground hover:border-primary transition-colors"
+              className="px-3 py-1.5 bg-white/5 hover:bg-white/10 backdrop-blur-sm text-gray-300 text-xs sm:text-sm rounded-xl border border-white/10 hover:border-white/20 hover:text-white transition-all duration-300 ease-out font-medium"
             >
               {tech}
             </span>
           ))}
           {techStack.length > 4 && (
-            <span className="px-2 py-1 sm:px-3 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-xs sm:text-sm rounded-full border border-gray-200 dark:border-gray-600">
-              +{techStack.length - 4}
+            <span className="px-3 py-1.5 bg-white/5 backdrop-blur-sm text-gray-300 text-xs sm:text-sm rounded-xl border border-white/10 font-medium">
+              +{techStack.length - 4} more
             </span>
           )}
         </div>

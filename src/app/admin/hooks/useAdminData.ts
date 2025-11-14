@@ -91,9 +91,16 @@ export function useAdminData() {
       if (response.ok) {
         const data = await response.json();
         setStats(data);
+      } else {
+        const errorData = await response
+          .json()
+          .catch(() => ({ error: "Unknown error" }));
+        console.error("Failed to fetch stats:", response.status, errorData);
+        // Don't show error to user for stats, just log it
       }
     } catch (error) {
       console.error("Error fetching stats:", error);
+      // Don't show error to user for stats, just log it
     }
   };
 
@@ -229,9 +236,17 @@ export function useAdminData() {
           statusText: response.statusText,
           body: errorText,
         });
-        throw new Error(
-          `API Error: ${response.status} ${response.statusText} - ${errorText}`
-        );
+
+        // Try to parse error message
+        let errorMessage = "Failed to save project";
+        try {
+          const errorData = JSON.parse(errorText);
+          errorMessage = errorData.error || errorMessage;
+        } catch {
+          errorMessage = errorText || errorMessage;
+        }
+
+        throw new Error(errorMessage);
       }
     } catch (error) {
       console.error("Error saving project:", error);

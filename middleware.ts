@@ -14,9 +14,11 @@ export function middleware(request: NextRequest) {
 
     // Check for admin session cookie
     const adminSession = request.cookies.get("admin_session")?.value;
+    const expectedToken =
+      process.env.ADMIN_SESSION_TOKEN || "admin_session_token_2024_secure";
 
     // If no session cookie, redirect to login
-    if (!adminSession || adminSession !== "admin_session_token_2024") {
+    if (!adminSession || adminSession !== expectedToken) {
       const loginUrl = new URL("/admin/login", request.url);
       // Add the current path as a query parameter so we can redirect back after login
       loginUrl.searchParams.set("redirect", path);

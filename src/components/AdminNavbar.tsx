@@ -30,11 +30,6 @@ export default function AdminNavbar() {
               >
                 Portfolio Admin
               </Link>
-              <div className="hidden sm:block">
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                  Kelola konten portfolio Anda dengan mudah
-                </p>
-              </div>
             </div>
 
             {/* Desktop Menu */}
