@@ -5,9 +5,6 @@ import {
   CheckCircle2,
   Github,
   Linkedin,
-  Mail,
-  MapPin,
-  Phone,
   Send,
 } from "lucide-react";
 import { useState } from "react";
@@ -459,49 +456,6 @@ export default function ContactPage() {
 
             {/* Contact Info */}
             <div className="space-y-8">
-              {/* Contact Details */}
-              <div className="bg-white/5 backdrop-blur-xl p-8 rounded-lg shadow-sm border border-white/10">
-                <h2 className="text-2xl font-bold bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent mb-6">
-                  Informasi Kontak
-                </h2>
-
-                <div className="space-y-4">
-                  <div className="flex items-center">
-                    <div className="w-12 h-12 bg-primary/20 rounded-lg flex items-center justify-center">
-                      <Mail className="h-6 w-6 text-primary" />
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-400">Email</p>
-                      <p className="text-white font-medium">
-                        contact@example.com
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center">
-                    <div className="w-12 h-12 bg-primary/20 rounded-lg flex items-center justify-center">
-                      <Phone className="h-6 w-6 text-primary" />
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-400">Telepon</p>
-                      <p className="text-white font-medium">
-                        +62 812-3456-7890
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center">
-                    <div className="w-12 h-12 bg-primary/20 rounded-lg flex items-center justify-center">
-                      <MapPin className="h-6 w-6 text-primary" />
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-400">Lokasi</p>
-                      <p className="text-white font-medium">Indonesia</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
               {/* Social Links */}
               <div className="bg-white/5 backdrop-blur-xl p-8 rounded-lg shadow-sm border border-white/10">
                 <h2 className="text-2xl font-bold bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent mb-6">

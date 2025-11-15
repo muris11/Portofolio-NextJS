@@ -1,6 +1,6 @@
 "use client";
 
-import { Github, Linkedin, Mail, Menu, X } from "lucide-react";
+import { Github, Linkedin, Menu, X } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -17,7 +17,6 @@ export default function Navbar() {
   const socialLinks = [
     { icon: Github, href: "https://github.com", label: "GitHub" },
     { icon: Linkedin, href: "https://linkedin.com", label: "LinkedIn" },
-    { icon: Mail, href: "mailto:contact@example.com", label: "Email" },
   ];
 
   return (

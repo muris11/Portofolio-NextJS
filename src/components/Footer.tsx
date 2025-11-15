@@ -1,4 +1,4 @@
-import { Github, Linkedin, Mail, MapPin } from "lucide-react";
+import { Github, Linkedin } from "lucide-react";
 import Link from "next/link";
 
 export default function Footer() {
@@ -7,7 +7,6 @@ export default function Footer() {
   const socialLinks = [
     { icon: Github, href: "https://github.com", label: "GitHub" },
     { icon: Linkedin, href: "https://linkedin.com", label: "LinkedIn" },
-    { icon: Mail, href: "mailto:contact@example.com", label: "Email" },
   ];
 
   const quickLinks = [
@@ -93,40 +92,6 @@ export default function Footer() {
                 </li>
               ))}
             </ul>
-          </div>
-
-          {/* Contact Info */}
-          <div className="col-span-1 sm:col-span-2 lg:col-span-1">
-            <h4 className="text-lg font-semibold mb-6 bg-gradient-to-r from-white via-blue-100 to-cyan-200 bg-clip-text text-transparent">
-              Contact Info
-            </h4>
-            <div className="space-y-6">
-              <div className="flex items-start space-x-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-blue-600/20 to-cyan-600/20 rounded-2xl flex items-center justify-center border border-white/20 backdrop-blur-xl">
-                  <Mail className="h-6 w-6 text-primary" />
-                </div>
-                <div>
-                  <p className="text-sm font-semibold text-white mb-1">Email</p>
-                  <a
-                    href="mailto:contact@example.com"
-                    className="text-sm text-gray-400 hover:text-primary transition-colors duration-300"
-                  >
-                    contact@example.com
-                  </a>
-                </div>
-              </div>
-              <div className="flex items-start space-x-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-indigo-600/20 to-purple-600/20 rounded-2xl flex items-center justify-center border border-white/20 backdrop-blur-xl">
-                  <MapPin className="h-6 w-6 text-primary" />
-                </div>
-                <div>
-                  <p className="text-sm font-semibold text-white mb-1">
-                    Location
-                  </p>
-                  <span className="text-sm text-gray-400">Indonesia</span>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
 

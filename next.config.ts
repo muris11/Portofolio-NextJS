@@ -15,14 +15,7 @@ const nextConfig: NextConfig = {
   },
 
   images: {
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "via.placeholder.com",
-        port: "",
-        pathname: "/**",
-      },
-    ],
+    remotePatterns: [],
   },
   webpack: (config, { dev }) => {
     if (dev) {
