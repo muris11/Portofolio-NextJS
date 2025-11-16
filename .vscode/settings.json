@@ -1,0 +1,253 @@
+{
+  // === ⚙️ BASIC UI & EDITOR ===
+  "code-runner.runInTerminal": true,
+  "window.zoomLevel": -1,
+  "workbench.editor.enablePreview": false,
+  "workbench.editor.empty.hint": "hidden",
+  "workbench.startupEditor": "none",
+
+  // Navigasi & tampilan
+  "editor.minimap.enabled": true,
+  "editor.stickyScroll.enabled": true,
+  "breadcrumbs.enabled": true,
+  "editor.smoothScrolling": true,
+  "workbench.list.smoothScrolling": true,
+  "editor.cursorSmoothCaretAnimation": "on",
+
+  // Indent & wrap
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "editor.detectIndentation": false,
+  "editor.wordWrap": "on",
+  "editor.wordWrapColumn": 120,
+  "editor.rulers": [100, 120],
+
+  // Format & autosave
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": true,
+  "editor.fontWeight": "normal",
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "files.autoSave": "afterDelay",
+
+  // === 🧠 DART & FLUTTER (UMUM) ===
+  "[dart]": {
+    "editor.formatOnSave": true,
+    "editor.formatOnType": true,
+    "editor.rulers": [80],
+    "editor.selectionHighlight": false,
+    "editor.tabCompletion": "onlySnippets",
+    "editor.wordBasedSuggestions": "off"
+  },
+  "dart.debugExternalPackageLibraries": false,
+  "dart.debugSdkLibraries": false,
+  "dart.previewFlutterUiGuidesCustomTracking": true,
+  "dart.previewFlutterUiGuides": true,
+
+  // === 🌐 EMMET / HTML-LIKE ===
+  "emmet.includeLanguages": {
+    "javascript": "javascriptreact"
+  },
+
+  // === 🧬 GIT & GITHUB ===
+  "git.enableSmartCommit": true,
+  "githubPullRequests.remotes": ["origin", "upstream"],
+  "git.autofetch": true,
+  "git.confirmSync": false,
+  "git.openRepositoryInParentFolders": "always",
+  "git.pruneOnFetch": true,
+  "diffEditor.ignoreTrimWhitespace": true,
+
+  // === 🧰 CODE ACTIONS ===
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "always",
+    "source.organizeImports": "always"
+  },
+
+  // === 🧱 BLADE & YAML / DOCKER ===
+  "[blade]": {
+    "editor.defaultFormatter": "shufo.vscode-blade-formatter"
+  },
+  "[dockercompose]": {
+    "editor.defaultFormatter": "redhat.vscode-yaml"
+  },
+  "[github-actions-workflow]": {
+    "editor.defaultFormatter": "redhat.vscode-yaml"
+  },
+
+  // === 📦 CODE RUNNER (UMUM) ===
+  "code-runner.executorMap": {
+    "c": "gcc $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt",
+    "cpp": "g++ $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt",
+    "java": "javac $fileName && java $fileNameWithoutExt",
+    "typescript": "ts-node",
+    "bash": "bash",
+    "powershell": "powershell -ExecutionPolicy ByPass -File",
+    "bat": "cmd /c",
+    "go": "go run",
+    "javascript": "node",
+    "python": "python -u",
+    "php": "php"
+  },
+  "code-runner.ignoreSelection": true,
+  "code-runner.clearPreviousOutput": true,
+
+  // === 🌍 FILE & SEARCH EXCLUDE (UMUM) ===
+  "files.exclude": {
+    "**/.git": true,
+    "**/.DS_Store": true,
+    "**/node_modules": true,
+    "**/vendor": true,
+    "**/.next": true,
+    "**/.turbo": true,
+    "**/.idea": true
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/vendor": true,
+    "**/.next": true,
+    "**/build": true,
+    "**/dist": true
+  },
+
+  // === 🔠 FILE ASSOCIATIONS (UMUM) ===
+  "files.associations": {
+    "*.blade.php": "blade",
+    "*.html": "html",
+    "*.css": "css"
+  },
+
+  // === 🐘 PHP / LARAVEL (UMUM) ===
+  "[php]": {
+    "editor.defaultFormatter": "bmewburn.vscode-intelephense-client",
+    "editor.formatOnSave": true
+  },
+
+  // === 🎯 FORMATTER PER BAHASA (PAKAI PRETTIER) ===
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[css]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[scss]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+
+  // === 🧠 GITHUB COPILOT SMART SETTINGS (UMUM) ===
+  "github.copilot.enable": {
+    "*": true,
+    "plaintext": false,
+    "markdown": false,
+    "scminput": false
+  },
+  "github.copilot.inlineSuggest.enable": true,
+  "github.copilot.suggestionDelay": 0,
+  "github.copilot.nextEditSuggestions.enabled": true,
+  "github.copilot.advanced": {
+    "autocompletion": {
+      "context": "full"
+    },
+    "chat": {
+      "context": "workspace"
+    },
+    "debug.overrideProxy": false
+  },
+
+  // === 🧠 GITLENS + COPILOT (UMUM) ===
+  "gitlens.ai.model": "vscode",
+  "gitlens.ai.vscode.model": "copilot:gpt-4.1",
+
+  // === 🌐 LIVE SERVER (UMUM) ===
+  "liveServer.settings.donotVerifyTags": true,
+
+  // === 💻 TERMINAL UMUM ===
+  "terminal.integrated.confirmOnKill": "never",
+  "terminal.integrated.defaultProfile.windows": "Windows PowerShell",
+  "terminal.integrated.fontSize": 13,
+  "terminal.integrated.cursorBlinking": true,
+
+  // === 🤖 TERMINAL AUTO-CONFIRM (NONAKTIFKAN SEMUA KONFIRMASI) ===
+  "chat.tools.terminal.confirmExecution": false,
+  "github.copilot.chat.terminal.confirmExecution": false,
+
+  // === 🤖 COPILOT CHAT + TERMINAL (UMUM) ===
+  "github.copilot.chat.terminal.autoExecution": "always",
+
+  // === 🧩 MCP / CHATGPT SETTING UMUM ===
+  "mcpServers": {},
+  "chatgpt.runCodexInWindowsSubsystemForLinux": true,
+
+  // === 🎨 THEME & ICON (UMUM, BISA KAMU GANTI KAPAN AJA) ===
+  "workbench.iconTheme": "vs-seti",
+  "workbench.colorTheme": "Default Dark Modern",
+
+  // ===================================================================
+  // =======================  💠 TAMBAHAN UMUM 💠  ======================
+  // ===================================================================
+
+  // === 🟦 BRACKET & HIGHLIGHT ===
+  "editor.guides.bracketPairs": "active",
+  "editor.bracketPairColorization.enabled": true,
+  "editor.renderLineHighlight": "all",
+
+  // === 🔍 PEEK & DEFINITION ===
+  "editor.peekWidgetDefaultFocus": "editor",
+  "editor.definitionLinkOpensInPeek": true,
+
+  // === 💡 INLINE SUGGEST (VS CODE) ===
+  "editor.inlineSuggest.enabled": true,
+
+  // === 📂 EXPLORER QUALITY OF LIFE ===
+  "explorer.compactFolders": false,
+
+  // === 🗂 BATAS TAB BIAR NGGAK NUMPUK ===
+  "workbench.editor.limit.enabled": true,
+  "workbench.editor.limit.value": 20,
+  "workbench.editor.limit.perEditorGroup": 20,
+
+  // === 🖥 TERMINAL QUALITY OF LIFE ===
+  "terminal.integrated.scrollback": 10000,
+  "terminal.integrated.defaultLocation": "view",
+
+  // === 🕒 LOCAL HISTORY (JAGA-JAGA) ===
+  "workbench.localHistory.enabled": true,
+  "workbench.localHistory.maxFileEntries": 50,
+  "workbench.localHistory.exclude": {
+    "**/node_modules/**": true,
+    "**/dist/**": true,
+    "**/build/**": true
+  },
+
+  // === 🛟 GIT SAFETY ===
+  "git.confirmForcePush": true,
+  "git.allowForcePush": "smart",
+
+  // === 🔒 PRIVASI & SECURITY UMUM ===
+  "telemetry.telemetryLevel": "off",
+  "security.workspace.trustEnabled": true,
+
+  // === 🧩 EXTRA EDITOR QUALITY-OF-LIFE ===
+  "editor.renderWhitespace": "selection",
+  "editor.linkedEditing": true,
+
+  // === ⚡ AUTO SAVE DELAY (SEDIKIT LEBIH CEPAT) ===
+  "files.autoSaveDelay": 700
+}

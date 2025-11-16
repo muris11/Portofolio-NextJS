@@ -166,20 +166,11 @@ export default function ContactPage() {
       } else {
         setSubmitStatus("error");
       }
-    } catch (error) {
+    } catch {
       setSubmitStatus("error");
     } finally {
       setIsSubmitting(false);
     }
-  };
-
-  const getCharacterCount = (field: keyof FormData) => {
-    const counts = {
-      name: { current: formData.name.length, max: 100 },
-      subject: { current: formData.subject.length, max: 200 },
-      message: { current: formData.message.length, max: 1000 },
-    };
-    return counts[field];
   };
 
   return (
@@ -199,7 +190,7 @@ export default function ContactPage() {
 
         {/* Floating particles */}
         <div className="absolute inset-0 overflow-hidden">
-          {[...Array(60)].map((_, i) => (
+          {[...Array(25)].map((_, i) => (
             <div
               key={i}
               className="absolute w-1 h-1 bg-blue-400/20 rounded-full animate-float"
@@ -239,7 +230,7 @@ export default function ContactPage() {
               <span className="relative inline-flex rounded-full h-3 w-3 bg-gradient-to-r from-blue-400 to-cyan-400"></span>
             </span>
             <span className="text-sm font-semibold text-white tracking-wide">
-              Let's Connect
+              Let&apos;s Connect
             </span>
           </div>
 
@@ -247,8 +238,8 @@ export default function ContactPage() {
             Get In Touch
           </h1>
           <p className="text-lg sm:text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed animate-slide-in-right animation-delay-300 font-light">
-            Ready to bring your ideas to life? Let's discuss your project and
-            create something amazing together.
+            Ready to bring your ideas to life? Let&apos;s discuss your project
+            and collaborate.
           </p>
         </div>
       </section>
@@ -264,8 +255,8 @@ export default function ContactPage() {
                   Send Message
                 </h2>
                 <p className="text-gray-300 leading-relaxed">
-                  Fill out the form below and I'll get back to you as soon as
-                  possible.
+                  Fill out the form below and I&apos;ll get back to you as soon
+                  as possible.
                 </p>
               </div>
 
@@ -274,7 +265,7 @@ export default function ContactPage() {
                   <div className="flex items-center">
                     <CheckCircle2 className="h-5 w-5 text-green-400 mr-3" />
                     <p className="text-green-200">
-                      Message sent successfully! I'll get back to you soon.
+                      Message sent successfully! I&apos;ll get back to you soon.
                     </p>
                   </div>
                 </div>
