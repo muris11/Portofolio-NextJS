@@ -1,6 +1,6 @@
 import { User } from "lucide-react";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { Profile } from "../hooks/useAdminData";
 
 interface ProfileSectionProps {
@@ -14,6 +14,13 @@ export function ProfileSection({ profile, onSave }: ProfileSectionProps) {
   const [previewUrl, setPreviewUrl] = useState<string | null>(
     profile?.profileImage || null
   );
+
+  // Update previewUrl when profile changes (after successful update)
+  useEffect(() => {
+    if (profile?.profileImage && !selectedFile) {
+      setPreviewUrl(profile.profileImage);
+    }
+  }, [profile?.profileImage, selectedFile]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -68,7 +75,12 @@ export function ProfileSection({ profile, onSave }: ProfileSectionProps) {
       uploadFormData.append("linkedinUrl", data.linkedinUrl || "");
       uploadFormData.append("instagramUrl", data.instagramUrl || "");
 
-      await onSave(uploadFormData);
+      const success = await onSave(uploadFormData);
+      if (success) {
+        // Reset file selection after successful upload
+        setSelectedFile(null);
+        setPreviewUrl(profile?.profileImage || null);
+      }
     } else {
       await onSave(data);
     }

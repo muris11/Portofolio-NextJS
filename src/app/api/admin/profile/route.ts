@@ -43,7 +43,7 @@ export async function PUT(request: NextRequest) {
       const profileImage = formData.get("profileImage") as File | null;
 
       // Handle file upload if present
-      if (profileImage && profileImage.size > 0) {
+      if (profileImage) {
         // Validate file type
         const allowedTypes = [
           "image/jpeg",
@@ -175,7 +175,10 @@ export async function PUT(request: NextRequest) {
 
     // Get existing profile to preserve profileImage if no new file uploaded
     const existingProfile = await db.profile.findFirst();
-    const finalProfileImageUrl = profileImageUrl !== null ? profileImageUrl : existingProfile?.profileImage;
+    const finalProfileImageUrl =
+      profileImageUrl !== null
+        ? profileImageUrl
+        : existingProfile?.profileImage;
 
     const profile = await db.profile.upsert({
       where: { id: "default" },
@@ -197,7 +200,7 @@ export async function PUT(request: NextRequest) {
         fullName,
         title,
         bio,
-        profileImage: profileImageUrl,
+        profileImage: finalProfileImageUrl,
         email,
         phone: phone || null,
         location: location || null,
