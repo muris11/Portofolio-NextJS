@@ -1,10 +1,11 @@
 import { User } from "lucide-react";
+import Image from "next/image";
 import { useState } from "react";
 import type { Profile } from "../hooks/useAdminData";
 
 interface ProfileSectionProps {
   profile: Profile | null;
-  onSave: (data: any) => Promise<boolean>;
+  onSave: (_data: FormData | Partial<Profile>) => Promise<boolean>;
 }
 
 export function ProfileSection({ profile, onSave }: ProfileSectionProps) {
@@ -43,7 +44,7 @@ export function ProfileSection({ profile, onSave }: ProfileSectionProps) {
       title: formData.get("title") as string,
       bio: formData.get("bio") as string,
       profileImage: selectedFile
-        ? null
+        ? undefined
         : (formData.get("profileImage") as string), // Will be handled by file upload
       email: formData.get("email") as string,
       phone: formData.get("phone") as string,
@@ -76,7 +77,7 @@ export function ProfileSection({ profile, onSave }: ProfileSectionProps) {
   };
 
   return (
-    <div className="space-y-8 animate-in fade-in-50 duration-500">
+    <div className="space-y-4 animate-in fade-in-50 duration-500">
       {/* Header Section */}
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 p-6 bg-gradient-to-br from-green-50 via-white to-emerald-50 dark:from-green-950/20 dark:via-gray-900 dark:to-emerald-950/20 rounded-2xl border border-green-100/50 dark:border-green-900/20">
         <div className="space-y-2">
@@ -86,10 +87,10 @@ export function ProfileSection({ profile, onSave }: ProfileSectionProps) {
             </div>
             <div>
               <h2 className="text-2xl lg:text-3xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
-                Kelola Profil
+                Manage Profile
               </h2>
               <p className="text-gray-600 dark:text-gray-400 text-sm lg:text-base">
-                Update informasi pribadi dan detail kontak Anda
+                Update your personal information and contact details
               </p>
             </div>
           </div>
@@ -97,7 +98,7 @@ export function ProfileSection({ profile, onSave }: ProfileSectionProps) {
             <div className="flex items-center space-x-2">
               <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
               <span className="text-gray-600 dark:text-gray-400">
-                Profil Lengkap
+                Complete Profile
               </span>
             </div>
             <div className="flex items-center space-x-2">
@@ -106,8 +107,8 @@ export function ProfileSection({ profile, onSave }: ProfileSectionProps) {
                 {profile?.githubUrl ||
                 profile?.linkedinUrl ||
                 profile?.instagramUrl
-                  ? "Sosial Media"
-                  : "Belum Terhubung"}
+                  ? "Social Media"
+                  : "Not Connected"}
               </span>
             </div>
           </div>
@@ -117,7 +118,7 @@ export function ProfileSection({ profile, onSave }: ProfileSectionProps) {
       {/* Profile Form */}
       <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200/50 dark:border-gray-700/50 p-8">
         {profile ? (
-          <form onSubmit={handleSubmit} className="space-y-8">
+          <form onSubmit={handleSubmit} className="space-y-4">
             {/* Personal Information */}
             <div className="space-y-6">
               <div className="flex items-center space-x-3 pb-4 border-b border-gray-200 dark:border-gray-700">
@@ -125,14 +126,14 @@ export function ProfileSection({ profile, onSave }: ProfileSectionProps) {
                   <User className="h-4 w-4 text-white" />
                 </div>
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                  Informasi Pribadi
+                  Personal Information
                 </h3>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
-                    Nama Lengkap *
+                    Full Name *
                   </label>
                   <input
                     type="text"
@@ -145,7 +146,7 @@ export function ProfileSection({ profile, onSave }: ProfileSectionProps) {
 
                 <div className="space-y-2">
                   <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
-                    Title/Posisi *
+                    Title/Position *
                   </label>
                   <input
                     type="text"
@@ -167,7 +168,7 @@ export function ProfileSection({ profile, onSave }: ProfileSectionProps) {
                   defaultValue={profile.bio}
                   required
                   rows={4}
-                  placeholder="Deskripsi singkat tentang diri Anda..."
+                  placeholder="Brief description about yourself..."
                   className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 dark:bg-gray-700 dark:text-white transition-all duration-200 resize-none"
                 />
               </div>
@@ -192,7 +193,7 @@ export function ProfileSection({ profile, onSave }: ProfileSectionProps) {
                   </svg>
                 </div>
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                  Informasi Kontak
+                  Contact Information
                 </h3>
               </div>
 
@@ -212,7 +213,7 @@ export function ProfileSection({ profile, onSave }: ProfileSectionProps) {
 
                 <div className="space-y-2">
                   <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
-                    Telepon
+                    Phone
                   </label>
                   <input
                     type="tel"
@@ -225,7 +226,7 @@ export function ProfileSection({ profile, onSave }: ProfileSectionProps) {
 
               <div className="space-y-2">
                 <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
-                  Lokasi
+                  Location
                 </label>
                 <input
                   type="text"
@@ -256,7 +257,7 @@ export function ProfileSection({ profile, onSave }: ProfileSectionProps) {
                   </svg>
                 </div>
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                  Gambar Profil
+                  Profile Image
                 </h3>
               </div>
 
@@ -264,18 +265,20 @@ export function ProfileSection({ profile, onSave }: ProfileSectionProps) {
                 {/* Current Image Preview */}
                 {previewUrl && (
                   <div className="flex items-center space-x-4 p-4 bg-gray-50 dark:bg-gray-800 rounded-xl">
-                    <img
+                    <Image
                       src={previewUrl}
                       alt="Profile preview"
+                      width={80}
+                      height={80}
                       className="w-20 h-20 rounded-full object-cover border-2 border-gray-200 dark:border-gray-600 shadow-lg"
                     />
                     <div>
                       <p className="text-sm font-medium text-gray-900 dark:text-white">
-                        Gambar profil saat ini
+                        Current profile image
                       </p>
                       {!selectedFile && (
                         <p className="text-xs text-gray-600 dark:text-gray-400">
-                          Pilih gambar baru untuk mengganti
+                          Choose a new image to replace
                         </p>
                       )}
                     </div>
@@ -291,7 +294,7 @@ export function ProfileSection({ profile, onSave }: ProfileSectionProps) {
                     className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-purple-500 focus:border-purple-500 dark:bg-gray-700 dark:text-white file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-purple-600 file:text-white hover:file:bg-purple-700 transition-all duration-200"
                   />
                   <p className="text-xs text-gray-600 dark:text-gray-400">
-                    Format: JPG, PNG, GIF. Maksimal 5MB.
+                    Format: JPG, PNG, GIF. Maximum 5MB.
                   </p>
                 </div>
               </div>
@@ -316,7 +319,7 @@ export function ProfileSection({ profile, onSave }: ProfileSectionProps) {
                   </svg>
                 </div>
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                  Sosial Media
+                  Social Media
                 </h3>
               </div>
 
@@ -371,7 +374,7 @@ export function ProfileSection({ profile, onSave }: ProfileSectionProps) {
               >
                 <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
                 <span className="relative z-10 font-medium">
-                  {isLoading ? "Menyimpan..." : "Update Profil"}
+                  {isLoading ? "Saving..." : "Update Profile"}
                 </span>
               </button>
             </div>
@@ -380,7 +383,7 @@ export function ProfileSection({ profile, onSave }: ProfileSectionProps) {
           <div className="text-center py-12">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto mb-4"></div>
             <p className="text-gray-600 dark:text-gray-400">
-              Memuat data profil...
+              Loading profile data...
             </p>
           </div>
         )}

@@ -1,57 +1,159 @@
-import { Github, Linkedin } from "lucide-react";
+import { db } from "@/lib/db";
+import { Github, Linkedin, Mail, MapPin, Phone } from "lucide-react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 
-export default function Footer() {
+const FooterParticles = dynamic(() => import("@/components/FooterParticles"));
+
+async function getProfile() {
+  try {
+    const profile = await db.profile.findFirst();
+    return profile;
+  } catch (error) {
+    console.error("Error fetching profile:", error);
+    return null;
+  }
+}
+
+export default async function Footer() {
   const currentYear = new Date().getFullYear();
+  const profile = await getProfile();
 
   const socialLinks = [
-    { icon: Github, href: "https://github.com", label: "GitHub" },
-    { icon: Linkedin, href: "https://linkedin.com", label: "LinkedIn" },
+    profile?.githubUrl
+      ? {
+          icon: Github,
+          href: profile.githubUrl,
+          label: "GitHub",
+        }
+      : null,
+    profile?.linkedinUrl
+      ? {
+          icon: Linkedin,
+          href: profile.linkedinUrl,
+          label: "LinkedIn",
+        }
+      : null,
+  ].filter((link): link is NonNullable<typeof link> => link !== null);
+
+  const navigationLinks = [
+    { name: "Home", href: "/" },
+    { name: "Projects", href: "/projects" },
+    { name: "Resume", href: "/resume" },
+    { name: "Contact", href: "/contact" },
   ];
 
-  const quickLinks = [
-    { name: "Beranda", href: "/" },
-    { name: "Proyek", href: "/projects" },
-    { name: "Resume", href: "/resume" },
-    { name: "Kontak", href: "/contact" },
+  const services = [
+    "Web Development",
+    "UI/UX Design",
+    "Mobile Apps",
+    "Database Design",
+    "API Development",
+    "Consulting",
   ];
 
   return (
-    <footer className="relative overflow-hidden border-t border-white/20 bg-slate-950/50 backdrop-blur-2xl">
-      {/* Enhanced Background decoration */}
-      <div className="absolute inset-0 opacity-40">
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-blue-950/20 to-transparent"></div>
-        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-slate-950/30 to-transparent"></div>
-        <div className="absolute bottom-0 right-0 w-96 h-96 bg-gradient-to-tl from-blue-600/10 to-cyan-600/10 rounded-full blur-3xl"></div>
-        <div className="absolute top-0 left-0 w-96 h-96 bg-gradient-to-br from-indigo-600/10 to-purple-600/10 rounded-full blur-3xl"></div>
+    <footer className="relative overflow-hidden bg-slate-900 border-t border-slate-800">
+      {/* Animated Background with Programming Language Logos */}
+      <div className="absolute inset-0 -z-10">
+        {/* Primary gradient background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-blue-950/30 to-slate-900"></div>
+
+        {/* Floating programming language logos */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-20">
+          {/* JavaScript */}
+          <div className="absolute top-20 left-10 animate-float-slow">
+            <div className="w-12 h-12 bg-yellow-400 rounded-lg flex items-center justify-center text-black font-bold text-lg shadow-lg">
+              JS
+            </div>
+          </div>
+
+          {/* TypeScript */}
+          <div className="absolute top-32 right-20 animate-float-reverse animation-delay-1000">
+            <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-sm shadow-lg">
+              TS
+            </div>
+          </div>
+
+          {/* React */}
+          <div className="absolute bottom-32 left-1/4 animate-float-slow animation-delay-2000">
+            <div className="w-12 h-12 bg-cyan-400 rounded-lg flex items-center justify-center text-black font-bold text-sm shadow-lg">
+              ⚛️
+            </div>
+          </div>
+
+          {/* Next.js */}
+          <div className="absolute bottom-20 right-1/3 animate-float-reverse animation-delay-3000">
+            <div className="w-12 h-12 bg-black rounded-lg flex items-center justify-center text-white font-bold text-xs shadow-lg border border-gray-600">
+              ▲
+            </div>
+          </div>
+
+          {/* Node.js */}
+          <div className="absolute top-1/2 left-1/6 animate-float-slow animation-delay-4000">
+            <div className="w-12 h-12 bg-green-600 rounded-lg flex items-center justify-center text-white font-bold text-sm shadow-lg">
+              Node
+            </div>
+          </div>
+
+          {/* Python */}
+          <div className="absolute top-3/4 right-1/4 animate-float-reverse animation-delay-5000">
+            <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-yellow-500 rounded-lg flex items-center justify-center text-white font-bold text-sm shadow-lg">
+              Py
+            </div>
+          </div>
+
+          {/* HTML */}
+          <div className="absolute top-1/4 left-3/4 animate-float-slow animation-delay-6000">
+            <div className="w-12 h-12 bg-orange-500 rounded-lg flex items-center justify-center text-white font-bold text-sm shadow-lg">
+              HTML
+            </div>
+          </div>
+
+          {/* CSS */}
+          <div className="absolute bottom-1/4 left-1/2 animate-float-reverse animation-delay-7000">
+            <div className="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center text-white font-bold text-sm shadow-lg">
+              CSS
+            </div>
+          </div>
+
+          {/* Git */}
+          <div className="absolute top-3/4 left-1/3 animate-float-slow animation-delay-8000">
+            <div className="w-12 h-12 bg-orange-600 rounded-lg flex items-center justify-center text-white font-bold text-sm shadow-lg">
+              Git
+            </div>
+          </div>
+
+          {/* Database */}
+          <div className="absolute bottom-1/2 right-1/6 animate-float-reverse animation-delay-9000">
+            <div className="w-12 h-12 bg-green-700 rounded-lg flex items-center justify-center text-white font-bold text-xs shadow-lg">
+              DB
+            </div>
+          </div>
+        </div>
+
+        {/* Floating particles */}
+        <FooterParticles />
+
+        {/* Subtle grid overlay */}
+        <div
+          className="absolute inset-0 opacity-[0.03]"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3E%3C/g%3E%3C/svg%3E")`,
+          }}
+        ></div>
       </div>
 
-      {/* Floating particles */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(20)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute w-1 h-1 bg-blue-400/20 rounded-full animate-float"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 10}s`,
-              animationDuration: `${10 + Math.random() * 10}s`,
-            }}
-          ></div>
-        ))}
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24 relative z-10">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12">
-          {/* Brand */}
-          <div className="col-span-1 sm:col-span-2 lg:col-span-1">
-            <h3 className="text-2xl lg:text-3xl font-bold bg-gradient-to-r from-white via-blue-100 to-cyan-200 bg-clip-text text-transparent mb-6">
-              Portfolio
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {/* Brand & About */}
+          <div className="lg:col-span-2">
+            <h3 className="text-2xl font-bold text-white mb-4">
+              {profile?.fullName || "Portfolio"}
             </h3>
-            <p className="text-gray-300 leading-relaxed max-w-sm mb-6">
-              A personal portfolio website showcasing my projects, experience,
-              and technical skills in digital development.
+            <p className="text-gray-400 leading-relaxed mb-6 max-w-md">
+              {profile?.bio ||
+                "A passionate developer creating innovative solutions and beautiful user experiences. Let's build something amazing together."}
             </p>
             <div className="flex space-x-4">
               {socialLinks.map((social) => {
@@ -60,13 +162,12 @@ export default function Footer() {
                   <Link
                     key={social.label}
                     href={social.href}
-                    className="relative text-gray-400 hover:text-white transition-all duration-500 p-4 rounded-2xl hover:bg-white/10 backdrop-blur-xl touch-manipulation border border-white/20 hover:border-primary/60 group overflow-hidden"
+                    className="text-gray-400 hover:text-white transition-colors duration-300"
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={social.label}
                   >
-                    <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-cyan-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl"></div>
-                    <Icon className="h-5 w-5 relative z-10" />
+                    <Icon className="h-5 w-5" />
                   </Link>
                 );
               })}
@@ -74,30 +175,66 @@ export default function Footer() {
           </div>
 
           {/* Quick Links */}
-          <div className="col-span-1">
-            <h4 className="text-lg font-semibold mb-6 bg-gradient-to-r from-white via-blue-100 to-cyan-200 bg-clip-text text-transparent">
-              Quick Links
+          <div>
+            <h4 className="text-lg font-semibold text-white mb-4">
+              Navigation
             </h4>
-            <ul className="space-y-4">
-              {quickLinks.map((link, index) => (
+            <ul className="space-y-3">
+              {navigationLinks.map((link) => (
                 <li key={link.name}>
                   <Link
                     href={link.href}
-                    className="relative text-gray-400 hover:text-white transition-all duration-500 hover:translate-x-2 inline-block border-b border-transparent hover:border-white/30 pb-1 group"
-                    style={{ animationDelay: `${index * 100}ms` }}
+                    className="text-gray-400 hover:text-white transition-colors duration-300 text-sm"
                   >
-                    <span className="relative z-10">{link.name}</span>
-                    <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-cyan-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10 rounded-lg"></div>
+                    {link.name}
                   </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Services */}
+          <div>
+            <h4 className="text-lg font-semibold text-white mb-4">Services</h4>
+            <ul className="space-y-3">
+              {services.map((service) => (
+                <li key={service}>
+                  <span className="text-gray-400 text-sm">{service}</span>
                 </li>
               ))}
             </ul>
           </div>
         </div>
 
-        <div className="border-t border-white/20 mt-16 sm:mt-20 pt-8 text-center">
-          <p className="text-gray-400 text-sm">
-            © {currentYear} Portfolio. Made with ❤️ using Next.js & Tailwind CSS
+        {/* Contact Info */}
+        <div className="border-t border-slate-800 mt-8 pt-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            {profile?.email && (
+              <div className="flex items-center space-x-3 text-gray-400">
+                <Mail className="h-4 w-4" />
+                <span className="text-sm">{profile.email}</span>
+              </div>
+            )}
+            {profile?.phone && (
+              <div className="flex items-center space-x-3 text-gray-400">
+                <Phone className="h-4 w-4" />
+                <span className="text-sm">{profile.phone}</span>
+              </div>
+            )}
+            {profile?.location && (
+              <div className="flex items-center space-x-3 text-gray-400">
+                <MapPin className="h-4 w-4" />
+                <span className="text-sm">{profile.location}</span>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Bottom Bar */}
+        <div className="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-center items-center">
+          <p className="text-gray-400 text-sm mb-4 md:mb-0 text-center">
+            © {currentYear} {profile?.fullName || "Portfolio"}. All rights
+            reserved.
           </p>
         </div>
       </div>

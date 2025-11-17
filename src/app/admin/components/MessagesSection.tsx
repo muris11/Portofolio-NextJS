@@ -3,7 +3,7 @@ import type { ContactMessage } from "../hooks/useAdminData";
 
 interface MessagesSectionProps {
   messages: ContactMessage[];
-  onDelete: (id: string) => Promise<boolean>;
+  onDelete: (_id: string) => Promise<boolean>;
 }
 
 export function MessagesSection({ messages, onDelete }: MessagesSectionProps) {
@@ -12,7 +12,7 @@ export function MessagesSection({ messages, onDelete }: MessagesSectionProps) {
   };
 
   return (
-    <div className="space-y-8 animate-in fade-in-50 duration-500">
+    <div className="space-y-4 animate-in fade-in-50 duration-500">
       {/* Header Section */}
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 p-6 bg-gradient-to-br from-purple-50 via-white to-pink-50 dark:from-purple-950/20 dark:via-gray-900 dark:to-pink-950/20 rounded-2xl border border-purple-100/50 dark:border-purple-900/20">
         <div className="space-y-2">
@@ -22,10 +22,10 @@ export function MessagesSection({ messages, onDelete }: MessagesSectionProps) {
             </div>
             <div>
               <h2 className="text-2xl lg:text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-                Pesan Masuk
+                Incoming Messages
               </h2>
               <p className="text-gray-600 dark:text-gray-400 text-sm lg:text-base">
-                Kelola pesan dan komunikasi dari pengunjung website
+                Manage messages and communications from website visitors
               </p>
             </div>
           </div>
@@ -33,7 +33,7 @@ export function MessagesSection({ messages, onDelete }: MessagesSectionProps) {
             <div className="flex items-center space-x-2">
               <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
               <span className="text-gray-600 dark:text-gray-400">
-                {messages.length} Pesan
+                {messages.length} Messages
               </span>
             </div>
             <div className="flex items-center space-x-2">
@@ -41,10 +41,10 @@ export function MessagesSection({ messages, onDelete }: MessagesSectionProps) {
               <span className="text-gray-600 dark:text-gray-400">
                 {
                   messages.filter(
-                    (m) => !m.subject || m.subject === "Tanpa Subjek"
+                    (m) => !m.subject || m.subject === "No Subject"
                   ).length
                 }{" "}
-                Tanpa Subjek
+                No Subject
               </span>
             </div>
           </div>
@@ -75,11 +75,11 @@ export function MessagesSection({ messages, onDelete }: MessagesSectionProps) {
             </div>
           </div>
           <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">
-            Belum ada pesan
+            No messages yet
           </h3>
           <p className="text-gray-600 dark:text-gray-400 mb-8 max-w-md mx-auto">
-            Pesan dari pengunjung website akan muncul di sini. Tunggu komunikasi
-            pertama!
+            Messages from website visitors will appear here. Wait for the first
+            communication!
           </p>
         </div>
       ) : (
@@ -91,19 +91,19 @@ export function MessagesSection({ messages, onDelete }: MessagesSectionProps) {
                 <thead className="bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700">
                   <tr>
                     <th className="px-6 py-5 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
-                      Pengirim
+                      Sender
                     </th>
                     <th className="px-6 py-5 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
-                      Subjek
+                      Subject
                     </th>
                     <th className="px-6 py-5 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
-                      Pesan
+                      Message
                     </th>
                     <th className="px-6 py-5 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
-                      Tanggal
+                      Date
                     </th>
                     <th className="px-6 py-5 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
-                      Aksi
+                      Actions
                     </th>
                   </tr>
                 </thead>
@@ -132,13 +132,12 @@ export function MessagesSection({ messages, onDelete }: MessagesSectionProps) {
                       <td className="px-6 py-5">
                         <span
                           className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold ${
-                            message.subject &&
-                            message.subject !== "Tanpa Subjek"
+                            message.subject && message.subject !== "No Subject"
                               ? "bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300 shadow-lg shadow-purple-500/20"
                               : "bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-300"
                           }`}
                         >
-                          {message.subject || "Tanpa Subjek"}
+                          {message.subject || "No Subject"}
                         </span>
                       </td>
                       <td className="px-6 py-5">
@@ -167,7 +166,7 @@ export function MessagesSection({ messages, onDelete }: MessagesSectionProps) {
                           <button
                             onClick={() => handleDelete(message.id)}
                             className="p-2 text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-all duration-200 transform hover:scale-110"
-                            title="Hapus"
+                            title="Delete"
                           >
                             <svg
                               className="h-5 w-5"
@@ -214,12 +213,12 @@ export function MessagesSection({ messages, onDelete }: MessagesSectionProps) {
                       </div>
                       <span
                         className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium mt-1 ${
-                          message.subject && message.subject !== "Tanpa Subjek"
+                          message.subject && message.subject !== "No Subject"
                             ? "bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300"
                             : "bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-300"
                         }`}
                       >
-                        {message.subject || "Tanpa Subjek"}
+                        {message.subject || "No Subject"}
                       </span>
                     </div>
                   </div>
@@ -251,7 +250,7 @@ export function MessagesSection({ messages, onDelete }: MessagesSectionProps) {
                   </p>
                   <div className="flex items-center justify-between text-sm">
                     <span className="text-gray-600 dark:text-gray-400">
-                      Dikirim
+                      Sent
                     </span>
                     <span className="font-medium text-gray-900 dark:text-white">
                       {new Date(message.createdAt).toLocaleDateString("id-ID")}

@@ -6,11 +6,11 @@ export function useAuth() {
   const handleLogout = async () => {
     try {
       await fetch("/api/admin/auth", { method: "DELETE" });
-      router.push("/admin/login");
+      router.push("/login");
     } catch (error) {
       console.error("Logout error:", error);
       // Force logout even if API fails
-      router.push("/admin/login");
+      router.push("/login");
     }
   };
 

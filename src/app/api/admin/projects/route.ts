@@ -3,6 +3,17 @@ import { mkdir, writeFile } from "fs/promises";
 import { NextRequest, NextResponse } from "next/server";
 import { join } from "path";
 
+interface ProjectData {
+  id?: string;
+  title: string;
+  description: string;
+  techStack: string | string[];
+  liveUrl?: string | null;
+  githubUrl?: string | null;
+  featured?: boolean;
+  imageUrl?: string | null;
+}
+
 export async function GET() {
   try {
     const projects = await db.project.findMany({
@@ -22,7 +33,7 @@ export async function POST(request: NextRequest) {
   try {
     const contentType = request.headers.get("content-type") || "";
 
-    let body: any;
+    let body: ProjectData;
     let imageUrl: string | null = null;
 
     if (contentType.includes("multipart/form-data")) {
@@ -61,7 +72,7 @@ export async function POST(request: NextRequest) {
         const uploadsDir = join(process.cwd(), "public", "uploads");
         try {
           await mkdir(uploadsDir, { recursive: true });
-        } catch (error) {
+        } catch {
           // Directory might already exist, continue
         }
 
@@ -79,17 +90,17 @@ export async function POST(request: NextRequest) {
       }
 
       body = {
-        title: formData.get("title"),
-        description: formData.get("description"),
-        techStack: formData.get("techStack"),
-        liveUrl: formData.get("liveUrl"),
-        githubUrl: formData.get("githubUrl"),
+        title: formData.get("title") as string,
+        description: formData.get("description") as string,
+        techStack: formData.get("techStack") as string,
+        liveUrl: formData.get("liveUrl") as string,
+        githubUrl: formData.get("githubUrl") as string,
         featured: formData.get("featured") === "true",
       };
     } else {
       // Handle JSON data (backward compatibility)
       body = await request.json();
-      imageUrl = body.imageUrl;
+      imageUrl = body.imageUrl || null;
     }
 
     const { title, description, techStack, liveUrl, githubUrl, featured } =
@@ -176,7 +187,7 @@ export async function PUT(request: NextRequest) {
   try {
     const contentType = request.headers.get("content-type") || "";
 
-    let body: any;
+    let body: ProjectData;
     let imageUrl: string | null = null;
 
     if (contentType.includes("multipart/form-data")) {
@@ -215,7 +226,7 @@ export async function PUT(request: NextRequest) {
         const uploadsDir = join(process.cwd(), "public", "uploads");
         try {
           await mkdir(uploadsDir, { recursive: true });
-        } catch (error) {
+        } catch {
           // Directory might already exist, continue
         }
 
@@ -233,18 +244,18 @@ export async function PUT(request: NextRequest) {
       }
 
       body = {
-        id: formData.get("id"),
-        title: formData.get("title"),
-        description: formData.get("description"),
-        techStack: formData.get("techStack"),
-        liveUrl: formData.get("liveUrl"),
-        githubUrl: formData.get("githubUrl"),
+        id: formData.get("id") as string,
+        title: formData.get("title") as string,
+        description: formData.get("description") as string,
+        techStack: formData.get("techStack") as string,
+        liveUrl: formData.get("liveUrl") as string,
+        githubUrl: formData.get("githubUrl") as string,
         featured: formData.get("featured") === "true",
       };
     } else {
       // Handle JSON data (backward compatibility)
       body = await request.json();
-      imageUrl = body.imageUrl;
+      imageUrl = body.imageUrl || null;
     }
 
     const { id, title, description, techStack, liveUrl, githubUrl, featured } =

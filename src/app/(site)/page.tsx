@@ -1,6 +1,17 @@
 import SkillIcon from "@/components/SkillIcon";
+import StructuredData, {
+  generatePersonStructuredData,
+  generateWebsiteStructuredData,
+} from "@/components/StructuredData";
 import { db } from "@/lib/db";
-import { ArrowRight, ExternalLink, Github, Linkedin, Mail } from "lucide-react";
+import {
+  ArrowRight,
+  ExternalLink,
+  Github,
+  Instagram,
+  Linkedin,
+  Mail,
+} from "lucide-react";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -20,7 +31,7 @@ async function getFeaturedProjects() {
     const projects = await db.project.findMany({
       where: { featured: true },
       orderBy: { createdAt: "desc" },
-      take: 3,
+      take: 6,
     });
     return projects.map((project) => ({
       ...project,
@@ -55,6 +66,24 @@ export const metadata: Metadata = {
   title: "Home",
   description:
     "Welcome to my portfolio - Fullstack Developer specializing in modern web technologies",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://rifqy.dev",
+    title: "Rifqy.Dev - Fullstack Developer Portfolio",
+    description:
+      "Professional portfolio of Rifqy, a skilled fullstack developer. Explore modern web development projects and cutting-edge technologies.",
+    siteName: "Rifqy.Dev",
+    images: ["https://rifqy.dev/og-image.png"],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Rifqy.Dev - Fullstack Developer Portfolio",
+    description:
+      "Professional portfolio showcasing modern web development projects and skills.",
+    images: ["/og-image"],
+    creator: "@rifqydev",
+  },
 };
 
 export default async function Home() {
@@ -133,30 +162,31 @@ export default async function Home() {
               <div className="space-y-8">
                 {/* Main Heading */}
                 <div className="space-y-4 mt-6">
-                  <h1 className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold leading-[1.1] tracking-tight">
+                  <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold leading-[1.1] tracking-tight">
                     <span className="block bg-gradient-to-r from-white via-blue-100 to-cyan-100 bg-clip-text text-transparent animate-slide-in-left drop-shadow-2xl">
-                      {profile?.fullName || "Your Name"}
+                      {profile?.fullName || "Rifqy Saputra"}
                     </span>
-                    <span className="block bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-300 bg-clip-text text-transparent animate-slide-in-right animation-delay-300 text-3xl sm:text-4xl lg:text-5xl xl:text-6xl mt-3 font-semibold">
-                      {profile?.title || "Fullstack Developer"}
+                    <span className="block bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-300 bg-clip-text text-transparent animate-slide-in-right animation-delay-300 text-xl sm:text-2xl lg:text-3xl xl:text-4xl mt-3 font-semibold">
+                      {profile?.title ||
+                        "Fullstack Developer, Mobile and System Analyst"}
                     </span>
                   </h1>
                 </div>
 
                 {/* Description */}
-                <p className="text-lg sm:text-xl lg:text-2xl text-gray-300 leading-relaxed max-w-2xl animate-fade-in-up animation-delay-500 font-light">
+                <p className="text-base sm:text-lg lg:text-xl text-gray-300 leading-relaxed max-w-2xl animate-fade-in-up animation-delay-500 font-light">
                   {profile?.bio ||
-                    "Crafting digital experiences that blend innovation with elegance. Transforming ideas into reality through code, design, and strategic thinking."}
+                    "A skilled fullstack developer specializing in modern web technologies."}
                 </p>
               </div>
 
               {/* CTA Buttons */}
-              <div className="flex flex-col sm:flex-row gap-4 animate-fade-in-up animation-delay-700">
+              <div className="lg:col-span-7 space-y-10 order-2 lg:order-1">
                 <Link
                   href="/contact"
                   className="group relative inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-2xl hover:from-blue-500 hover:to-cyan-500 transition-all duration-500 font-semibold text-base shadow-2xl shadow-blue-600/30 hover:shadow-blue-500/40 hover:scale-[1.02] transform-gpu overflow-hidden"
                 >
-                  <span className="relative z-10 flex items-center gap-2">
+                  <span className="relative z-10 flex items-center justify-center gap-2 w-full">
                     Let&apos;s Collaborate
                     <Mail className="h-5 w-5 group-hover:rotate-12 group-hover:scale-110 transition-transform duration-500" />
                   </span>
@@ -168,7 +198,7 @@ export default async function Home() {
                   href="/projects"
                   className="group inline-flex items-center justify-center px-8 py-4 border-2 border-white/30 text-white rounded-2xl hover:bg-white/10 hover:border-white/50 transition-all duration-500 font-semibold text-base backdrop-blur-sm hover:scale-[1.02] transform-gpu hover:shadow-xl hover:shadow-white/10"
                 >
-                  <span className="flex items-center gap-2">
+                  <span className="flex items-center justify-center gap-2 w-full">
                     View My Work
                     <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform duration-500" />
                   </span>
@@ -198,6 +228,18 @@ export default async function Home() {
                     aria-label="LinkedIn"
                   >
                     <Linkedin className="h-6 w-6 text-gray-300 group-hover:text-white transition-colors duration-300" />
+                    <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-blue-600/20 to-cyan-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10 blur-xl"></div>
+                  </Link>
+                )}
+                {profile?.instagramUrl && (
+                  <Link
+                    href={profile.instagramUrl}
+                    className="group relative p-4 bg-white/5 hover:bg-white/10 rounded-2xl border border-white/10 hover:border-white/30 transition-all duration-500 hover:scale-110 transform-gpu backdrop-blur-sm hover:shadow-xl hover:shadow-blue-500/20"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Instagram"
+                  >
+                    <Instagram className="h-6 w-6 text-gray-300 group-hover:text-white transition-colors duration-300" />
                     <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-blue-600/20 to-cyan-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10 blur-xl"></div>
                   </Link>
                 )}
@@ -615,12 +657,12 @@ export default async function Home() {
           </div>
 
           {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 animate-fade-in-up animation-delay-700">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up animation-delay-700">
             <Link
               href="/contact"
               className="group relative inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-2xl hover:from-blue-500 hover:to-cyan-500 transition-all duration-500 font-semibold text-base shadow-2xl shadow-blue-600/30 hover:shadow-blue-500/40 hover:scale-[1.02] transform-gpu overflow-hidden"
             >
-              <span className="relative z-10 flex items-center gap-2">
+              <span className="relative z-10 flex items-center justify-center gap-2 w-full">
                 Get In Touch
                 <Mail className="h-5 w-5 group-hover:rotate-12 group-hover:scale-110 transition-transform duration-500" />
               </span>
@@ -632,7 +674,7 @@ export default async function Home() {
               href="/projects"
               className="group inline-flex items-center justify-center px-8 py-4 border-2 border-white/30 text-white rounded-2xl hover:bg-white/10 hover:border-white/50 transition-all duration-500 font-semibold text-base backdrop-blur-sm hover:scale-[1.02] transform-gpu hover:shadow-xl hover:shadow-white/10"
             >
-              <span className="flex items-center gap-2">
+              <span className="flex items-center justify-center gap-2 w-full">
                 View My Work
                 <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform duration-500" />
               </span>
@@ -640,6 +682,13 @@ export default async function Home() {
           </div>
         </div>
       </section>
+
+      {/* Structured Data for SEO */}
+      <StructuredData
+        type="Person"
+        data={generatePersonStructuredData(profile)}
+      />
+      <StructuredData type="WebSite" data={generateWebsiteStructuredData()} />
     </div>
   );
 }

@@ -9,14 +9,54 @@ const nextConfig: NextConfig = {
     ignoreBuildErrors: process.env.NODE_ENV === "development",
   },
 
-  eslint: {
-    // Only ignore ESLint during builds in development
-    ignoreDuringBuilds: process.env.NODE_ENV === "development",
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "github.com",
+        port: "",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "avatars.githubusercontent.com",
+        port: "",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "raw.githubusercontent.com",
+        port: "",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+        port: "",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "cdn.sanity.io",
+        port: "",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "vercel.com",
+        port: "",
+        pathname: "/**",
+      },
+    ],
+    // Optimize images for better performance
+    formats: ["image/webp", "image/avif"],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
   },
 
-  images: {
-    remotePatterns: [],
-  },
+  // Turbopack configuration for Next.js 16+
+  turbopack: {},
+
   webpack: (config, { dev }) => {
     if (dev) {
       // Improve development performance by ignoring node_modules
@@ -44,6 +84,27 @@ const nextConfig: NextConfig = {
           {
             key: "Referrer-Policy",
             value: "origin-when-cross-origin",
+          },
+          {
+            key: "Permissions-Policy",
+            value: "camera=(), microphone=(), geolocation=()",
+          },
+          {
+            key: "Strict-Transport-Security",
+            value: "max-age=31536000; includeSubDomains",
+          },
+        ],
+      },
+      {
+        source: "/api/(.*)",
+        headers: [
+          {
+            key: "X-RateLimit-Limit",
+            value: "100",
+          },
+          {
+            key: "X-RateLimit-Window",
+            value: "60",
           },
         ],
       },

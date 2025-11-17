@@ -1,15 +1,22 @@
-import { NextRequest, NextResponse } from "next/server";
+import type {
+  ApiErrorResponse,
+  ContactRequest,
+  ContactResponse,
+} from "@/lib/api-types";
 import { db } from "@/lib/db";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(request: NextRequest) {
+export async function POST(
+  request: NextRequest
+): Promise<NextResponse<ContactResponse | ApiErrorResponse>> {
   try {
-    const body = await request.json();
+    const body: ContactRequest = await request.json();
     const { name, email, subject, message } = body;
 
     // Validasi input
     if (!name || !email || !message) {
       return NextResponse.json(
-        { error: "Name, email, and message are required" },
+        { success: false, error: "Name, email, and message are required" },
         { status: 400 }
       );
     }
@@ -18,7 +25,7 @@ export async function POST(request: NextRequest) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       return NextResponse.json(
-        { error: "Invalid email format" },
+        { success: false, error: "Invalid email format" },
         { status: 400 }
       );
     }
@@ -44,7 +51,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error("Error sending contact message:", error);
     return NextResponse.json(
-      { error: "Internal server error" },
+      { success: false, error: "Internal server error" },
       { status: 500 }
     );
   }

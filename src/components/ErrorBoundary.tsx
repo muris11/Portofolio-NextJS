@@ -64,16 +64,16 @@ class ErrorBoundary extends React.Component<
               </svg>
             </div>
             <h3 className="text-xl font-semibold text-red-800 dark:text-red-200 mb-2">
-              Terjadi Kesalahan
+              Something went wrong
             </h3>
             <p className="text-red-600 dark:text-red-300 mb-4">
-              Maaf, terjadi kesalahan yang tidak terduga. Silakan coba lagi.
+              Sorry, an unexpected error occurred. Please try again.
             </p>
             <button
               onClick={this.resetError}
               className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors duration-200"
             >
-              Coba Lagi
+              Try Again
             </button>
           </div>
         </div>

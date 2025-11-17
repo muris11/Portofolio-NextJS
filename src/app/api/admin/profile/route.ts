@@ -3,6 +3,19 @@ import { mkdir, writeFile } from "fs/promises";
 import { NextRequest, NextResponse } from "next/server";
 import { join } from "path";
 
+interface ProfileData {
+  fullName?: string;
+  title?: string;
+  bio?: string;
+  email?: string;
+  phone?: string;
+  location?: string;
+  githubUrl?: string;
+  linkedinUrl?: string;
+  instagramUrl?: string;
+  profileImage?: string;
+}
+
 export async function GET() {
   try {
     const profile = await db.profile.findFirst();
@@ -20,7 +33,7 @@ export async function PUT(request: NextRequest) {
   try {
     const contentType = request.headers.get("content-type") || "";
 
-    let body: any;
+    let body: ProfileData;
     let profileImageUrl: string | null = null;
 
     if (contentType.includes("multipart/form-data")) {
@@ -108,7 +121,7 @@ export async function PUT(request: NextRequest) {
         const uploadsDir = join(process.cwd(), "public", "uploads");
         try {
           await mkdir(uploadsDir, { recursive: true });
-        } catch (error) {
+        } catch {
           // Directory might already exist, continue
         }
 
@@ -123,20 +136,20 @@ export async function PUT(request: NextRequest) {
       }
 
       body = {
-        fullName: formData.get("fullName"),
-        title: formData.get("title"),
-        bio: formData.get("bio"),
-        email: formData.get("email"),
-        phone: formData.get("phone"),
-        location: formData.get("location"),
-        githubUrl: formData.get("githubUrl"),
-        linkedinUrl: formData.get("linkedinUrl"),
-        instagramUrl: formData.get("instagramUrl"),
+        fullName: formData.get("fullName") as string,
+        title: formData.get("title") as string,
+        bio: formData.get("bio") as string,
+        email: formData.get("email") as string,
+        phone: formData.get("phone") as string,
+        location: formData.get("location") as string,
+        githubUrl: formData.get("githubUrl") as string,
+        linkedinUrl: formData.get("linkedinUrl") as string,
+        instagramUrl: formData.get("instagramUrl") as string,
       };
     } else {
       // Handle JSON data (backward compatibility)
       body = await request.json();
-      profileImageUrl = body.profileImage;
+      profileImageUrl = body.profileImage || null;
     }
 
     const {

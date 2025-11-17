@@ -1,3 +1,4 @@
+import type { Skill } from "@/app/admin/hooks/useAdminData";
 import SkillIcon from "@/components/SkillIcon";
 import TimelineItem from "@/components/TimelineItem";
 import { db } from "@/lib/db";
@@ -54,14 +55,14 @@ async function getSkills() {
   }
 }
 
-function groupSkillsByCategory(skills: any[]) {
+function groupSkillsByCategory(skills: Skill[]) {
   const grouped = skills.reduce((acc, skill) => {
     if (!acc[skill.category]) {
       acc[skill.category] = [];
     }
     acc[skill.category].push(skill);
     return acc;
-  }, {} as Record<string, any[]>);
+  }, {} as Record<string, Skill[]>);
 
   return grouped;
 }
@@ -239,7 +240,7 @@ export default async function ResumePage() {
                     {category}
                   </h3>
                   <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6 justify-items-center">
-                    {(categorySkills as any[]).map((skill, skillIndex) => (
+                    {categorySkills.map((skill, skillIndex) => (
                       <div
                         key={skill.id}
                         className="animate-fade-in-up"

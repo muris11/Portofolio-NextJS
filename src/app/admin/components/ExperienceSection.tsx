@@ -6,8 +6,8 @@ import { ExperienceModal } from "./ExperienceModal";
 
 interface ExperienceSectionProps {
   experience: Experience[];
-  onSave: (data: Partial<Experience>) => Promise<boolean>;
-  onDelete: (id: string) => Promise<boolean>;
+  onSave: (_data: Partial<Experience>) => Promise<boolean>;
+  onDelete: (_id: string) => Promise<boolean>;
 }
 
 export function ExperienceSection({
@@ -44,7 +44,7 @@ export function ExperienceSection({
   };
 
   return (
-    <div className="space-y-8 animate-in fade-in-50 duration-500">
+    <div className="space-y-4 animate-in fade-in-50 duration-500">
       {/* Header Section */}
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 p-6 bg-gradient-to-br from-amber-50 via-white to-orange-50 dark:from-amber-950/20 dark:via-gray-900 dark:to-orange-950/20 rounded-2xl border border-amber-100/50 dark:border-amber-900/20">
         <div className="space-y-2">
@@ -54,10 +54,10 @@ export function ExperienceSection({
             </div>
             <div>
               <h2 className="text-2xl lg:text-3xl font-bold bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent">
-                Kelola Pengalaman
+                Manage Experience
               </h2>
               <p className="text-gray-600 dark:text-gray-400 text-sm lg:text-base">
-                Kelola pengalaman kerja dan karir profesional Anda
+                Manage your work experience and professional career
               </p>
             </div>
           </div>
@@ -65,7 +65,7 @@ export function ExperienceSection({
             <div className="flex items-center space-x-2">
               <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
               <span className="text-gray-600 dark:text-gray-400">
-                {experience.length} Pengalaman
+                {experience.length} Experience
               </span>
             </div>
           </div>
@@ -77,7 +77,7 @@ export function ExperienceSection({
         >
           <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
           <Plus className="h-5 w-5 mr-2 relative z-10" />
-          <span className="relative z-10 font-medium">Tambah Pengalaman</span>
+          <span className="relative z-10 font-medium">Add Experience</span>
         </Button>
       </div>
 
@@ -93,18 +93,18 @@ export function ExperienceSection({
             </div>
           </div>
           <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">
-            Belum ada pengalaman
+            No experience yet
           </h3>
           <p className="text-gray-600 dark:text-gray-400 mb-8 max-w-md mx-auto">
-            Mulai tambahkan pengalaman kerja Anda. Tunjukkan karir dan
-            pencapaian profesional!
+            Start adding your work experience. Show your career and professional
+            achievements!
           </p>
           <Button
             onClick={handleAdd}
             className="bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white px-8 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
           >
             <Plus className="h-5 w-5 mr-2" />
-            <span className="font-medium">Tambah Pengalaman Pertama</span>
+            <span className="font-medium">Add First Experience</span>
           </Button>
         </div>
       ) : (
@@ -116,16 +116,16 @@ export function ExperienceSection({
                 <thead className="bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700">
                   <tr>
                     <th className="px-6 py-5 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
-                      Perusahaan
+                      Company
                     </th>
                     <th className="px-6 py-5 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
-                      Jabatan
+                      Position
                     </th>
                     <th className="px-6 py-5 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
-                      Periode
+                      Period
                     </th>
                     <th className="px-6 py-5 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
-                      Aksi
+                      Actions
                     </th>
                   </tr>
                 </thead>
@@ -191,7 +191,7 @@ export function ExperienceSection({
                           <button
                             onClick={() => handleDelete(exp.id)}
                             className="p-2 text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-all duration-200 transform hover:scale-110"
-                            title="Hapus"
+                            title="Delete"
                           >
                             <svg
                               className="h-5 w-5"
@@ -281,7 +281,7 @@ export function ExperienceSection({
                 <div className="space-y-3">
                   <div className="flex items-center justify-between text-sm">
                     <span className="text-gray-600 dark:text-gray-400">
-                      Periode
+                      Period
                     </span>
                     <span className="font-medium text-gray-900 dark:text-white">
                       {exp.startDate} - {exp.endDate}

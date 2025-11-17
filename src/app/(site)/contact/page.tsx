@@ -7,7 +7,15 @@ import {
   Linkedin,
   Send,
 } from "lucide-react";
+import dynamic from "next/dynamic";
 import { useState } from "react";
+
+const FloatingParticles = dynamic(
+  () => import("@/components/FloatingParticles"),
+  {
+    ssr: false,
+  }
+);
 
 interface FormData {
   name: string;
@@ -42,39 +50,39 @@ export default function ContactPage() {
 
     // Name validation
     if (!formData.name.trim()) {
-      newErrors.name = "Nama harus diisi";
+      newErrors.name = "Name is required";
     } else if (formData.name.trim().length < 2) {
-      newErrors.name = "Nama minimal 2 karakter";
+      newErrors.name = "Name must be at least 2 characters";
     } else if (formData.name.trim().length > 100) {
-      newErrors.name = "Nama maksimal 100 karakter";
+      newErrors.name = "Name must be less than 100 characters";
     }
 
     // Email validation
     if (!formData.email.trim()) {
-      newErrors.email = "Email harus diisi";
+      newErrors.email = "Email is required";
     } else {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(formData.email)) {
-        newErrors.email = "Format email tidak valid";
+        newErrors.email = "Invalid email format";
       }
     }
 
     // Subject validation
     if (!formData.subject.trim()) {
-      newErrors.subject = "Subjek harus diisi";
+      newErrors.subject = "Subject is required";
     } else if (formData.subject.trim().length < 3) {
-      newErrors.subject = "Subjek minimal 3 karakter";
+      newErrors.subject = "Subject must be at least 3 characters";
     } else if (formData.subject.trim().length > 200) {
-      newErrors.subject = "Subjek maksimal 200 karakter";
+      newErrors.subject = "Subject must be less than 200 characters";
     }
 
     // Message validation
     if (!formData.message.trim()) {
-      newErrors.message = "Pesan harus diisi";
+      newErrors.message = "Message is required";
     } else if (formData.message.trim().length < 10) {
-      newErrors.message = "Pesan minimal 10 karakter";
+      newErrors.message = "Message must be at least 10 characters";
     } else if (formData.message.trim().length > 1000) {
-      newErrors.message = "Pesan maksimal 1000 karakter";
+      newErrors.message = "Message must be less than 1000 characters";
     }
 
     setErrors(newErrors);
@@ -110,26 +118,26 @@ export default function ContactPage() {
 
     if (name === "name") {
       if (!formData.name.trim()) {
-        fieldErrors.name = "Nama harus diisi";
+        fieldErrors.name = "Name is required";
       } else if (formData.name.trim().length < 2) {
-        fieldErrors.name = "Nama minimal 2 karakter";
+        fieldErrors.name = "Name must be at least 2 characters";
       }
     } else if (name === "email") {
       if (!formData.email.trim()) {
-        fieldErrors.email = "Email harus diisi";
+        fieldErrors.email = "Email is required";
       } else {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(formData.email)) {
-          fieldErrors.email = "Format email tidak valid";
+          fieldErrors.email = "Invalid email format";
         }
       }
     } else if (name === "subject") {
       if (!formData.subject.trim()) {
-        fieldErrors.subject = "Subjek harus diisi";
+        fieldErrors.subject = "Subject is required";
       }
     } else if (name === "message") {
       if (!formData.message.trim()) {
-        fieldErrors.message = "Pesan harus diisi";
+        fieldErrors.message = "Message is required";
       }
     }
 
@@ -188,22 +196,6 @@ export default function ContactPage() {
           <div className="absolute bottom-20 right-20 w-96 h-96 bg-sky-600 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-6000"></div>
         </div>
 
-        {/* Floating particles */}
-        <div className="absolute inset-0 overflow-hidden">
-          {[...Array(25)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute w-1 h-1 bg-blue-400/20 rounded-full animate-float"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                animationDelay: `${Math.random() * 15}s`,
-                animationDuration: `${15 + Math.random() * 15}s`,
-              }}
-            ></div>
-          ))}
-        </div>
-
         {/* Geometric patterns */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-20">
           <div className="absolute top-20 left-10 w-40 h-40 border border-blue-500/20 rotate-45 animate-spin-slow"></div>
@@ -219,6 +211,9 @@ export default function ContactPage() {
             backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2363b3ed' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='1.5'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
           }}
         ></div>
+
+        {/* Floating particles */}
+        <FloatingParticles />
       </div>
 
       {/* Header Section */}
@@ -348,7 +343,7 @@ export default function ContactPage() {
                     htmlFor="subject"
                     className="block text-sm font-medium text-gray-300 mb-2"
                   >
-                    Subjek <span className="text-red-500">*</span>
+                    Subject <span className="text-red-500">*</span>
                   </label>
                   <div className="relative">
                     <input
@@ -363,7 +358,7 @@ export default function ContactPage() {
                           ? "border-red-500 bg-red-50/50"
                           : "border-white/20 bg-white/5 backdrop-blur-sm text-white placeholder-gray-400"
                       }`}
-                      placeholder="Diskusi Proyek"
+                      placeholder="Project Discussion"
                       disabled={isSubmitting}
                     />
                     <span
@@ -389,7 +384,7 @@ export default function ContactPage() {
                     htmlFor="message"
                     className="block text-sm font-medium text-gray-300 mb-2"
                   >
-                    Pesan <span className="text-red-500">*</span>
+                    Message <span className="text-red-500">*</span>
                   </label>
                   <div className="relative">
                     <textarea
@@ -404,7 +399,7 @@ export default function ContactPage() {
                           ? "border-red-500 bg-red-50/50"
                           : "border-white/20 bg-white/5 backdrop-blur-sm text-white placeholder-gray-400"
                       }`}
-                      placeholder="Halo, saya tertarik untuk mendiskusikan..."
+                      placeholder="Hello, I'm interested in discussing..."
                       disabled={isSubmitting}
                     />
                     <span
@@ -428,19 +423,23 @@ export default function ContactPage() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full flex items-center justify-center px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="group relative w-full flex items-center justify-center px-8 py-4 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-2xl hover:from-blue-500 hover:to-cyan-500 transition-all duration-500 font-semibold text-lg shadow-2xl shadow-blue-600/30 hover:shadow-blue-500/40 hover:scale-105 transform-gpu overflow-hidden disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:shadow-lg"
                 >
-                  {isSubmitting ? (
-                    <>
-                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                      Mengirim...
-                    </>
-                  ) : (
-                    <>
-                      <Send className="mr-2 h-4 w-4" />
-                      Kirim Pesan
-                    </>
-                  )}
+                  <span className="relative z-10 flex items-center gap-3">
+                    {isSubmitting ? (
+                      <>
+                        <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent"></div>
+                        Mengirim...
+                      </>
+                    ) : (
+                      <>
+                        Kirim Pesan
+                        <Send className="h-5 w-5 group-hover:translate-x-1 transition-transform duration-500" />
+                      </>
+                    )}
+                  </span>
+                  <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-cyan-400 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                  <div className="absolute inset-0 -z-10 bg-gradient-to-r from-blue-600 to-cyan-600 blur-xl opacity-50"></div>
                 </button>
               </form>
             </div>
@@ -450,12 +449,12 @@ export default function ContactPage() {
               {/* Social Links */}
               <div className="bg-white/5 backdrop-blur-xl p-8 rounded-lg shadow-sm border border-white/10">
                 <h2 className="text-2xl font-bold bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent mb-6">
-                  Media Sosial
+                  Social Media
                 </h2>
 
                 <div className="space-y-4">
                   <a
-                    href="https://github.com"
+                    href="https://github.com/muris11"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center space-x-4 p-4 rounded-lg border border-white/10 hover:bg-white/5 backdrop-blur-sm transition-colors"
@@ -466,13 +465,13 @@ export default function ContactPage() {
                         GitHub
                       </p>
                       <p className="text-sm text-gray-400">
-                        Lihat proyek dan kode saya
+                        View my projects and code
                       </p>
                     </div>
                   </a>
 
                   <a
-                    href="https://linkedin.com"
+                    href="https://www.linkedin.com/in/rifqy-saputra-022236261/"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center space-x-4 p-4 rounded-lg border border-white/10 hover:bg-white/5 backdrop-blur-sm transition-colors"
@@ -483,7 +482,7 @@ export default function ContactPage() {
                         LinkedIn
                       </p>
                       <p className="text-sm text-gray-400">
-                        Hubungi profesional
+                        Connect professionally
                       </p>
                     </div>
                   </a>
@@ -492,10 +491,10 @@ export default function ContactPage() {
 
               {/* Response Time */}
               <div className="bg-primary/20 p-6 rounded-lg">
-                <h3 className="font-semibold text-white mb-2">Waktu Respon</h3>
+                <h3 className="font-semibold text-white mb-2">Response Time</h3>
                 <p className="text-gray-300">
-                  Saya biasanya merespons pesan dalam 24-48 jam. Untuk keperluan
-                  mendesak, silakan sebutkan dalam subjek email.
+                  I usually respond to messages within 24-48 hours. For urgent
+                  matters, please mention it in the email subject.
                 </p>
               </div>
             </div>

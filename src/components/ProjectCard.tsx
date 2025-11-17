@@ -36,10 +36,11 @@ export default function ProjectCard({ project }: ProjectCardProps) {
       <div className="relative h-64 sm:h-72 lg:h-80 xl:h-96 bg-gradient-to-br from-slate-800 to-slate-900 overflow-hidden">
         {project.imageUrl ? (
           isPlaceholder ? (
-            <img
+            <Image
               src={project.imageUrl}
               alt={project.title}
-              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
+              fill
+              className="object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
               loading="lazy"
             />
           ) : (
@@ -70,7 +71,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
 
         {/* Featured badge */}
         {project.featured && (
-          <div className="absolute top-4 left-4 bg-gradient-to-r from-primary to-primary/80 text-white px-3 py-1.5 rounded-full text-xs font-semibold shadow-lg backdrop-blur-sm border border-white/20">
+          <div className="absolute top-4 left-4 bg-gradient-to-r from-yellow-400 to-orange-500 text-black px-3 py-1.5 rounded-full text-xs font-semibold shadow-lg backdrop-blur-sm border border-white/20">
             ⭐ Featured
           </div>
         )}

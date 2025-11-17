@@ -71,7 +71,7 @@ export function ProjectsSection({
           ))}
           {remainingCount > 0 && (
             <span className="text-xs text-gray-500 dark:text-gray-400 ml-1">
-              +{remainingCount} lagi
+              +{remainingCount} more
             </span>
           )}
         </>
@@ -112,10 +112,10 @@ export function ProjectsSection({
                 </div>
                 <div>
                   <h2 className="text-2xl lg:text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                    Kelola Proyek
+                    Manage Projects
                   </h2>
                   <p className="text-gray-600 dark:text-gray-400 text-sm lg:text-base">
-                    Tambah, edit, dan hapus proyek portfolio Anda
+                    Add, edit, and delete your portfolio projects
                   </p>
                 </div>
               </div>
@@ -123,7 +123,7 @@ export function ProjectsSection({
                 <div className="flex items-center space-x-2">
                   <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
                   <span className="text-gray-600 dark:text-gray-400">
-                    {projects.length} Proyek
+                    {projects.length} Projects
                   </span>
                 </div>
                 <div className="flex items-center space-x-2">
@@ -141,7 +141,7 @@ export function ProjectsSection({
             >
               <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
               <Plus className="h-5 w-5 mr-2 relative z-10" />
-              <span className="relative z-10 font-medium">Tambah Proyek</span>
+              <span className="relative z-10 font-medium">Add Project</span>
             </Button>
           </div>
 
@@ -157,18 +157,18 @@ export function ProjectsSection({
                 </div>
               </div>
               <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">
-                Belum ada proyek
+                No projects yet
               </h3>
               <p className="text-gray-600 dark:text-gray-400 mb-8 max-w-md mx-auto">
-                Mulai bangun portfolio Anda dengan menambahkan proyek pertama.
-                Tunjukkan karya terbaik Anda!
+                Start building your portfolio by adding your first project.
+                Showcase your best work!
               </p>
               <Button
                 onClick={handleAdd}
                 className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
               >
                 <Plus className="h-5 w-5 mr-2" />
-                <span className="font-medium">Tambah Proyek Pertama</span>
+                <span className="font-medium">Add First Project</span>
               </Button>
             </div>
           ) : (
@@ -180,7 +180,7 @@ export function ProjectsSection({
                     <thead className="bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700">
                       <tr>
                         <th className="px-6 py-5 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
-                          Proyek
+                          Project
                         </th>
                         <th className="px-6 py-5 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
                           Teknologi
@@ -354,30 +354,26 @@ export function ProjectsSection({
                         </button>
                       </div>
                     </div>
-
-                    <p className="text-gray-600 dark:text-gray-400 text-sm mb-4 line-clamp-3">
-                      {truncateDescription(project.description)}
-                    </p>
-
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex flex-wrap gap-2 mb-4">
                       {renderTechStack(project.techStack)}
+                    </div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
+                      {truncateDescription(project.description)}
                     </div>
                   </div>
                 ))}
               </div>
             </div>
           )}
-
-          <ProjectModal
-            isOpen={showModal}
-            onClose={() => {
-              setShowModal(false);
-              setEditingProject(null);
-            }}
-            project={editingProject}
-            onSave={handleSave}
-          />
         </>
+      )}
+      {showModal && (
+        <ProjectModal
+          isOpen={showModal}
+          onClose={() => setShowModal(false)}
+          onSave={handleSave}
+          project={editingProject}
+        />
       )}
     </div>
   );

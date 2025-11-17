@@ -11,9 +11,9 @@ interface SkillIconProps {
 export default function SkillIcon({ skill }: SkillIconProps) {
   const getLevelColor = (level?: number) => {
     if (!level) return "from-gray-400 to-gray-500";
-    if (level >= 4) return "from-green-400 to-green-500";
-    if (level >= 3) return "from-blue-400 to-blue-500";
-    if (level >= 2) return "from-yellow-400 to-yellow-500";
+    if (level >= 80) return "from-green-400 to-green-500";
+    if (level >= 60) return "from-blue-400 to-blue-500";
+    if (level >= 40) return "from-yellow-400 to-yellow-500";
     return "from-red-400 to-red-500";
   };
 
@@ -39,17 +39,16 @@ export default function SkillIcon({ skill }: SkillIconProps) {
       </p>
 
       {skill.level && (
-        <div className="flex">
-          {[...Array(5)].map((_, i) => (
+        <div className="w-full">
+          <div className="flex justify-center items-center mb-1">
+            <span className="text-xs text-gray-400">{skill.level}%</span>
+          </div>
+          <div className="w-full bg-gray-700 rounded-full h-2">
             <div
-              key={i}
-              className={`w-2 h-2 rounded-full mx-0.5 transition-colors duration-300 ${
-                i < (skill.level || 0)
-                  ? "bg-gradient-to-r from-yellow-400 to-yellow-500"
-                  : "bg-gray-600"
-              }`}
-            />
-          ))}
+              className="bg-gradient-to-r from-yellow-400 to-yellow-500 h-2 rounded-full transition-all duration-300"
+              style={{ width: `${skill.level}%` }}
+            ></div>
+          </div>
         </div>
       )}
     </div>

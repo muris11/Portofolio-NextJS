@@ -5,7 +5,7 @@ interface SkillModalProps {
   isOpen: boolean;
   onClose: () => void;
   skill: Skill | null;
-  onSave: (data: Partial<Skill>) => Promise<boolean>;
+  onSave: (_data: Partial<Skill>) => Promise<boolean>;
 }
 
 export function SkillModal({
@@ -96,20 +96,20 @@ export function SkillModal({
 
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Level Kemampuan (1-5) *
+                Level Kemampuan (0-100) *
               </label>
               <input
                 type="range"
                 name="level"
-                min="1"
-                max="5"
-                defaultValue={skill?.level || 3}
+                min="0"
+                max="100"
+                defaultValue={skill?.level || 50}
                 className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer"
               />
               <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400 mt-1">
-                <span>Pemula</span>
-                <span>Menengah</span>
-                <span>Ahli</span>
+                <span>Pemula (0)</span>
+                <span>Menengah (50)</span>
+                <span>Ahli (100)</span>
               </div>
             </div>
 

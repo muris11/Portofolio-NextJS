@@ -1,23 +1,45 @@
 "use client";
 
-import { Github, Linkedin, Menu, X } from "lucide-react";
+import { useProfile } from "@/hooks/useProfile";
+import { Github, Instagram, Linkedin, Menu, X } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const { profile } = useProfile();
 
   const navItems = [
-    { name: "Beranda", href: "/" },
-    { name: "Proyek", href: "/projects" },
+    { name: "Home", href: "/" },
+    { name: "Projects", href: "/projects" },
     { name: "Resume", href: "/resume" },
-    { name: "Kontak", href: "/contact" },
+    { name: "Contact", href: "/contact" },
   ];
 
+  // Dynamically generate social links from profile data
   const socialLinks = [
-    { icon: Github, href: "https://github.com", label: "GitHub" },
-    { icon: Linkedin, href: "https://linkedin.com", label: "LinkedIn" },
-  ];
+    profile?.githubUrl
+      ? {
+          icon: Github,
+          href: profile.githubUrl,
+          label: "GitHub",
+        }
+      : null,
+    profile?.linkedinUrl
+      ? {
+          icon: Linkedin,
+          href: profile.linkedinUrl,
+          label: "LinkedIn",
+        }
+      : null,
+    profile?.instagramUrl
+      ? {
+          icon: Instagram,
+          href: profile.instagramUrl,
+          label: "Instagram",
+        }
+      : null,
+  ].filter((link): link is NonNullable<typeof link> => link !== null);
 
   return (
     <>
@@ -48,16 +70,6 @@ export default function Navbar() {
                     <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-cyan-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl"></div>
                   </Link>
                 ))}
-              </div>
-
-              <div className="flex items-center space-x-4 pl-8 border-l border-white/20">
-                <Link
-                  href="/admin/login"
-                  className="relative text-gray-300 hover:text-white px-6 py-3 rounded-2xl text-sm font-medium transition-all duration-500 hover:bg-white/10 backdrop-blur-xl border border-white/20 hover:border-primary/60 overflow-hidden group"
-                >
-                  <span className="relative z-10">Login</span>
-                  <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-cyan-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl"></div>
-                </Link>
               </div>
             </div>
 
@@ -135,14 +147,6 @@ export default function Navbar() {
                     <span className="relative z-10">{item.name}</span>
                   </Link>
                 ))}
-                <Link
-                  href="/admin/login"
-                  className="relative block px-5 py-4 text-gray-300 hover:text-white hover:bg-white/10 rounded-2xl transition-all duration-500 font-medium touch-manipulation border border-transparent hover:border-white/20 overflow-hidden group mt-4"
-                  onClick={() => setIsOpen(false)}
-                >
-                  <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-cyan-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl"></div>
-                  <span className="relative z-10">Admin Login</span>
-                </Link>
               </div>
 
               {/* Social Links */}
@@ -169,13 +173,6 @@ export default function Navbar() {
                   })}
                 </div>
               </div>
-            </div>
-
-            {/* Footer */}
-            <div className="p-6 border-t border-white/20">
-              <p className="text-xs text-gray-400 text-center">
-                © {new Date().getFullYear()} Portfolio. Made with ❤️
-              </p>
             </div>
           </div>
         </div>

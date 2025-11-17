@@ -3,15 +3,9 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET() {
   try {
-    console.log("Fetching experience data...");
     const experience = await db.experience.findMany({
       orderBy: { id: "desc" },
     });
-    console.log(
-      "Experience data fetched successfully:",
-      experience.length,
-      "records"
-    );
     return NextResponse.json(experience);
   } catch (error) {
     console.error("Error fetching experience:", error);

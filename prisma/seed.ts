@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
 
@@ -23,7 +24,24 @@ async function main() {
 
   console.log("Profile created/updated:", profile);
 
-  // Skills, Education, Experience, Projects, and Admin user will be added manually through the admin panel
+  // Create Admin User
+  const hashedPassword = await bcrypt.hash("rifqy110205", 12);
+
+  const admin = await prisma.admin.upsert({
+    where: { email: "rifqysaputra1102@gmail.com" },
+    update: {
+      password: hashedPassword,
+    },
+    create: {
+      email: "rifqysaputra1102@gmail.com",
+      password: hashedPassword,
+      name: "Rifqy Saputra",
+    },
+  });
+
+  console.log("Admin user created/updated:", admin.email);
+
+  // Skills, Education, Experience, Projects will be added manually through the admin panel
 }
 
 main()

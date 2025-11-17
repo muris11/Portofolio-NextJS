@@ -7,13 +7,13 @@ interface ExperienceModalProps {
   isOpen: boolean;
   onClose: () => void;
   experience: Experience | null;
-  onSave: (data: Partial<Experience>) => Promise<boolean>;
+  onSave: (_data: Partial<Experience>) => Promise<boolean>;
 }
 
 export function ExperienceModal({
   isOpen,
   onClose,
-  experience,
+  experience: _experience,
   onSave,
 }: ExperienceModalProps) {
   const [formData, setFormData] = useState({
@@ -26,13 +26,13 @@ export function ExperienceModal({
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (experience) {
+    if (_experience) {
       setFormData({
-        company: experience.company,
-        role: experience.role,
-        startDate: experience.startDate,
-        endDate: experience.endDate,
-        description: experience.description,
+        company: _experience.company,
+        role: _experience.role,
+        startDate: _experience.startDate,
+        endDate: _experience.endDate,
+        description: _experience.description,
       });
     } else {
       setFormData({
@@ -43,7 +43,7 @@ export function ExperienceModal({
         description: "",
       });
     }
-  }, [experience, isOpen]);
+  }, [_experience, isOpen]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -51,7 +51,7 @@ export function ExperienceModal({
 
     const data = {
       ...formData,
-      ...(experience && { id: experience.id }),
+      ...(_experience && { id: _experience.id }),
     };
 
     const success = await onSave(data);
@@ -72,7 +72,7 @@ export function ExperienceModal({
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
         <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
-          {experience ? "Edit Pengalaman" : "Tambah Pengalaman"}
+          {_experience ? "Edit Pengalaman" : "Tambah Pengalaman"}
         </h3>
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -151,7 +151,7 @@ export function ExperienceModal({
               Batal
             </Button>
             <Button type="submit" disabled={isLoading}>
-              {isLoading ? "Menyimpan..." : experience ? "Update" : "Simpan"}
+              {isLoading ? "Menyimpan..." : _experience ? "Update" : "Simpan"}
             </Button>
           </div>
         </form>

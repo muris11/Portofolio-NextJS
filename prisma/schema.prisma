@@ -33,7 +33,7 @@ model Skill {
   name     String
   category String // Kategori: "Frontend", "Backend", "Database", "Tools"
   icon     String? // Nama ikon (cth: "SiReact", "SiNodedotjs" dari react-icons)
-  level    Int?    // Level skill (1-5)
+  level    Int?    // Level skill (0-100)
 }
 
 // Data untuk alur sekolah/pendidikan

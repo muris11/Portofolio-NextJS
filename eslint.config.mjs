@@ -1,6 +1,6 @@
+import { FlatCompat } from "@eslint/eslintrc";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
-import { FlatCompat } from "@eslint/eslintrc";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -13,37 +13,40 @@ const eslintConfig = [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
   {
     rules: {
-      // TypeScript 相关规则
-      "@typescript-eslint/no-explicit-any": "off",
-      "@typescript-eslint/no-unused-vars": "off",
-      "@typescript-eslint/no-non-null-assertion": "off",
-      "@typescript-eslint/ban-ts-comment": "off",
-      "@typescript-eslint/prefer-as-const": "off",
+      // TypeScript 相关规则 - 保持一些宽松但启用重要检查
+      "@typescript-eslint/no-explicit-any": "warn",
+      "@typescript-eslint/no-unused-vars": [
+        "warn",
+        { argsIgnorePattern: "^_" },
+      ],
+      "@typescript-eslint/no-non-null-assertion": "warn",
+      "@typescript-eslint/ban-ts-comment": "warn",
+      "@typescript-eslint/prefer-as-const": "warn",
 
       // React 相关规则
-      "react-hooks/exhaustive-deps": "off",
-      "react/no-unescaped-entities": "off",
+      "react-hooks/exhaustive-deps": "warn",
+      "react/no-unescaped-entities": "warn",
       "react/display-name": "off",
       "react/prop-types": "off",
 
       // Next.js 相关规则
-      "@next/next/no-img-element": "off",
-      "@next/next/no-html-link-for-pages": "off",
+      "@next/next/no-img-element": "warn",
+      "@next/next/no-html-link-for-pages": "warn",
 
-      // 一般JavaScript规则
-      "prefer-const": "off", // 关闭prefer-const规则
-      "no-unused-vars": "off",
-      "no-console": "off",
-      "no-debugger": "off",
-      "no-empty": "off",
-      "no-irregular-whitespace": "off",
-      "no-case-declarations": "off",
-      "no-fallthrough": "off",
-      "no-mixed-spaces-and-tabs": "off",
-      "no-redeclare": "off",
-      "no-undef": "off",
-      "no-unreachable": "off",
-      "no-useless-escape": "off",
+      // 一般JavaScript规则 - 启用重要检查但不过于严格
+      "prefer-const": "error",
+      "no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
+      "no-console": "off", // Allow console for debugging and error logging
+      "no-debugger": "error",
+      "no-empty": "warn",
+      "no-irregular-whitespace": "error",
+      "no-case-declarations": "error",
+      "no-fallthrough": "error",
+      "no-mixed-spaces-and-tabs": "error",
+      "no-redeclare": "error",
+      "no-undef": "off", // React and globals are handled by TypeScript
+      "no-unreachable": "error",
+      "no-useless-escape": "error",
     },
   },
 ];

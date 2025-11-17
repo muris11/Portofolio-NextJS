@@ -7,13 +7,13 @@ interface EducationModalProps {
   isOpen: boolean;
   onClose: () => void;
   education: Education | null;
-  onSave: (data: Partial<Education>) => Promise<boolean>;
+  onSave: (_data: Partial<Education>) => Promise<boolean>;
 }
 
 export function EducationModal({
   isOpen,
   onClose,
-  education,
+  education: _education,
   onSave,
 }: EducationModalProps) {
   const [formData, setFormData] = useState({
@@ -26,13 +26,13 @@ export function EducationModal({
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (education) {
+    if (_education) {
       setFormData({
-        institution: education.institution,
-        degree: education.degree,
-        startDate: education.startDate,
-        endDate: education.endDate,
-        description: education.description || "",
+        institution: _education.institution,
+        degree: _education.degree,
+        startDate: _education.startDate,
+        endDate: _education.endDate,
+        description: _education.description || "",
       });
     } else {
       setFormData({
@@ -43,7 +43,7 @@ export function EducationModal({
         description: "",
       });
     }
-  }, [education, isOpen]);
+  }, [_education, isOpen]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -51,7 +51,7 @@ export function EducationModal({
 
     const data = {
       ...formData,
-      ...(education && { id: education.id }),
+      ...(_education && { id: _education.id }),
     };
 
     const success = await onSave(data);
@@ -72,7 +72,7 @@ export function EducationModal({
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
         <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
-          {education ? "Edit Pendidikan" : "Tambah Pendidikan"}
+          {_education ? "Edit Pendidikan" : "Tambah Pendidikan"}
         </h3>
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -150,7 +150,7 @@ export function EducationModal({
               Batal
             </Button>
             <Button type="submit" disabled={isLoading}>
-              {isLoading ? "Menyimpan..." : education ? "Update" : "Simpan"}
+              {isLoading ? "Menyimpan..." : _education ? "Update" : "Simpan"}
             </Button>
           </div>
         </form>

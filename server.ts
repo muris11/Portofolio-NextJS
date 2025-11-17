@@ -35,8 +35,12 @@ async function createCustomServer() {
     const io = new Server(server, {
       path: "/api/socketio",
       cors: {
-        origin: "*",
+        origin:
+          process.env.NODE_ENV === "production"
+            ? ["https://yourdomain.com"] // Ganti dengan domain production Anda
+            : ["http://localhost:3000", "http://localhost:3001"],
         methods: ["GET", "POST"],
+        credentials: true,
       },
     });
 

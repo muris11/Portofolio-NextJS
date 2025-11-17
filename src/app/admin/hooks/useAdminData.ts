@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export interface DashboardStats {
   projects: number;
@@ -55,6 +55,15 @@ export interface ContactMessage {
   createdAt: string;
 }
 
+export interface RecentActivity {
+  id: string;
+  type: "project" | "message" | "profile";
+  title: string;
+  description: string;
+  timestamp: string;
+  icon: string;
+}
+
 export interface Profile {
   id: string;
   fullName: string;
@@ -83,7 +92,11 @@ export function useAdminData() {
   const [experience, setExperience] = useState<Experience[]>([]);
   const [messages, setMessages] = useState<ContactMessage[]>([]);
   const [profile, setProfile] = useState<Profile | null>(null);
+  const [recentActivities, setRecentActivities] = useState<RecentActivity[]>(
+    []
+  );
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   const fetchStats = async () => {
     try {
@@ -201,6 +214,22 @@ export function useAdminData() {
       console.error("Error fetching profile:", error);
     }
   };
+
+  const fetchRecentActivities = useCallback(async () => {
+    try {
+      const response = await fetch("/api/admin/activities");
+      if (response.ok) {
+        const data = await response.json();
+        setRecentActivities(data);
+      } else {
+        console.error(
+          `Failed to fetch recent activities: ${response.status} ${response.statusText}`
+        );
+      }
+    } catch (error) {
+      console.error("Error fetching recent activities:", error);
+    }
+  }, []);
 
   // CRUD functions
   const handleSaveProject = async (
@@ -372,34 +401,37 @@ export function useAdminData() {
     return false;
   };
 
-  const handleSaveProfile = async (profileData: any) => {
-    try {
-      let response: Response;
+  const handleSaveProfile = useCallback(
+    async (profileData: FormData | Partial<Profile>) => {
+      try {
+        let response: Response;
 
-      if (profileData instanceof FormData) {
-        // Handle file upload
-        response = await fetch("/api/admin/profile", {
-          method: "PUT",
-          body: profileData,
-        });
-      } else {
-        // Handle JSON data (backward compatibility)
-        response = await fetch("/api/admin/profile", {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(profileData),
-        });
-      }
+        if (profileData instanceof FormData) {
+          // Handle file upload
+          response = await fetch("/api/admin/profile", {
+            method: "PUT",
+            body: profileData,
+          });
+        } else {
+          // Handle JSON data (backward compatibility)
+          response = await fetch("/api/admin/profile", {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(profileData),
+          });
+        }
 
-      if (response.ok) {
-        await fetchProfile();
-        return true;
+        if (response.ok) {
+          await fetchProfile();
+          return true;
+        }
+      } catch (error) {
+        console.error("Error updating profile:", error);
       }
-    } catch (error) {
-      console.error("Error updating profile:", error);
-    }
-    return false;
-  };
+      return false;
+    },
+    []
+  );
 
   const handleDeleteMessage = async (id: string) => {
     if (confirm("Apakah Anda yakin menghapus pesan ini?")) {
@@ -414,6 +446,10 @@ export function useAdminData() {
     return false;
   };
 
+  const clearError = () => {
+    setError(null);
+  };
+
   useEffect(() => {
     const loadData = async () => {
       await Promise.all([
@@ -424,6 +460,7 @@ export function useAdminData() {
         fetchExperience(),
         fetchMessages(),
         fetchProfile(),
+        fetchRecentActivities(),
       ]);
       setIsLoading(false);
     };
@@ -439,16 +476,12 @@ export function useAdminData() {
     experience,
     messages,
     profile,
+    recentActivities,
     isLoading,
+    error,
 
     // Actions
-    refreshStats: fetchStats,
-    refreshProjects: fetchProjects,
-    refreshSkills: fetchSkills,
-    refreshEducation: fetchEducation,
-    refreshExperience: fetchExperience,
-    refreshMessages: fetchMessages,
-    refreshProfile: fetchProfile,
+    clearError,
 
     // CRUD handlers
     handleSaveProject,

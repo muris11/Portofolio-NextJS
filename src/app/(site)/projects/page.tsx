@@ -1,7 +1,6 @@
 import ProjectCard from "@/components/ProjectCard";
 import { db } from "@/lib/db";
 import type { Metadata } from "next";
-import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Projects",
@@ -104,7 +103,7 @@ export default async function ProjectsPage() {
 
       {/* Header Section */}
       <section className="relative pt-32 pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
-        <div className="max-w-5xl mx-auto text-center">
+        <div className="max-w-6xl mx-auto text-center">
           <div className="inline-flex items-center px-6 py-3 rounded-full bg-gradient-to-r from-blue-600/10 to-cyan-600/10 border border-blue-500/30 backdrop-blur-sm mb-10 animate-scale-in shadow-lg shadow-blue-500/10">
             <span className="relative flex h-3 w-3 mr-3">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
@@ -127,7 +126,7 @@ export default async function ProjectsPage() {
 
       {/* Projects Grid */}
       <section className="py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto space-y-20">
+        <div className="max-w-6xl mx-auto space-y-16">
           {/* Featured Projects Grid */}
           {featuredProjects.length > 0 && (
             <div className="space-y-16">
@@ -151,7 +150,7 @@ export default async function ProjectsPage() {
                 </p>
               </div>
 
-              <div className="grid grid-cols-1 gap-8 lg:gap-12">
+              <div className="grid grid-cols-1 gap-8 lg:gap-10">
                 {featuredProjects.map((project, index) => (
                   <div
                     key={project.id}
@@ -191,7 +190,7 @@ export default async function ProjectsPage() {
                 </p>
               </div>
 
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10">
                 {regularProjects.map((project, index) => (
                   <div
                     key={project.id}

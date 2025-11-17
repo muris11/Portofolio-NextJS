@@ -6,8 +6,8 @@ import { EducationModal } from "./EducationModal";
 
 interface EducationSectionProps {
   education: Education[];
-  onSave: (data: Partial<Education>) => Promise<boolean>;
-  onDelete: (id: string) => Promise<boolean>;
+  onSave: (_data: Partial<Education>) => Promise<boolean>;
+  onDelete: (_id: string) => Promise<boolean>;
 }
 
 export function EducationSection({
@@ -44,7 +44,7 @@ export function EducationSection({
   };
 
   return (
-    <div className="space-y-8 animate-in fade-in-50 duration-500">
+    <div className="space-y-4 animate-in fade-in-50 duration-500">
       {/* Header Section */}
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 p-6 bg-gradient-to-br from-cyan-50 via-white to-teal-50 dark:from-cyan-950/20 dark:via-gray-900 dark:to-teal-950/20 rounded-2xl border border-cyan-100/50 dark:border-cyan-900/20">
         <div className="space-y-2">
@@ -54,10 +54,10 @@ export function EducationSection({
             </div>
             <div>
               <h2 className="text-2xl lg:text-3xl font-bold bg-gradient-to-r from-cyan-600 to-teal-600 bg-clip-text text-transparent">
-                Kelola Pendidikan
+                Manage Education
               </h2>
               <p className="text-gray-600 dark:text-gray-400 text-sm lg:text-base">
-                Kelola riwayat pendidikan dan gelar akademik Anda
+                Manage your educational background and academic degrees
               </p>
             </div>
           </div>
@@ -65,7 +65,7 @@ export function EducationSection({
             <div className="flex items-center space-x-2">
               <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
               <span className="text-gray-600 dark:text-gray-400">
-                {education.length} Pendidikan
+                {education.length} Education
               </span>
             </div>
           </div>
@@ -77,7 +77,7 @@ export function EducationSection({
         >
           <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
           <Plus className="h-5 w-5 mr-2 relative z-10" />
-          <span className="relative z-10 font-medium">Tambah Pendidikan</span>
+          <span className="relative z-10 font-medium">Add Education</span>
         </Button>
       </div>
 
@@ -93,18 +93,18 @@ export function EducationSection({
             </div>
           </div>
           <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">
-            Belum ada data pendidikan
+            No education data yet
           </h3>
           <p className="text-gray-600 dark:text-gray-400 mb-8 max-w-md mx-auto">
-            Mulai tambahkan riwayat pendidikan Anda. Tunjukkan gelar dan
-            pencapaian akademik!
+            Start adding your educational background. Show your degrees and
+            academic achievements!
           </p>
           <Button
             onClick={handleAdd}
             className="bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-700 hover:to-teal-700 text-white px-8 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
           >
             <Plus className="h-5 w-5 mr-2" />
-            <span className="font-medium">Tambah Pendidikan Pertama</span>
+            <span className="font-medium">Add First Education</span>
           </Button>
         </div>
       ) : (
@@ -116,16 +116,16 @@ export function EducationSection({
                 <thead className="bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700">
                   <tr>
                     <th className="px-6 py-5 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
-                      Institusi
+                      Institution
                     </th>
                     <th className="px-6 py-5 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
-                      Gelar
+                      Degree
                     </th>
                     <th className="px-6 py-5 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
-                      Periode
+                      Period
                     </th>
                     <th className="px-6 py-5 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
-                      Aksi
+                      Actions
                     </th>
                   </tr>
                 </thead>
@@ -277,7 +277,7 @@ export function EducationSection({
                 <div className="space-y-3">
                   <div className="flex items-center justify-between text-sm">
                     <span className="text-gray-600 dark:text-gray-400">
-                      Periode
+                      Period
                     </span>
                     <span className="font-medium text-gray-900 dark:text-white">
                       {edu.startDate} - {edu.endDate}

@@ -1,14 +1,8 @@
-import crypto from "crypto";
+import { ADMIN_SESSION_TOKEN } from "@/lib/auth";
+import { db } from "@/lib/db";
+import bcrypt from "bcryptjs";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
-
-// Admin credentials from environment variables
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
-
-// Generate a secure session token if not provided
-const SESSION_TOKEN =
-  process.env.ADMIN_SESSION_TOKEN || crypto.randomBytes(32).toString("hex");
 
 // Simple in-memory rate limiting (in production, use Redis or similar)
 const loginAttempts = new Map<string, { count: number; lastAttempt: number }>();
@@ -38,21 +32,14 @@ export async function POST(request: NextRequest) {
     // Check if too many attempts
     if (attempts.count >= MAX_ATTEMPTS) {
       return NextResponse.json(
-        { error: "Terlalu banyak percobaan login. Coba lagi dalam 15 menit." },
+        { error: "Too many login attempts. Try again in 15 minutes." },
         { status: 429 }
       );
     }
 
     // Validate that admin credentials are configured
-    if (!ADMIN_EMAIL || !ADMIN_PASSWORD) {
-      console.error(
-        "Admin credentials not configured in environment variables"
-      );
-      return NextResponse.json(
-        { error: "Server configuration error" },
-        { status: 500 }
-      );
-    }
+    // Note: Admin credentials are now stored in the database
+    // This check is kept for backwards compatibility but admin users are managed via database
 
     let body;
     try {
@@ -80,15 +67,33 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Validate credentials
-    if (email !== ADMIN_EMAIL || password !== ADMIN_PASSWORD) {
+    // Validate credentials against database
+    const admin = await db.admin.findUnique({
+      where: { email: email },
+    });
+
+    if (!admin) {
       // Record failed attempt
       attempts.count++;
       attempts.lastAttempt = now;
       loginAttempts.set(clientIP, attempts);
 
       return NextResponse.json(
-        { error: "Email atau password salah" },
+        { error: "Invalid email or password" },
+        { status: 401 }
+      );
+    }
+
+    // Verify password
+    const isValidPassword = await bcrypt.compare(password, admin.password);
+    if (!isValidPassword) {
+      // Record failed attempt
+      attempts.count++;
+      attempts.lastAttempt = now;
+      loginAttempts.set(clientIP, attempts);
+
+      return NextResponse.json(
+        { error: "Invalid email or password" },
         { status: 401 }
       );
     }
@@ -98,7 +103,7 @@ export async function POST(request: NextRequest) {
 
     // Create session cookie
     const cookieStore = await cookies();
-    cookieStore.set("admin_session", SESSION_TOKEN, {
+    cookieStore.set("admin_session", ADMIN_SESSION_TOKEN as string, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
@@ -106,7 +111,7 @@ export async function POST(request: NextRequest) {
       path: "/",
     });
 
-    return NextResponse.json({ success: true, message: "Login berhasil" });
+    return NextResponse.json({ success: true, message: "Login successful" });
   } catch (error) {
     console.error("Auth error:", error);
     return NextResponse.json(
@@ -122,11 +127,11 @@ export async function DELETE() {
     const cookieStore = await cookies();
     cookieStore.delete("admin_session");
 
-    return NextResponse.json({ success: true, message: "Logout berhasil" });
+    return NextResponse.json({ success: true, message: "Logout successful" });
   } catch (error) {
     console.error("Logout error:", error);
     return NextResponse.json(
-      { error: "Terjadi kesalahan server" },
+      { error: "Server error occurred" },
       { status: 500 }
     );
   }
@@ -138,7 +143,7 @@ export async function GET() {
     const cookieStore = await cookies();
     const sessionToken = cookieStore.get("admin_session")?.value;
 
-    if (sessionToken === SESSION_TOKEN) {
+    if (sessionToken === ADMIN_SESSION_TOKEN) {
       return NextResponse.json({ authenticated: true });
     } else {
       return NextResponse.json({ authenticated: false }, { status: 401 });

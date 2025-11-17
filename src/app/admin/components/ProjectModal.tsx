@@ -1,11 +1,13 @@
-import { useState } from "react";
+import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
 import type { Project } from "../hooks/useAdminData";
+import { validateUrl } from "../utils/validation";
 
 interface ProjectModalProps {
   isOpen: boolean;
   onClose: () => void;
   project: Project | null;
-  onSave: (data: Partial<Project> | FormData) => Promise<boolean>;
+  onSave: (_data: Partial<Project> | FormData) => Promise<boolean>;
 }
 
 export function ProjectModal({
@@ -20,6 +22,77 @@ export function ProjectModal({
     project?.imageUrl || null
   );
   const [error, setError] = useState<string | null>(null);
+  const [validationErrors, setValidationErrors] = useState<
+    Record<string, string>
+  >({});
+  const [touchedFields, setTouchedFields] = useState<Record<string, boolean>>(
+    {}
+  );
+
+  // Focus management
+  const modalRef = useRef<HTMLDivElement>(null);
+  const previouslyFocusedElement = useRef<Element | null>(null);
+
+  useEffect(() => {
+    if (isOpen) {
+      // Store the currently focused element
+      previouslyFocusedElement.current = document.activeElement;
+
+      // Focus the modal
+      if (modalRef.current) {
+        modalRef.current.focus();
+      }
+
+      // Prevent body scroll
+      document.body.style.overflow = "hidden";
+    } else {
+      // Restore focus to previously focused element
+      if (previouslyFocusedElement.current instanceof HTMLElement) {
+        previouslyFocusedElement.current.focus();
+      }
+      document.body.style.overflow = "unset";
+    }
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    // Focus trap
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onClose();
+        return;
+      }
+
+      if (e.key === "Tab") {
+        const modal = modalRef.current;
+        if (!modal) return;
+
+        const focusableElements = modal.querySelectorAll(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        const firstElement = focusableElements[0] as HTMLElement;
+        const lastElement = focusableElements[
+          focusableElements.length - 1
+        ] as HTMLElement;
+
+        if (e.shiftKey) {
+          if (document.activeElement === firstElement) {
+            lastElement.focus();
+            e.preventDefault();
+          }
+        } else {
+          if (document.activeElement === lastElement) {
+            firstElement.focus();
+            e.preventDefault();
+          }
+        }
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, onClose]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -29,8 +102,6 @@ export function ProjectModal({
       setPreviewUrl(url);
     }
   };
-
-  if (!isOpen) return null;
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -105,6 +176,57 @@ export function ProjectModal({
     }
   };
 
+  // Validation functions
+  const validateField = (name: string, value: string): string => {
+    switch (name) {
+      case "title":
+        if (!value.trim()) return "Judul diperlukan";
+        if (value.trim().length < 3)
+          return "Judul harus terdiri dari setidaknya 3 karakter";
+        if (value.trim().length > 100)
+          return "Judul harus kurang dari 100 karakter";
+        return "";
+      case "description":
+        if (!value.trim()) return "Deskripsi diperlukan";
+        if (value.trim().length < 10)
+          return "Deskripsi harus terdiri dari setidaknya 10 karakter";
+        if (value.trim().length > 1000)
+          return "Deskripsi harus kurang dari 1000 karakter";
+        return "";
+      case "techStack":
+        if (!value.trim()) return "Setidaknya satu teknologi diperlukan";
+        return "";
+      case "liveUrl":
+      case "githubUrl":
+        if (value && !validateUrl(value))
+          return "Silakan masukkan URL yang valid";
+        return "";
+      default:
+        return "";
+    }
+  };
+
+  const handleFieldBlur = (
+    e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setTouchedFields((prev) => ({ ...prev, [name]: true }));
+    const error = validateField(name, value);
+    setValidationErrors((prev) => ({ ...prev, [name]: error }));
+  };
+
+  const handleFieldChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    if (touchedFields[name]) {
+      const error = validateField(name, value);
+      setValidationErrors((prev) => ({ ...prev, [name]: error }));
+    }
+  };
+
+  if (!isOpen) return null;
+
   return (
     <div
       className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
@@ -113,12 +235,12 @@ export function ProjectModal({
       aria-labelledby="modal-title"
     >
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
-        <div className="p-6">
+        <div className="p-6" ref={modalRef} tabIndex={-1}>
           <h3
             id="modal-title"
             className="text-lg font-semibold text-gray-900 dark:text-white mb-4"
           >
-            {project ? "Edit Proyek" : "Tambah Proyek Baru"}
+            {project ? "Edit Project" : "Add New Project"}
           </h3>
 
           {error && (
@@ -141,8 +263,15 @@ export function ProjectModal({
                 name="title"
                 defaultValue={project?.title}
                 required
+                onBlur={handleFieldBlur}
+                onChange={handleFieldChange}
                 className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white"
               />
+              {validationErrors.title && (
+                <p className="mt-1 text-xs text-red-600 dark:text-red-400">
+                  {validationErrors.title}
+                </p>
+              )}
             </div>
 
             <div>
@@ -154,8 +283,15 @@ export function ProjectModal({
                 defaultValue={project?.description}
                 required
                 rows={3}
+                onBlur={handleFieldBlur}
+                onChange={handleFieldChange}
                 className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white"
               />
+              {validationErrors.description && (
+                <p className="mt-1 text-xs text-red-600 dark:text-red-400">
+                  {validationErrors.description}
+                </p>
+              )}
             </div>
 
             <div>
@@ -178,8 +314,15 @@ export function ProjectModal({
                 }
                 required
                 placeholder="React, Next.js, TypeScript"
+                onBlur={handleFieldBlur}
+                onChange={handleFieldChange}
                 className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white"
               />
+              {validationErrors.techStack && (
+                <p className="mt-1 text-xs text-red-600 dark:text-red-400">
+                  {validationErrors.techStack}
+                </p>
+              )}
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -191,9 +334,11 @@ export function ProjectModal({
                   {/* Current Image Preview */}
                   {previewUrl && (
                     <div className="flex items-center space-x-4">
-                      <img
+                      <Image
                         src={previewUrl}
                         alt="Project preview"
+                        width={80}
+                        height={80}
                         className="w-20 h-20 rounded-lg object-cover border-2 border-gray-200 dark:border-gray-600"
                       />
                       <div>
@@ -232,8 +377,15 @@ export function ProjectModal({
                   type="url"
                   name="liveUrl"
                   defaultValue={project?.liveUrl}
+                  onBlur={handleFieldBlur}
+                  onChange={handleFieldChange}
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white"
                 />
+                {validationErrors.liveUrl && (
+                  <p className="mt-1 text-xs text-red-600 dark:text-red-400">
+                    {validationErrors.liveUrl}
+                  </p>
+                )}
               </div>
 
               <div>
@@ -244,8 +396,15 @@ export function ProjectModal({
                   type="url"
                   name="githubUrl"
                   defaultValue={project?.githubUrl}
+                  onBlur={handleFieldBlur}
+                  onChange={handleFieldChange}
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white"
                 />
+                {validationErrors.githubUrl && (
+                  <p className="mt-1 text-xs text-red-600 dark:text-red-400">
+                    {validationErrors.githubUrl}
+                  </p>
+                )}
               </div>
             </div>
 

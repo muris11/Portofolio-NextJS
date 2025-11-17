@@ -6,8 +6,8 @@ import { SkillModal } from "./SkillModal";
 
 interface SkillsSectionProps {
   skills: Skill[];
-  onSave: (data: Partial<Skill>) => Promise<boolean>;
-  onDelete: (id: string) => Promise<boolean>;
+  onSave: (_data: Partial<Skill>) => Promise<boolean>;
+  onDelete: (_id: string) => Promise<boolean>;
 }
 
 export function SkillsSection({
@@ -42,7 +42,7 @@ export function SkillsSection({
   };
 
   return (
-    <div className="space-y-8 animate-in fade-in-50 duration-500">
+    <div className="space-y-4 animate-in fade-in-50 duration-500">
       {/* Header Section */}
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 p-6 bg-gradient-to-br from-emerald-50 via-white to-teal-50 dark:from-emerald-950/20 dark:via-gray-900 dark:to-teal-950/20 rounded-2xl border border-emerald-100/50 dark:border-emerald-900/20">
         <div className="space-y-2">
@@ -64,10 +64,10 @@ export function SkillsSection({
             </div>
             <div>
               <h2 className="text-2xl lg:text-3xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
-                Kelola Kemampuan
+                Manage Skills
               </h2>
               <p className="text-gray-600 dark:text-gray-400 text-sm lg:text-base">
-                Kelola skill dan kompetensi Anda dengan indikator visual
+                Manage your skills and competencies with visual indicators
               </p>
             </div>
           </div>
@@ -81,7 +81,7 @@ export function SkillsSection({
             <div className="flex items-center space-x-2">
               <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
               <span className="text-gray-600 dark:text-gray-400">
-                {new Set(skills.map((s) => s.category)).size} Kategori
+                {new Set(skills.map((s) => s.category)).size} Categories
               </span>
             </div>
           </div>
@@ -93,7 +93,7 @@ export function SkillsSection({
         >
           <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
           <Plus className="h-5 w-5 mr-2 relative z-10" />
-          <span className="relative z-10 font-medium">Tambah Skill</span>
+          <span className="relative z-10 font-medium">Add Skill</span>
         </Button>
       </div>
 
@@ -121,18 +121,18 @@ export function SkillsSection({
             </div>
           </div>
           <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">
-            Belum ada skill
+            No skills yet
           </h3>
           <p className="text-gray-600 dark:text-gray-400 mb-8 max-w-md mx-auto">
-            Mulai tambahkan skill dan kompetensi Anda. Tunjukkan keahlian yang
-            Anda kuasai!
+            Start adding your skills and competencies. Show the expertise you
+            master!
           </p>
           <Button
             onClick={handleAdd}
             className="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white px-8 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
           >
             <Plus className="h-5 w-5 mr-2" />
-            <span className="font-medium">Tambah Skill Pertama</span>
+            <span className="font-medium">Add First Skill</span>
           </Button>
         </div>
       ) : (
@@ -147,13 +147,13 @@ export function SkillsSection({
                       Skill
                     </th>
                     <th className="px-6 py-5 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
-                      Kategori
+                      Category
                     </th>
                     <th className="px-6 py-5 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
-                      Tingkat Keahlian
+                      Proficiency Level
                     </th>
                     <th className="px-6 py-5 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
-                      Aksi
+                      Actions
                     </th>
                   </tr>
                 </thead>
@@ -255,7 +255,7 @@ export function SkillsSection({
                           <button
                             onClick={() => handleDelete(skill.id)}
                             className="p-2 text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-all duration-200 transform hover:scale-110"
-                            title="Hapus"
+                            title="Delete"
                           >
                             <svg
                               className="h-5 w-5"
@@ -353,7 +353,7 @@ export function SkillsSection({
                     <button
                       onClick={() => handleDelete(skill.id)}
                       className="p-2 text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300 rounded-lg transition-all duration-200"
-                      title="Hapus"
+                      title="Delete"
                     >
                       <svg
                         className="h-5 w-5"
