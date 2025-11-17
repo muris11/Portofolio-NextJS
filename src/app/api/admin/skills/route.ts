@@ -39,8 +39,9 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    // Revalidate the homepage to reflect skill changes immediately
+    // Revalidate the homepage and admin page to reflect skill changes immediately
     revalidatePath("/");
+    revalidatePath("/admin");
 
     return NextResponse.json(skill, { status: 201 });
   } catch (error) {
@@ -74,8 +75,9 @@ export async function PUT(request: NextRequest) {
       },
     });
 
-    // Revalidate the homepage to reflect skill changes immediately
+    // Revalidate the homepage and admin page to reflect skill changes immediately
     revalidatePath("/");
+    revalidatePath("/admin");
 
     return NextResponse.json(skill);
   } catch (error) {
@@ -103,8 +105,9 @@ export async function DELETE(request: NextRequest) {
       where: { id },
     });
 
-    // Revalidate the homepage to reflect skill changes immediately
+    // Revalidate the homepage and admin page to reflect skill changes immediately
     revalidatePath("/");
+    revalidatePath("/admin");
 
     return NextResponse.json({ message: "Skill deleted successfully" });
   } catch (error) {

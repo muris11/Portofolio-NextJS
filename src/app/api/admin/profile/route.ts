@@ -173,13 +173,17 @@ export async function PUT(request: NextRequest) {
       );
     }
 
+    // Get existing profile to preserve profileImage if no new file uploaded
+    const existingProfile = await db.profile.findFirst();
+    const finalProfileImageUrl = profileImageUrl !== null ? profileImageUrl : existingProfile?.profileImage;
+
     const profile = await db.profile.upsert({
       where: { id: "default" },
       update: {
         fullName,
         title,
         bio,
-        profileImage: profileImageUrl,
+        profileImage: finalProfileImageUrl,
         email,
         phone: phone || null,
         location: location || null,
@@ -203,9 +207,10 @@ export async function PUT(request: NextRequest) {
       },
     });
 
-    // Revalidate the homepage and profile page to reflect changes immediately
+    // Revalidate the homepage, profile page, and admin page to reflect changes immediately
     revalidatePath("/");
     revalidatePath("/profile");
+    revalidatePath("/admin");
 
     return NextResponse.json(profile);
   } catch (error) {

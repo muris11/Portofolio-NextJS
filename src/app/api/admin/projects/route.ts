@@ -174,9 +174,10 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    // Revalidate the homepage and projects page to reflect changes immediately
+    // Revalidate the homepage, projects page, and admin page to reflect changes immediately
     revalidatePath("/");
     revalidatePath("/projects");
+    revalidatePath("/admin");
 
     return NextResponse.json(project, { status: 201 });
   } catch (error) {
@@ -342,9 +343,10 @@ export async function PUT(request: NextRequest) {
       },
     });
 
-    // Revalidate the homepage and projects page to reflect changes immediately
+    // Revalidate the homepage, projects page, and admin page to reflect changes immediately
     revalidatePath("/");
     revalidatePath("/projects");
+    revalidatePath("/admin");
 
     return NextResponse.json(project);
   } catch (error) {
@@ -372,9 +374,10 @@ export async function DELETE(request: NextRequest) {
       where: { id },
     });
 
-    // Revalidate the homepage and projects page to reflect changes immediately
+    // Revalidate the homepage, projects page, and admin page to reflect changes immediately
     revalidatePath("/");
     revalidatePath("/projects");
+    revalidatePath("/admin");
 
     return NextResponse.json({ message: "Project deleted successfully" });
   } catch (error) {
