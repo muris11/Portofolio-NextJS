@@ -26,7 +26,7 @@ export default function AdminNavbar() {
                 href="/admin"
                 className="text-xl font-bold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
               >
-                Admin Portfolio
+                Admin Rifqy.Dev
               </Link>
             </div>
 

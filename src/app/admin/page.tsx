@@ -120,7 +120,7 @@ export default function AdminPage() {
                     Admin Panel
                   </h1>
                   <p className="text-sm text-gray-600 dark:text-gray-400">
-                    Portfolio Management
+                    Rifqy.Dev Management
                   </p>
                 </div>
               </div>

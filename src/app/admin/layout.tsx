@@ -7,8 +7,8 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
-  title: "Admin Panel - Portfolio",
-  description: "Admin panel for managing portfolio content",
+  title: "Admin Panel - Rifqy.Dev",
+  description: "Admin panel for managing Rifqy.Dev content",
 };
 
 export default async function AdminLayout({

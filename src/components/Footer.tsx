@@ -149,7 +149,7 @@ export default async function Footer() {
           {/* Brand & About */}
           <div className="lg:col-span-2">
             <h3 className="text-2xl font-bold text-white mb-4">
-              {profile?.fullName || "Portfolio"}
+              {profile?.fullName || "Rifqy.Dev"}
             </h3>
             <p className="text-gray-400 leading-relaxed mb-6 max-w-md">
               {profile?.bio ||
@@ -233,7 +233,7 @@ export default async function Footer() {
         {/* Bottom Bar */}
         <div className="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-center items-center">
           <p className="text-gray-400 text-sm mb-4 md:mb-0 text-center">
-            © {currentYear} {profile?.fullName || "Portfolio"}. All rights
+            © {currentYear} {profile?.fullName || "Rifqy.Dev"}. All rights
             reserved.
           </p>
         </div>

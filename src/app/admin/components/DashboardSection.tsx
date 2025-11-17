@@ -73,7 +73,7 @@ export function DashboardSection({
             Dashboard Overview
           </h2>
           <p className="text-gray-600 dark:text-gray-400 mt-1">
-            Manage your portfolio content easily
+            Manage your Rifqy.Dev content easily
           </p>
         </div>
         <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400">

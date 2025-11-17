@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     "React",
     "TypeScript",
     "Node.js",
-    "Portfolio",
+    "Rifqy.Dev",
     "JavaScript",
     "Frontend",
     "Backend",
