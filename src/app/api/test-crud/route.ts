@@ -20,8 +20,8 @@ export async function GET() {
         create: "Not tested",
         read: "Not tested",
         update: "Not tested",
-        delete: "Not tested"
-      }
+        delete: "Not tested",
+      },
     };
 
     // Test connection and counts
@@ -41,32 +41,33 @@ export async function GET() {
           name: "Test Skill",
           category: "Test",
           level: 50,
-          icon: "test-icon"
-        }
+          icon: "test-icon",
+        },
       });
       results.operations.create = "✅ Success";
 
       // Test READ operation
       const readSkill = await db.skill.findUnique({
-        where: { id: testSkill.id }
+        where: { id: testSkill.id },
       });
       results.operations.read = readSkill ? "✅ Success" : "❌ Failed";
 
       // Test UPDATE operation
       const updatedSkill = await db.skill.update({
         where: { id: testSkill.id },
-        data: { name: "Updated Test Skill" }
+        data: { name: "Updated Test Skill" },
       });
-      results.operations.update = updatedSkill.name === "Updated Test Skill" ? "✅ Success" : "❌ Failed";
+      results.operations.update =
+        updatedSkill.name === "Updated Test Skill" ? "✅ Success" : "❌ Failed";
 
       // Test DELETE operation
       await db.skill.delete({
-        where: { id: testSkill.id }
+        where: { id: testSkill.id },
       });
       results.operations.delete = "✅ Success";
-
     } catch (crudError: unknown) {
-      const errorMessage = crudError instanceof Error ? crudError.message : 'Unknown error';
+      const errorMessage =
+        crudError instanceof Error ? crudError.message : "Unknown error";
       results.operations.create = `❌ Failed: ${errorMessage}`;
       results.operations.read = "❌ Skipped";
       results.operations.update = "❌ Skipped";
@@ -75,14 +76,17 @@ export async function GET() {
 
     return NextResponse.json({
       status: "CRUD Operations Test",
-      results
+      results,
     });
-
   } catch (error: unknown) {
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-    return NextResponse.json({
-      status: "Database Test Error",
-      error: errorMessage
-    }, { status: 500 });
+    const errorMessage =
+      error instanceof Error ? error.message : "Unknown error";
+    return NextResponse.json(
+      {
+        status: "Database Test Error",
+        error: errorMessage,
+      },
+      { status: 500 }
+    );
   }
 }
