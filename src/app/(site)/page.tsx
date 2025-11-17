@@ -91,7 +91,7 @@ export const metadata: Metadata = {
 // export const revalidate = 300; // 5 minutes
 
 // Force dynamic rendering to ensure fresh data on every request
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 export default async function Home() {
   const profile = await getProfile();

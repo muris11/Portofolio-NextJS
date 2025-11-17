@@ -52,7 +52,10 @@ export async function PUT(request: NextRequest) {
         ];
         if (!allowedTypes.includes(profileImage.type)) {
           return NextResponse.json(
-            { error: "Invalid image file type. Only JPEG, PNG, GIF, and WebP are allowed." },
+            {
+              error:
+                "Invalid image file type. Only JPEG, PNG, GIF, and WebP are allowed.",
+            },
             { status: 400 }
           );
         }
@@ -67,18 +70,22 @@ export async function PUT(request: NextRequest) {
 
         // Upload to Vercel Blob (production) or local storage (development)
         let uploadedUrl: string;
-        
+
         if (process.env.BLOB_READ_WRITE_TOKEN) {
           // Production: Use Vercel Blob
-          const blob = await put(`profile-${Date.now()}.${profileImage.name.split('.').pop()}`, profileImage, {
-            access: 'public',
-          });
+          const blob = await put(
+            `profile-${Date.now()}.${profileImage.name.split(".").pop()}`,
+            profileImage,
+            {
+              access: "public",
+            }
+          );
           uploadedUrl = blob.url;
         } else {
           // Development: Use local storage (fallback)
-          const fs = await import('fs/promises');
-          const path = await import('path');
-          
+          const fs = await import("fs/promises");
+          const path = await import("path");
+
           const uploadsDir = path.join(process.cwd(), "public", "uploads");
           try {
             await fs.mkdir(uploadsDir, { recursive: true });
@@ -86,12 +93,14 @@ export async function PUT(request: NextRequest) {
             // Directory might already exist, continue
           }
 
-          const fileName = `profile-${Date.now()}.${profileImage.name.split('.').pop()}`;
+          const fileName = `profile-${Date.now()}.${profileImage.name
+            .split(".")
+            .pop()}`;
           const filePath = path.join(uploadsDir, fileName);
-          
+
           const buffer = Buffer.from(await profileImage.arrayBuffer());
           await fs.writeFile(filePath, buffer);
-          
+
           uploadedUrl = `/uploads/${fileName}`;
         }
 

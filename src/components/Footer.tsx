@@ -80,7 +80,7 @@ export default async function Footer() {
                   <Link
                     key={social.label}
                     href={social.href}
-                    className="text-gray-400 hover:text-white transition-colors duration-300"
+                    className="text-gray-400"
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={social.label}
@@ -102,7 +102,7 @@ export default async function Footer() {
                 <li key={link.name}>
                   <Link
                     href={link.href}
-                    className="text-gray-400 hover:text-white transition-colors duration-300 text-sm"
+                    className="text-gray-400 text-sm"
                   >
                     {link.name}
                   </Link>
