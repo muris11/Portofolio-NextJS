@@ -49,6 +49,56 @@ export async function GET() {
     return "http://localhost:3000";
   };
 
+  // Store session cookie for authenticated requests
+  let sessionCookie: string | null = null;
+
+  // Helper function to make authenticated requests
+  const authenticatedFetch = async (url: string, options: RequestInit = {}) => {
+    const headers = new Headers(options.headers);
+
+    if (sessionCookie) {
+      headers.set("Cookie", sessionCookie);
+    }
+
+    return fetch(url, {
+      ...options,
+      headers,
+    });
+  };
+
+  // 0. Admin Login Test (required for all other tests)
+  await runTest("Admin Login", async () => {
+    const loginCredentials = {
+      email: "rifqysaputra1102@gmail.com",
+      password: "rifqy110205",
+    };
+
+    const response = await fetch(`${getBaseUrl()}/api/admin/auth`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(loginCredentials),
+    });
+
+    if (!response.ok) {
+      const error = await response.text();
+      throw new Error(`Login failed: ${response.status} - ${error}`);
+    }
+
+    // Extract session cookie from response
+    const setCookieHeader = response.headers.get("set-cookie");
+    if (setCookieHeader) {
+      // Extract admin_session cookie
+      const cookieMatch = setCookieHeader.match(/admin_session=([^;]+)/);
+      if (cookieMatch) {
+        sessionCookie = `admin_session=${cookieMatch[1]}`;
+      }
+    }
+
+    if (!sessionCookie) {
+      throw new Error("Failed to obtain session cookie after login");
+    }
+  });
+
   // 1. Database Connection Test
   await runTest("Database Connection", async () => {
     const result = await db.$queryRaw`SELECT 1 as test`;
@@ -65,7 +115,7 @@ export async function GET() {
     }
   });
 
-  // 3. Vercel Blob Test
+  // 3. Vercel Blob Configuration Test
   await runTest("Vercel Blob Configuration", async () => {
     if (!process.env.BLOB_READ_WRITE_TOKEN) {
       results.push({
@@ -77,11 +127,14 @@ export async function GET() {
       return;
     }
 
-    // Test blob upload with a small test file
+    // Test blob upload with unique filename to avoid conflicts
+    const uniqueFilename = `test-file-${Date.now()}-${Math.random()
+      .toString(36)
+      .substring(7)}.txt`;
     const testContent = "test file content";
     const blob = new Blob([testContent], { type: "text/plain" });
 
-    const uploadResult = await put("test-file.txt", blob, {
+    const uploadResult = await put(uniqueFilename, blob, {
       access: "public",
     });
 
@@ -92,18 +145,21 @@ export async function GET() {
     console.log("Blob test successful:", uploadResult.url);
   });
 
-  // 4. Authentication API Test
+  // 4. Authentication API Test (now using authenticated fetch)
   await runTest("Authentication API", async () => {
     const testCredentials = {
       email: "test@example.com",
       password: "testpass123",
     };
 
-    const response = await fetch(`${getBaseUrl()}/api/admin/auth`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(testCredentials),
-    });
+    const response = await authenticatedFetch(
+      `${getBaseUrl()}/api/admin/auth`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(testCredentials),
+      }
+    );
 
     if (!response.ok) {
       const error = await response.text();
@@ -118,7 +174,9 @@ export async function GET() {
   // 5. Profile CRUD Test
   await runTest("Profile CRUD Operations", async () => {
     // Test GET
-    const getResponse = await fetch(`${getBaseUrl()}/api/admin/profile`);
+    const getResponse = await authenticatedFetch(
+      `${getBaseUrl()}/api/admin/profile`
+    );
     if (!getResponse.ok) {
       throw new Error(`Profile GET failed: ${getResponse.status}`);
     }
@@ -131,11 +189,14 @@ export async function GET() {
       email: "test@example.com",
     };
 
-    const postResponse = await fetch(`${getBaseUrl()}/api/admin/profile`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(testProfile),
-    });
+    const postResponse = await authenticatedFetch(
+      `${getBaseUrl()}/api/admin/profile`,
+      {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(testProfile),
+      }
+    );
 
     if (!postResponse.ok) {
       const error = await postResponse.text();
@@ -146,7 +207,9 @@ export async function GET() {
   // 6. Projects CRUD Test
   await runTest("Projects CRUD Operations", async () => {
     // Test GET
-    const getResponse = await fetch(`${getBaseUrl()}/api/admin/projects`);
+    const getResponse = await authenticatedFetch(
+      `${getBaseUrl()}/api/admin/projects`
+    );
     if (!getResponse.ok) {
       throw new Error(`Projects GET failed: ${getResponse.status}`);
     }
@@ -161,15 +224,20 @@ export async function GET() {
       featured: false,
     };
 
-    const postResponse = await fetch(`${getBaseUrl()}/api/admin/projects`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(testProject),
-    });
+    const postResponse = await authenticatedFetch(
+      `${getBaseUrl()}/api/admin/projects`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(testProject),
+      }
+    );
 
     if (!postResponse.ok) {
       const error = await postResponse.text();
-      throw new Error(`Projects POST failed: ${postResponse.status} - ${error}`);
+      throw new Error(
+        `Projects POST failed: ${postResponse.status} - ${error}`
+      );
     }
 
     const createdProject = await postResponse.json();
@@ -180,11 +248,14 @@ export async function GET() {
       id: createdProject.id,
       title: "Updated Test Project",
     };
-    const putResponse = await fetch(`${getBaseUrl()}/api/admin/projects`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(updateData),
-    });
+    const putResponse = await authenticatedFetch(
+      `${getBaseUrl()}/api/admin/projects`,
+      {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updateData),
+      }
+    );
 
     if (!putResponse.ok) {
       const error = await putResponse.text();
@@ -192,7 +263,7 @@ export async function GET() {
     }
 
     // Test DELETE
-    const deleteResponse = await fetch(
+    const deleteResponse = await authenticatedFetch(
       `${getBaseUrl()}/api/admin/projects?id=${createdProject.id}`,
       {
         method: "DELETE",
@@ -210,7 +281,9 @@ export async function GET() {
   // 7. Skills CRUD Test
   await runTest("Skills CRUD Operations", async () => {
     // Test GET
-    const getResponse = await fetch(`${getBaseUrl()}/api/admin/skills`);
+    const getResponse = await authenticatedFetch(
+      `${getBaseUrl()}/api/admin/skills`
+    );
     if (!getResponse.ok) {
       throw new Error(`Skills GET failed: ${getResponse.status}`);
     }
@@ -222,11 +295,14 @@ export async function GET() {
       level: 80,
     };
 
-    const postResponse = await fetch(`${getBaseUrl()}/api/admin/skills`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(testSkill),
-    });
+    const postResponse = await authenticatedFetch(
+      `${getBaseUrl()}/api/admin/skills`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(testSkill),
+      }
+    );
 
     if (!postResponse.ok) {
       const error = await postResponse.text();
@@ -241,11 +317,14 @@ export async function GET() {
       id: createdSkill.id,
       name: "Updated Test Skill",
     };
-    const putResponse = await fetch(`${getBaseUrl()}/api/admin/skills`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(updateData),
-    });
+    const putResponse = await authenticatedFetch(
+      `${getBaseUrl()}/api/admin/skills`,
+      {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updateData),
+      }
+    );
 
     if (!putResponse.ok) {
       const error = await putResponse.text();
@@ -253,7 +332,7 @@ export async function GET() {
     }
 
     // Test DELETE
-    const deleteResponse = await fetch(
+    const deleteResponse = await authenticatedFetch(
       `${getBaseUrl()}/api/admin/skills?id=${createdSkill.id}`,
       {
         method: "DELETE",
@@ -262,14 +341,18 @@ export async function GET() {
 
     if (!deleteResponse.ok) {
       const error = await deleteResponse.text();
-      throw new Error(`Skills DELETE failed: ${deleteResponse.status} - ${error}`);
+      throw new Error(
+        `Skills DELETE failed: ${deleteResponse.status} - ${error}`
+      );
     }
   });
 
   // 8. Education CRUD Test
   await runTest("Education CRUD Operations", async () => {
     // Test GET
-    const getResponse = await fetch(`${getBaseUrl()}/api/admin/education`);
+    const getResponse = await authenticatedFetch(
+      `${getBaseUrl()}/api/admin/education`
+    );
     if (!getResponse.ok) {
       throw new Error(`Education GET failed: ${getResponse.status}`);
     }
@@ -283,15 +366,20 @@ export async function GET() {
       description: "Test education description",
     };
 
-    const postResponse = await fetch(`${getBaseUrl()}/api/admin/education`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(testEducation),
-    });
+    const postResponse = await authenticatedFetch(
+      `${getBaseUrl()}/api/admin/education`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(testEducation),
+      }
+    );
 
     if (!postResponse.ok) {
       const error = await postResponse.text();
-      throw new Error(`Education POST failed: ${postResponse.status} - ${error}`);
+      throw new Error(
+        `Education POST failed: ${postResponse.status} - ${error}`
+      );
     }
 
     const createdEducation = await postResponse.json();
@@ -302,11 +390,14 @@ export async function GET() {
       id: createdEducation.id,
       institution: "Updated University",
     };
-    const putResponse = await fetch(`${getBaseUrl()}/api/admin/education`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(updateData),
-    });
+    const putResponse = await authenticatedFetch(
+      `${getBaseUrl()}/api/admin/education`,
+      {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updateData),
+      }
+    );
 
     if (!putResponse.ok) {
       const error = await putResponse.text();
@@ -314,7 +405,7 @@ export async function GET() {
     }
 
     // Test DELETE
-    const deleteResponse = await fetch(
+    const deleteResponse = await authenticatedFetch(
       `${getBaseUrl()}/api/admin/education?id=${createdEducation.id}`,
       {
         method: "DELETE",
@@ -332,7 +423,9 @@ export async function GET() {
   // 9. Experience CRUD Test
   await runTest("Experience CRUD Operations", async () => {
     // Test GET
-    const getResponse = await fetch(`${getBaseUrl()}/api/admin/experience`);
+    const getResponse = await authenticatedFetch(
+      `${getBaseUrl()}/api/admin/experience`
+    );
     if (!getResponse.ok) {
       throw new Error(`Experience GET failed: ${getResponse.status}`);
     }
@@ -346,47 +439,68 @@ export async function GET() {
       endDate: "2024-01-01",
     };
 
-    const postResponse = await fetch(`${getBaseUrl()}/api/admin/experience`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(testExperience),
-    });
+    const postResponse = await authenticatedFetch(
+      `${getBaseUrl()}/api/admin/experience`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(testExperience),
+      }
+    );
 
     if (!postResponse.ok) {
       const error = await postResponse.text();
-      throw new Error(`Experience POST failed: ${postResponse.status} - ${error}`);
+      throw new Error(
+        `Experience POST failed: ${postResponse.status} - ${error}`
+      );
     }
 
     const createdExperience = await postResponse.json();
 
     // Test PUT
-    const updateData = { ...testExperience, id: createdExperience.id, company: "Updated Company" };
-    const putResponse = await fetch(`${getBaseUrl()}/api/admin/experience`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(updateData),
-    });
+    const updateData = {
+      ...testExperience,
+      id: createdExperience.id,
+      company: "Updated Company",
+    };
+    const putResponse = await authenticatedFetch(
+      `${getBaseUrl()}/api/admin/experience`,
+      {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updateData),
+      }
+    );
 
     if (!putResponse.ok) {
       const error = await putResponse.text();
-      throw new Error(`Experience PUT failed: ${putResponse.status} - ${error}`);
+      throw new Error(
+        `Experience PUT failed: ${putResponse.status} - ${error}`
+      );
     }
 
     // Test DELETE
-    const deleteResponse = await fetch(`${getBaseUrl()}/api/admin/experience?id=${createdExperience.id}`, {
-      method: "DELETE",
-    });
+    const deleteResponse = await authenticatedFetch(
+      `${getBaseUrl()}/api/admin/experience?id=${createdExperience.id}`,
+      {
+        method: "DELETE",
+      }
+    );
 
     if (!deleteResponse.ok) {
       const error = await deleteResponse.text();
-      throw new Error(`Experience DELETE failed: ${deleteResponse.status} - ${error}`);
+      throw new Error(
+        `Experience DELETE failed: ${deleteResponse.status} - ${error}`
+      );
     }
   });
 
   // 10. Messages API Test
   await runTest("Messages API", async () => {
     // Test GET
-    const getResponse = await fetch(`${getBaseUrl()}/api/admin/messages`);
+    const getResponse = await authenticatedFetch(
+      `${getBaseUrl()}/api/admin/messages`
+    );
     if (!getResponse.ok) {
       throw new Error(`Messages GET failed: ${getResponse.status}`);
     }
@@ -399,11 +513,14 @@ export async function GET() {
       message: "Test message content",
     };
 
-    const postResponse = await fetch(`${getBaseUrl()}/api/contact`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(testMessage),
-    });
+    const postResponse = await authenticatedFetch(
+      `${getBaseUrl()}/api/contact`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(testMessage),
+      }
+    );
 
     if (!postResponse.ok) {
       const error = await postResponse.text();
@@ -411,7 +528,9 @@ export async function GET() {
     }
 
     // Get messages again to verify creation
-    const messagesResponse = await fetch(`${getBaseUrl()}/api/admin/messages`);
+    const messagesResponse = await authenticatedFetch(
+      `${getBaseUrl()}/api/admin/messages`
+    );
     if (!messagesResponse.ok) {
       throw new Error(
         `Messages GET after creation failed: ${messagesResponse.status}`
@@ -467,10 +586,13 @@ export async function GET() {
     });
     formData.append("imageFile", testImageBlob, "test.png");
 
-    const response = await fetch(`${getBaseUrl()}/api/admin/projects`, {
-      method: "POST",
-      body: formData,
-    });
+    const response = await authenticatedFetch(
+      `${getBaseUrl()}/api/admin/projects`,
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
 
     if (!response.ok) {
       const error = await response.text();
