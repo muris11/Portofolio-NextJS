@@ -8,6 +8,9 @@ export const metadata: Metadata = {
     "Explore my portfolio of innovative web development projects and creative solutions",
 };
 
+// Enable ISR with 5 minute revalidation for better performance
+export const revalidate = 300; // 5 minutes
+
 async function getProjects() {
   try {
     const projects = await db.project.findMany({

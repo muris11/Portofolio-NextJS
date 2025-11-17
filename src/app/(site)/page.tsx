@@ -86,6 +86,9 @@ export const metadata: Metadata = {
   },
 };
 
+// Enable ISR with 5 minute revalidation for better performance
+export const revalidate = 300; // 5 minutes
+
 export default async function Home() {
   const profile = await getProfile();
   const featuredProjects = await getFeaturedProjects();

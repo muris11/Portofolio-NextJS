@@ -1,14 +1,14 @@
-// server.ts - Next.js Standalone + Socket.IO
-import { setupSocket } from "@/lib/socket";
+// server.ts - Next.js Standalone
+// import { setupSocket } from "@/lib/socket";
 import { createServer } from "http";
 import next from "next";
-import { Server } from "socket.io";
+// import { Server } from "socket.io";
 
 const dev = process.env.NODE_ENV !== "production";
 const currentPort = 3000;
 const hostname = "0.0.0.0";
 
-// Custom server with Socket.IO integration
+// Custom server
 async function createCustomServer() {
   try {
     // Create Next.js app
@@ -22,15 +22,13 @@ async function createCustomServer() {
     await nextApp.prepare();
     const handle = nextApp.getRequestHandler();
 
-    // Create HTTP server that will handle both Next.js and Socket.IO
+    // Create HTTP server that will handle Next.js requests
     const server = createServer((req, res) => {
-      // Skip socket.io requests from Next.js handler
-      if (req.url?.startsWith("/api/socketio")) {
-        return;
-      }
       handle(req, res);
     });
 
+    // Socket.IO setup commented out for production
+    /*
     // Setup Socket.IO
     const io = new Server(server, {
       path: "/api/socketio",
@@ -45,6 +43,7 @@ async function createCustomServer() {
     });
 
     setupSocket(io);
+    */
 
     // Start the server
     server.listen(currentPort, hostname, () => {

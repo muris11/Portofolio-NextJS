@@ -10,6 +10,9 @@ export const metadata: Metadata = {
     "View my professional experience, education, and technical skills as a Fullstack Developer",
 };
 
+// Enable ISR with 5 minute revalidation for better performance
+export const revalidate = 300; // 5 minutes
+
 async function getEducation() {
   try {
     const education = await db.education.findMany({
