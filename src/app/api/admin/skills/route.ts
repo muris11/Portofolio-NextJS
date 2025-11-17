@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import { revalidatePath } from "next/cache";
 
 export async function GET() {
   try {
@@ -38,6 +39,9 @@ export async function POST(request: NextRequest) {
       },
     });
 
+    // Revalidate the homepage to reflect skill changes immediately
+    revalidatePath("/");
+
     return NextResponse.json(skill, { status: 201 });
   } catch (error) {
     console.error("Error creating skill:", error);
@@ -70,6 +74,9 @@ export async function PUT(request: NextRequest) {
       },
     });
 
+    // Revalidate the homepage to reflect skill changes immediately
+    revalidatePath("/");
+
     return NextResponse.json(skill);
   } catch (error) {
     console.error("Error updating skill:", error);
@@ -95,6 +102,9 @@ export async function DELETE(request: NextRequest) {
     await db.skill.delete({
       where: { id },
     });
+
+    // Revalidate the homepage to reflect skill changes immediately
+    revalidatePath("/");
 
     return NextResponse.json({ message: "Skill deleted successfully" });
   } catch (error) {

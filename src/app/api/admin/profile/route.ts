@@ -2,6 +2,7 @@ import { db } from "@/lib/db";
 import { mkdir, writeFile } from "fs/promises";
 import { NextRequest, NextResponse } from "next/server";
 import { join } from "path";
+import { revalidatePath } from "next/cache";
 
 interface ProfileData {
   fullName?: string;
@@ -201,6 +202,10 @@ export async function PUT(request: NextRequest) {
         instagramUrl: instagramUrl || null,
       },
     });
+
+    // Revalidate the homepage and profile page to reflect changes immediately
+    revalidatePath("/");
+    revalidatePath("/profile");
 
     return NextResponse.json(profile);
   } catch (error) {
