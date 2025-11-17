@@ -1,5 +1,6 @@
 import { db } from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 
 export async function GET() {
   try {
@@ -31,6 +32,9 @@ export async function DELETE(request: NextRequest) {
     await db.contactMessage.delete({
       where: { id },
     });
+
+    // Revalidate the admin messages page to reflect changes
+    revalidatePath("/admin");
 
     return NextResponse.json({ message: "Message deleted successfully" });
   } catch (error) {

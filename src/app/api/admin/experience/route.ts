@@ -1,5 +1,6 @@
 import { db } from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 
 export async function GET() {
   try {
@@ -39,6 +40,10 @@ export async function POST(request: NextRequest) {
       },
     });
 
+    // Revalidate the homepage and resume page to reflect experience changes
+    revalidatePath("/");
+    revalidatePath("/resume");
+
     return NextResponse.json(experience, { status: 201 });
   } catch (error) {
     console.error("Error creating experience:", error);
@@ -72,6 +77,10 @@ export async function PUT(request: NextRequest) {
       },
     });
 
+    // Revalidate the homepage and resume page to reflect experience changes
+    revalidatePath("/");
+    revalidatePath("/resume");
+
     return NextResponse.json(experience);
   } catch (error) {
     console.error("Error updating experience:", error);
@@ -97,6 +106,10 @@ export async function DELETE(request: NextRequest) {
     await db.experience.delete({
       where: { id },
     });
+
+    // Revalidate the homepage and resume page to reflect experience changes
+    revalidatePath("/");
+    revalidatePath("/resume");
 
     return NextResponse.json({ message: "Experience deleted successfully" });
   } catch (error) {

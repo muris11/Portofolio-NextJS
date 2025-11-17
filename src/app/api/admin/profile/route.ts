@@ -1,8 +1,8 @@
 import { db } from "@/lib/db";
 import { mkdir, writeFile } from "fs/promises";
+import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 import { join } from "path";
-import { revalidatePath } from "next/cache";
 
 interface ProfileData {
   fullName?: string;
