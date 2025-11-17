@@ -5,8 +5,12 @@ export async function GET() {
     // Test environment variables
     const envStatus = {
       DATABASE_URL: process.env.DATABASE_URL ? "✅ Set" : "❌ Missing",
-      PRISMA_DATABASE_URL: process.env.PRISMA_DATABASE_URL ? "✅ Set" : "❌ Missing",
-      ADMIN_SESSION_TOKEN: process.env.ADMIN_SESSION_TOKEN ? "✅ Set" : "❌ Missing",
+      PRISMA_DATABASE_URL: process.env.PRISMA_DATABASE_URL
+        ? "✅ Set"
+        : "❌ Missing",
+      ADMIN_SESSION_TOKEN: process.env.ADMIN_SESSION_TOKEN
+        ? "✅ Set"
+        : "❌ Missing",
       NODE_ENV: process.env.NODE_ENV || "development",
     };
 
@@ -19,7 +23,8 @@ export async function GET() {
       dbStatus = `✅ Connected (${adminCount} admin users)`;
       await db.$disconnect();
     } catch (dbError: unknown) {
-      const errorMessage = dbError instanceof Error ? dbError.message : 'Unknown error';
+      const errorMessage =
+        dbError instanceof Error ? dbError.message : "Unknown error";
       dbStatus = `❌ Connection failed: ${errorMessage}`;
     }
 
@@ -30,7 +35,8 @@ export async function GET() {
       database: dbStatus,
     });
   } catch (error: unknown) {
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    const errorMessage =
+      error instanceof Error ? error.message : "Unknown error";
     return NextResponse.json(
       {
         status: "Error",
