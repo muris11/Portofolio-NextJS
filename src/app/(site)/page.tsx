@@ -172,7 +172,7 @@ export default async function Home() {
               </div>
 
               {/* CTA Buttons */}
-              <div className="lg:col-span-7 space-y-10 order-2 lg:order-1">
+              <div className="lg:col-span-7 space-y-12 lg:space-y-16 order-2 lg:order-1">
                 <Link
                   href="/contact"
                   className="group relative inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-2xl hover:from-blue-500 hover:to-cyan-500 transition-all duration-500 font-semibold text-base shadow-2xl shadow-blue-600/30 hover:shadow-blue-500/40 hover:scale-[1.02] transform-gpu overflow-hidden"

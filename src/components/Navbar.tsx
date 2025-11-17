@@ -16,7 +16,7 @@ export default function Navbar() {
     { name: "Contact", href: "/contact" },
   ];
 
-  // Dynamically generate social links from profile data
+  // Dynamically generate social links from profile data or fallback
   const socialLinks = [
     profile?.githubUrl
       ? {
@@ -40,6 +40,29 @@ export default function Navbar() {
         }
       : null,
   ].filter((link): link is NonNullable<typeof link> => link !== null);
+
+  // Fallback social links if profile data is not available
+  const fallbackSocialLinks = [
+    {
+      icon: Github,
+      href: "https://github.com/muris11",
+      label: "GitHub",
+    },
+    {
+      icon: Linkedin,
+      href: "https://www.linkedin.com/in/rifqy-saputra-022236261/",
+      label: "LinkedIn",
+    },
+    {
+      icon: Instagram,
+      href: "https://instagram.com/rfqy_sptr",
+      label: "Instagram",
+    },
+  ];
+
+  // Use profile social links if available, otherwise use fallback
+  const displaySocialLinks =
+    socialLinks.length > 0 ? socialLinks : fallbackSocialLinks;
 
   return (
     <>
@@ -155,7 +178,7 @@ export default function Navbar() {
                   Connect With Me
                 </p>
                 <div className="flex space-x-4">
-                  {socialLinks.map((social) => {
+                  {displaySocialLinks.map((social) => {
                     const Icon = social.icon;
                     return (
                       <a
