@@ -8,7 +8,10 @@ export default function middleware(request: NextRequest) {
     // Check if user has admin session cookie
     const sessionCookie = request.cookies.get("admin_session");
 
-    if (!sessionCookie || sessionCookie.value !== process.env.ADMIN_SESSION_TOKEN) {
+    if (
+      !sessionCookie ||
+      sessionCookie.value !== process.env.ADMIN_SESSION_TOKEN
+    ) {
       console.log("No valid session, redirecting to login");
       return NextResponse.redirect(new URL("/login", request.url));
     }
