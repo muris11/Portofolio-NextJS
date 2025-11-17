@@ -74,14 +74,18 @@ export async function POST(request: NextRequest) {
         if (process.env.BLOB_READ_WRITE_TOKEN) {
           // Production: Use Vercel Blob
           const fileExtension = imageFile.name.split(".").pop();
-          const blob = await put(`project-${Date.now()}.${fileExtension}`, imageFile, {
-            access: 'public',
-          });
+          const blob = await put(
+            `project-${Date.now()}.${fileExtension}`,
+            imageFile,
+            {
+              access: "public",
+            }
+          );
           uploadedUrl = blob.url;
         } else {
           // Development: Use local storage (fallback)
-          const fs = await import('fs/promises');
-          const path = await import('path');
+          const fs = await import("fs/promises");
+          const path = await import("path");
 
           const uploadsDir = path.join(process.cwd(), "public", "uploads");
           try {
@@ -205,18 +209,23 @@ export async function POST(request: NextRequest) {
 
 export async function PUT(request: NextRequest) {
   try {
+    console.log("PUT /api/admin/projects - Starting update");
     const contentType = request.headers.get("content-type") || "";
+    console.log("Content-Type:", contentType);
 
     let body: ProjectData;
     let imageUrl: string | null = null;
 
     if (contentType.includes("multipart/form-data")) {
+      console.log("Handling multipart/form-data");
       // Handle file upload
       const formData = await request.formData();
       const imageFile = formData.get("imageFile") as File | null;
+      console.log("Image file present:", !!imageFile);
 
       // Handle file upload if present
       if (imageFile && imageFile.size > 0) {
+        console.log("Processing image upload, size:", imageFile.size);
         // Validate file type
         const allowedTypes = [
           "image/jpeg",
@@ -225,6 +234,7 @@ export async function PUT(request: NextRequest) {
           "image/webp",
         ];
         if (!allowedTypes.includes(imageFile.type)) {
+          console.log("Invalid file type:", imageFile.type);
           return NextResponse.json(
             {
               error:
@@ -236,6 +246,7 @@ export async function PUT(request: NextRequest) {
 
         // Validate file size (5MB max)
         if (imageFile.size > 5 * 1024 * 1024) {
+          console.log("File too large:", imageFile.size);
           return NextResponse.json(
             { error: "File size too large. Maximum 5MB allowed." },
             { status: 400 }
@@ -246,16 +257,31 @@ export async function PUT(request: NextRequest) {
         let uploadedUrl: string;
 
         if (process.env.BLOB_READ_WRITE_TOKEN) {
-          // Production: Use Vercel Blob
-          const fileExtension = imageFile.name.split(".").pop();
-          const blob = await put(`project-${Date.now()}.${fileExtension}`, imageFile, {
-            access: 'public',
-          });
-          uploadedUrl = blob.url;
+          console.log("Using Vercel Blob for upload");
+          try {
+            // Production: Use Vercel Blob
+            const fileExtension = imageFile.name.split(".").pop();
+            const blob = await put(
+              `project-${Date.now()}.${fileExtension}`,
+              imageFile,
+              {
+                access: "public",
+              }
+            );
+            uploadedUrl = blob.url;
+            console.log("Blob upload successful:", uploadedUrl);
+          } catch (blobError) {
+            console.error("Blob upload failed:", blobError);
+            return NextResponse.json(
+              { error: "Failed to upload image to storage" },
+              { status: 500 }
+            );
+          }
         } else {
+          console.log("Using local storage for upload (development)");
           // Development: Use local storage (fallback)
-          const fs = await import('fs/promises');
-          const path = await import('path');
+          const fs = await import("fs/promises");
+          const path = await import("path");
 
           const uploadsDir = path.join(process.cwd(), "public", "uploads");
           try {
@@ -273,6 +299,7 @@ export async function PUT(request: NextRequest) {
           await fs.writeFile(filePath, buffer);
 
           uploadedUrl = `/uploads/${fileName}`;
+          console.log("Local upload successful:", uploadedUrl);
         }
 
         imageUrl = uploadedUrl;
@@ -287,16 +314,24 @@ export async function PUT(request: NextRequest) {
         githubUrl: formData.get("githubUrl") as string,
         featured: formData.get("featured") === "true",
       };
+      console.log("Form data parsed:", {
+        id: body.id,
+        title: body.title,
+        hasImage: !!imageUrl,
+      });
     } else {
       // Handle JSON data (backward compatibility)
+      console.log("Handling JSON data");
       body = await request.json();
       imageUrl = body.imageUrl || null;
     }
 
     const { id, title, description, techStack, liveUrl, githubUrl, featured } =
       body;
+    console.log("Destructured body:", { id, title, hasImage: !!imageUrl });
 
     if (!id) {
+      console.log("Missing project ID");
       return NextResponse.json(
         { error: "Project ID is required" },
         { status: 400 }
@@ -371,11 +406,13 @@ export async function PUT(request: NextRequest) {
         updatedAt: new Date(),
       },
     });
+    console.log("Database update successful for project:", id);
 
     // Revalidate the homepage, projects page, and admin page to reflect changes immediately
     revalidatePath("/");
     revalidatePath("/projects");
     revalidatePath("/admin");
+    console.log("Cache revalidation completed");
 
     return NextResponse.json(project);
   } catch (error) {
