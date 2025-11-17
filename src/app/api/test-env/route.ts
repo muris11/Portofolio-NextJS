@@ -18,8 +18,9 @@ export async function GET() {
       const adminCount = await db.admin.count();
       dbStatus = `✅ Connected (${adminCount} admin users)`;
       await db.$disconnect();
-    } catch (dbError) {
-      dbStatus = `❌ Connection failed: ${dbError.message}`;
+    } catch (dbError: unknown) {
+      const errorMessage = dbError instanceof Error ? dbError.message : 'Unknown error';
+      dbStatus = `❌ Connection failed: ${errorMessage}`;
     }
 
     return NextResponse.json({
@@ -28,11 +29,12 @@ export async function GET() {
       environment: envStatus,
       database: dbStatus,
     });
-  } catch (error) {
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     return NextResponse.json(
       {
         status: "Error",
-        error: error.message,
+        error: errorMessage,
       },
       { status: 500 }
     );
