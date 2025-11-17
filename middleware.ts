@@ -2,9 +2,11 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
 export default function middleware(request: NextRequest) {
-  console.log("MIDDLEWARE IS RUNNING!", request.nextUrl.pathname);
+  const url = request.nextUrl;
+  console.log("MIDDLEWARE IS RUNNING!", url.pathname);
 
-  if (request.nextUrl.pathname === "/admin") {
+  // Handle admin access
+  if (url.pathname === "/admin") {
     // Check if user has admin session cookie
     const sessionCookie = request.cookies.get("admin_session");
 
@@ -17,10 +19,22 @@ export default function middleware(request: NextRequest) {
     }
 
     console.log("Valid session found, allowing access to admin");
-    // User has valid session, allow access to admin
   }
 
-  return NextResponse.next();
+  // Add security headers
+  const response = NextResponse.next();
+
+  // Add security headers for admin routes
+  if (
+    url.pathname.startsWith("/admin") ||
+    url.pathname.startsWith("/api/admin")
+  ) {
+    response.headers.set("X-Frame-Options", "DENY");
+    response.headers.set("X-Content-Type-Options", "nosniff");
+    response.headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
+  }
+
+  return response;
 }
 
 export const config = {

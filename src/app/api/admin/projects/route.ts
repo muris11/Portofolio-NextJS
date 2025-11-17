@@ -1,8 +1,7 @@
 import { db } from "@/lib/db";
-import { mkdir, writeFile } from "fs/promises";
+import { put } from "@vercel/blob";
 import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
-import { join } from "path";
 
 interface ProjectData {
   id?: string;
@@ -69,25 +68,40 @@ export async function POST(request: NextRequest) {
           );
         }
 
-        // Create uploads directory if it doesn't exist
-        const uploadsDir = join(process.cwd(), "public", "uploads");
-        try {
-          await mkdir(uploadsDir, { recursive: true });
-        } catch {
-          // Directory might already exist, continue
+        // Upload to Vercel Blob (production) or local storage (development)
+        let uploadedUrl: string;
+
+        if (process.env.BLOB_READ_WRITE_TOKEN) {
+          // Production: Use Vercel Blob
+          const fileExtension = imageFile.name.split(".").pop();
+          const blob = await put(`project-${Date.now()}.${fileExtension}`, imageFile, {
+            access: 'public',
+          });
+          uploadedUrl = blob.url;
+        } else {
+          // Development: Use local storage (fallback)
+          const fs = await import('fs/promises');
+          const path = await import('path');
+
+          const uploadsDir = path.join(process.cwd(), "public", "uploads");
+          try {
+            await fs.mkdir(uploadsDir, { recursive: true });
+          } catch {
+            // Directory might already exist, continue
+          }
+
+          const fileExtension = imageFile.name.split(".").pop();
+          const fileName = `project-${Date.now()}.${fileExtension}`;
+          const filePath = path.join(uploadsDir, fileName);
+
+          const bytes = await imageFile.arrayBuffer();
+          const buffer = Buffer.from(bytes);
+          await fs.writeFile(filePath, buffer);
+
+          uploadedUrl = `/uploads/${fileName}`;
         }
 
-        // Generate unique filename
-        const fileExtension = imageFile.name.split(".").pop();
-        const fileName = `project-${Date.now()}.${fileExtension}`;
-        const filePath = join(uploadsDir, fileName);
-
-        // Convert file to buffer and save
-        const bytes = await imageFile.arrayBuffer();
-        const buffer = Buffer.from(bytes);
-        await writeFile(filePath, buffer);
-
-        imageUrl = `/uploads/${fileName}`;
+        imageUrl = uploadedUrl;
       }
 
       body = {
@@ -228,25 +242,40 @@ export async function PUT(request: NextRequest) {
           );
         }
 
-        // Create uploads directory if it doesn't exist
-        const uploadsDir = join(process.cwd(), "public", "uploads");
-        try {
-          await mkdir(uploadsDir, { recursive: true });
-        } catch {
-          // Directory might already exist, continue
+        // Upload to Vercel Blob (production) or local storage (development)
+        let uploadedUrl: string;
+
+        if (process.env.BLOB_READ_WRITE_TOKEN) {
+          // Production: Use Vercel Blob
+          const fileExtension = imageFile.name.split(".").pop();
+          const blob = await put(`project-${Date.now()}.${fileExtension}`, imageFile, {
+            access: 'public',
+          });
+          uploadedUrl = blob.url;
+        } else {
+          // Development: Use local storage (fallback)
+          const fs = await import('fs/promises');
+          const path = await import('path');
+
+          const uploadsDir = path.join(process.cwd(), "public", "uploads");
+          try {
+            await fs.mkdir(uploadsDir, { recursive: true });
+          } catch {
+            // Directory might already exist, continue
+          }
+
+          const fileExtension = imageFile.name.split(".").pop();
+          const fileName = `project-${Date.now()}.${fileExtension}`;
+          const filePath = path.join(uploadsDir, fileName);
+
+          const bytes = await imageFile.arrayBuffer();
+          const buffer = Buffer.from(bytes);
+          await fs.writeFile(filePath, buffer);
+
+          uploadedUrl = `/uploads/${fileName}`;
         }
 
-        // Generate unique filename
-        const fileExtension = imageFile.name.split(".").pop();
-        const fileName = `project-${Date.now()}.${fileExtension}`;
-        const filePath = join(uploadsDir, fileName);
-
-        // Convert file to buffer and save
-        const bytes = await imageFile.arrayBuffer();
-        const buffer = Buffer.from(bytes);
-        await writeFile(filePath, buffer);
-
-        imageUrl = `/uploads/${fileName}`;
+        imageUrl = uploadedUrl;
       }
 
       body = {

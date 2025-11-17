@@ -100,10 +100,7 @@ export default async function Footer() {
             <ul className="space-y-3">
               {navigationLinks.map((link) => (
                 <li key={link.name}>
-                  <Link
-                    href={link.href}
-                    className="text-gray-400 text-sm"
-                  >
+                  <Link href={link.href} className="text-gray-400 text-sm">
                     {link.name}
                   </Link>
                 </li>
