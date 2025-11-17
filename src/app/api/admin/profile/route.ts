@@ -1,8 +1,7 @@
 import { db } from "@/lib/db";
-import { mkdir, writeFile } from "fs/promises";
+import { put } from "@vercel/blob";
 import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
-import { join } from "path";
 
 interface ProfileData {
   fullName?: string;
@@ -53,87 +52,50 @@ export async function PUT(request: NextRequest) {
         ];
         if (!allowedTypes.includes(profileImage.type)) {
           return NextResponse.json(
-            {
-              error:
-                "Invalid file type. Only JPG, PNG, GIF, and WebP are allowed.",
-            },
+            { error: "Invalid image file type. Only JPEG, PNG, GIF, and WebP are allowed." },
             { status: 400 }
           );
         }
 
-        // Validate file size (5MB max)
-        if (profileImage.size > 2 * 1024 * 1024) {
+        // Validate file size (max 5MB)
+        if (profileImage.size > 5 * 1024 * 1024) {
           return NextResponse.json(
-            { error: "File size too large. Maximum 2MB allowed." },
+            { error: "File size too large. Maximum size is 5MB." },
             { status: 400 }
           );
         }
 
-        // Additional security: check file extension matches MIME type
-        const profileFileExtension = profileImage.name
-          .split(".")
-          .pop()
-          ?.toLowerCase();
-        const allowedExtensions = ["jpg", "jpeg", "png", "gif", "webp"];
-        if (
-          !profileFileExtension ||
-          !allowedExtensions.includes(profileFileExtension)
-        ) {
-          return NextResponse.json(
-            { error: "Invalid file extension" },
-            { status: 400 }
-          );
+        // Upload to Vercel Blob (production) or local storage (development)
+        let uploadedUrl: string;
+        
+        if (process.env.BLOB_READ_WRITE_TOKEN) {
+          // Production: Use Vercel Blob
+          const blob = await put(`profile-${Date.now()}.${profileImage.name.split('.').pop()}`, profileImage, {
+            access: 'public',
+          });
+          uploadedUrl = blob.url;
+        } else {
+          // Development: Use local storage (fallback)
+          const fs = await import('fs/promises');
+          const path = await import('path');
+          
+          const uploadsDir = path.join(process.cwd(), "public", "uploads");
+          try {
+            await fs.mkdir(uploadsDir, { recursive: true });
+          } catch {
+            // Directory might already exist, continue
+          }
+
+          const fileName = `profile-${Date.now()}.${profileImage.name.split('.').pop()}`;
+          const filePath = path.join(uploadsDir, fileName);
+          
+          const buffer = Buffer.from(await profileImage.arrayBuffer());
+          await fs.writeFile(filePath, buffer);
+          
+          uploadedUrl = `/uploads/${fileName}`;
         }
 
-        // Check for malicious file signatures (basic check)
-        const profileBytes = await profileImage.arrayBuffer();
-        const profileBuffer = Buffer.from(profileBytes);
-        const magicBytes = profileBuffer.subarray(0, 4);
-
-        // JPEG: FF D8 FF
-        // PNG: 89 50 4E 47
-        // GIF: 47 49 46 38
-        // WebP: 52 49 46 46
-        const isValidImage =
-          (magicBytes[0] === 0xff &&
-            magicBytes[1] === 0xd8 &&
-            magicBytes[2] === 0xff) || // JPEG
-          (magicBytes[0] === 0x89 &&
-            magicBytes[1] === 0x50 &&
-            magicBytes[2] === 0x4e &&
-            magicBytes[3] === 0x47) || // PNG
-          (magicBytes[0] === 0x47 &&
-            magicBytes[1] === 0x49 &&
-            magicBytes[2] === 0x46 &&
-            magicBytes[3] === 0x38) || // GIF
-          (magicBytes[0] === 0x52 &&
-            magicBytes[1] === 0x49 &&
-            magicBytes[2] === 0x46 &&
-            magicBytes[3] === 0x46); // WebP
-
-        if (!isValidImage) {
-          return NextResponse.json(
-            { error: "Invalid image file" },
-            { status: 400 }
-          );
-        }
-
-        // Create uploads directory if it doesn't exist
-        const uploadsDir = join(process.cwd(), "public", "uploads");
-        try {
-          await mkdir(uploadsDir, { recursive: true });
-        } catch {
-          // Directory might already exist, continue
-        }
-
-        // Generate unique filename
-        const fileName = `profile-${Date.now()}.${profileFileExtension}`;
-        const filePath = join(uploadsDir, fileName);
-
-        // Convert file to buffer and save
-        await writeFile(filePath, profileBuffer);
-
-        profileImageUrl = `/uploads/${fileName}`;
+        profileImageUrl = uploadedUrl;
       }
 
       body = {

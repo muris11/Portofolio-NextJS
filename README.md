@@ -11,7 +11,7 @@ A modern, responsive portfolio website built with Next.js 15, TypeScript, Tailwi
 - **SEO Optimized**: Meta tags, Open Graph, and structured data
 - **Database**: PostgreSQL with Prisma ORM
 - **Authentication**: Session-based admin authentication
-- **File Uploads**: Image upload functionality for projects and profile
+- **File Uploads**: Image upload functionality for projects and profile (using Vercel Blob Storage)
 
 ## 🛠️ Tech Stack
 
@@ -152,8 +152,16 @@ npm run lint             # Run ESLint
 ### Vercel (Recommended)
 
 1. Connect your GitHub repository to Vercel
-2. Add environment variables in Vercel dashboard
-3. Deploy automatically on push
+2. **Enable Vercel Blob Storage**:
+   - Go to your Vercel project dashboard
+   - Navigate to Storage → Blob
+   - Click "Create Database" and follow the setup
+   - Copy the `BLOB_READ_WRITE_TOKEN` from the connection details
+3. Add environment variables in Vercel dashboard:
+   - `DATABASE_URL` (from Vercel Postgres)
+   - `ADMIN_SESSION_TOKEN` (generate a secure random string)
+   - `BLOB_READ_WRITE_TOKEN` (from Vercel Blob setup)
+4. Deploy automatically on push
 
 ### Manual Deployment
 

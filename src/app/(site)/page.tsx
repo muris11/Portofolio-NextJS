@@ -90,6 +90,9 @@ export const metadata: Metadata = {
 // Note: Profile data is now dynamic to ensure updates are reflected immediately
 // export const revalidate = 300; // 5 minutes
 
+// Force dynamic rendering to ensure fresh data on every request
+export const dynamic = 'force-dynamic';
+
 export default async function Home() {
   const profile = await getProfile();
   const featuredProjects = await getFeaturedProjects();
@@ -104,23 +107,21 @@ export default async function Home() {
 
         {/* Animated mesh gradient */}
         <div className="absolute inset-0 opacity-30">
-          <div className="absolute top-0 -left-4 w-96 h-96 bg-blue-600 rounded-full mix-blend-multiply filter blur-3xl animate-float"></div>
-          <div className="absolute top-0 -right-4 w-96 h-96 bg-cyan-600 rounded-full mix-blend-multiply filter blur-3xl animate-float animation-delay-2000"></div>
-          <div className="absolute -bottom-8 left-20 w-96 h-96 bg-indigo-600 rounded-full mix-blend-multiply filter blur-3xl animate-float animation-delay-4000"></div>
-          <div className="absolute bottom-20 right-20 w-96 h-96 bg-sky-600 rounded-full mix-blend-multiply filter blur-3xl animate-float animation-delay-6000"></div>
+          <div className="absolute top-0 -left-4 w-96 h-96 bg-blue-600 rounded-full mix-blend-multiply filter blur-3xl"></div>
+          <div className="absolute top-0 -right-4 w-96 h-96 bg-cyan-600 rounded-full mix-blend-multiply filter blur-3xl"></div>
+          <div className="absolute -bottom-8 left-20 w-96 h-96 bg-indigo-600 rounded-full mix-blend-multiply filter blur-3xl"></div>
+          <div className="absolute bottom-20 right-20 w-96 h-96 bg-sky-600 rounded-full mix-blend-multiply filter blur-3xl"></div>
         </div>
 
         {/* Floating particles */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          {[...Array(40)].map((_, i) => (
+          {[...Array(20)].map((_, i) => (
             <div
               key={i}
-              className="absolute w-1 h-1 bg-blue-400/20 rounded-full animate-float"
+              className="absolute w-1 h-1 bg-blue-400/20 rounded-full"
               style={{
                 left: `${Math.random() * 100}%`,
                 top: `${Math.random() * 100}%`,
-                animationDelay: `${Math.random() * 15}s`,
-                animationDuration: `${15 + Math.random() * 15}s`,
               }}
             ></div>
           ))}
@@ -140,10 +141,10 @@ export default async function Home() {
           <div className="absolute bottom-20 right-1/3 text-sky-500/30 font-mono text-xl select-none">
             {"[ ]"}
           </div>
-          <div className="absolute top-1/3 left-1/3 text-blue-500/20 font-mono text-sm animate-pulse select-none">
+          <div className="absolute top-1/3 left-1/3 text-blue-500/20 font-mono text-sm select-none">
             {"=>"}
           </div>
-          <div className="absolute bottom-1/3 right-1/4 text-cyan-500/20 font-mono text-base animate-bounce select-none">
+          <div className="absolute bottom-1/3 right-1/4 text-cyan-500/20 font-mono text-base select-none">
             {"&&"}
           </div>
         </div>
@@ -167,10 +168,10 @@ export default async function Home() {
                 {/* Main Heading */}
                 <div className="space-y-4 mt-6">
                   <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold leading-[1.1] tracking-tight">
-                    <span className="block bg-gradient-to-r from-white via-blue-100 to-cyan-100 bg-clip-text text-transparent animate-slide-in-left drop-shadow-2xl">
+                    <span className="block bg-gradient-to-r from-white via-blue-100 to-cyan-100 bg-clip-text text-transparent drop-shadow-2xl">
                       {profile?.fullName || "Rifqy Saputra"}
                     </span>
-                    <span className="block bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-300 bg-clip-text text-transparent animate-slide-in-right animation-delay-300 text-xl sm:text-2xl lg:text-3xl xl:text-4xl mt-3 font-semibold">
+                    <span className="block bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-300 bg-clip-text text-transparent text-xl sm:text-2xl lg:text-3xl xl:text-4xl mt-3 font-semibold">
                       {profile?.title ||
                         "Fullstack Developer, Mobile and System Analyst"}
                     </span>
@@ -178,7 +179,7 @@ export default async function Home() {
                 </div>
 
                 {/* Description */}
-                <p className="text-base sm:text-lg lg:text-xl text-gray-300 leading-relaxed max-w-2xl animate-fade-in-up animation-delay-500 font-light">
+                <p className="text-base sm:text-lg lg:text-xl text-gray-300 leading-relaxed max-w-2xl font-light">
                   {profile?.bio ||
                     "A skilled fullstack developer specializing in modern web technologies."}
                 </p>
@@ -210,7 +211,7 @@ export default async function Home() {
               </div>
 
               {/* Social Links */}
-              <div className="flex gap-4 pt-4 animate-fade-in-up animation-delay-900">
+              <div className="flex gap-4 pt-4">
                 {profile?.githubUrl && (
                   <Link
                     href={profile.githubUrl}
@@ -264,9 +265,9 @@ export default async function Home() {
             <div className="lg:col-span-5 order-1 lg:order-2">
               <div className="relative flex justify-center lg:justify-end">
                 {/* Glow effect */}
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-cyan-600 rounded-3xl blur-3xl opacity-30 animate-pulse"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-cyan-600 rounded-3xl blur-3xl opacity-30"></div>
 
-                <div className="relative w-80 h-80 sm:w-96 sm:h-96 lg:w-[30rem] lg:h-[30rem] animate-scale-in animation-delay-300">
+                <div className="relative w-80 h-80 sm:w-96 sm:h-96 lg:w-[30rem] lg:h-[30rem]">
                   {profile?.profileImage ? (
                     <div className="relative w-full h-full group">
                       <div className="absolute inset-0 bg-gradient-to-br from-blue-600/20 to-cyan-600/20 rounded-3xl blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
@@ -286,21 +287,15 @@ export default async function Home() {
                       </span>
                     </div>
                   )}
-
-                  {/* Floating elements */}
-                  <div className="absolute -top-8 -right-8 w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-full animate-float shadow-2xl shadow-blue-500/50"></div>
-                  <div className="absolute -bottom-8 -left-8 w-12 h-12 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-full animate-float animation-delay-2000 shadow-2xl shadow-cyan-500/50"></div>
-                  <div className="absolute top-1/2 -right-10 w-8 h-8 bg-gradient-to-br from-indigo-500 to-blue-500 rounded-full animate-ping shadow-xl shadow-indigo-500/50"></div>
-                  <div className="absolute top-1/4 -left-10 w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-full animate-pulse shadow-xl shadow-blue-500/50"></div>
                 </div>
               </div>
             </div>
           </div>
 
           {/* Scroll Indicator */}
-          <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce hidden lg:block">
+          <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 hidden lg:block">
             <div className="w-6 h-10 border-2 border-white/40 rounded-full flex justify-center p-2">
-              <div className="w-1.5 h-3 bg-white/60 rounded-full animate-pulse"></div>
+              <div className="w-1.5 h-3 bg-white/60 rounded-full"></div>
             </div>
           </div>
         </div>
@@ -333,10 +328,10 @@ export default async function Home() {
                 </span>
               </div>
 
-              <h2 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold bg-gradient-to-r from-white via-blue-100 to-cyan-100 bg-clip-text text-transparent mb-8 animate-slide-in-left tracking-tight">
+              <h2 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold bg-gradient-to-r from-white via-blue-100 to-cyan-100 bg-clip-text text-transparent mb-8 tracking-tight">
                 Skills & Technologies
               </h2>
-              <p className="text-lg sm:text-xl lg:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed animate-slide-in-right animation-delay-300 font-light">
+              <p className="text-lg sm:text-xl lg:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed font-light">
                 Mastering modern technologies and frameworks to deliver
                 exceptional digital solutions
               </p>
@@ -345,14 +340,8 @@ export default async function Home() {
             {/* Skills Grid */}
             <div className="relative">
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 lg:gap-8">
-                {skills.map((skill, index) => (
-                  <div
-                    key={skill.id}
-                    className="group relative animate-scale-in"
-                    style={{
-                      animationDelay: `${index * 100 + 800}ms`,
-                    }}
-                  >
+                {skills.map((skill) => (
+                  <div key={skill.id} className="group relative">
                     <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-cyan-600/20 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
 
                     <div className="relative bg-white/5 hover:bg-white/10 rounded-3xl p-6 lg:p-8 border border-white/10 hover:border-white/30 transition-all duration-500 hover:scale-105 transform-gpu backdrop-blur-sm group-hover:shadow-2xl group-hover:shadow-blue-500/10">
@@ -375,7 +364,7 @@ export default async function Home() {
             </div>
 
             {/* CTA */}
-            <div className="text-center mt-16 lg:mt-20 animate-fade-in-up animation-delay-1500">
+            <div className="text-center mt-16 lg:mt-20">
               <Link
                 href="/resume"
                 className="group relative inline-flex items-center justify-center px-10 py-5 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-2xl hover:from-blue-500 hover:to-cyan-500 transition-all duration-500 font-semibold text-lg shadow-2xl shadow-blue-600/30 hover:shadow-blue-500/40 hover:scale-105 transform-gpu overflow-hidden"
@@ -401,9 +390,8 @@ export default async function Home() {
           <div className="max-w-7xl mx-auto relative z-10">
             {/* Section Header */}
             <div className="text-center mb-20 lg:mb-24">
-              <div className="inline-flex items-center px-6 py-3 rounded-full bg-gradient-to-r from-blue-600/10 to-cyan-600/10 border border-blue-500/30 backdrop-blur-sm mb-8 animate-scale-in shadow-lg shadow-blue-500/10">
+              <div className="inline-flex items-center px-6 py-3 rounded-full bg-gradient-to-r from-blue-600/10 to-cyan-600/10 border border-blue-500/30 backdrop-blur-sm mb-8 shadow-lg shadow-blue-500/10">
                 <span className="relative flex h-3 w-3 mr-3">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-3 w-3 bg-gradient-to-r from-blue-400 to-cyan-400"></span>
                 </span>
                 <span className="text-sm font-semibold text-white tracking-wide">
@@ -411,22 +399,18 @@ export default async function Home() {
                 </span>
               </div>
 
-              <h2 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold bg-gradient-to-r from-white via-blue-100 to-cyan-100 bg-clip-text text-transparent mb-8 animate-slide-in-left tracking-tight">
+              <h2 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold bg-gradient-to-r from-white via-blue-100 to-cyan-100 bg-clip-text text-transparent mb-8 tracking-tight">
                 Project Showcase
               </h2>
-              <p className="text-lg sm:text-xl lg:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed animate-slide-in-right animation-delay-300 font-light">
+              <p className="text-lg sm:text-xl lg:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed font-light">
                 Innovative solutions crafted with cutting-edge technology
               </p>
             </div>
 
             {/* Projects - 2 Column Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
-              {featuredProjects.map((project, index) => (
-                <div
-                  key={project.id}
-                  className="group animate-fade-in-up"
-                  style={{ animationDelay: `${index * 200 + 500}ms` }}
-                >
+              {featuredProjects.map((project) => (
+                <div key={project.id} className="group">
                   <div className="relative bg-white/5 hover:bg-white/10 rounded-3xl overflow-hidden border border-white/10 hover:border-white/30 transition-all duration-700 hover:scale-[1.02] transform-gpu backdrop-blur-sm group-hover:shadow-2xl group-hover:shadow-blue-500/20">
                     {/* Project Image */}
                     <div className="relative h-48 sm:h-56 lg:h-64 bg-gradient-to-br from-slate-800 to-slate-900 overflow-hidden">
@@ -558,7 +542,7 @@ export default async function Home() {
             </div>
 
             {/* View All CTA */}
-            <div className="text-center mt-20 lg:mt-24 animate-fade-in-up animation-delay-1000">
+            <div className="text-center mt-20 lg:mt-24">
               <Link
                 href="/projects"
                 className="group relative inline-flex items-center justify-center px-10 py-5 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-2xl hover:from-blue-500 hover:to-cyan-500 transition-all duration-500 font-semibold text-lg shadow-2xl shadow-blue-600/30 hover:shadow-blue-500/40 hover:scale-105 transform-gpu overflow-hidden"
@@ -584,10 +568,10 @@ export default async function Home() {
 
           {/* Animated mesh gradient */}
           <div className="absolute inset-0 opacity-30">
-            <div className="absolute top-0 -left-4 w-96 h-96 bg-blue-600 rounded-full mix-blend-multiply filter blur-3xl animate-float"></div>
-            <div className="absolute top-0 -right-4 w-96 h-96 bg-cyan-600 rounded-full mix-blend-multiply filter blur-3xl animate-float animation-delay-2000"></div>
-            <div className="absolute -bottom-8 left-20 w-96 h-96 bg-indigo-600 rounded-full mix-blend-multiply filter blur-3xl animate-float animation-delay-4000"></div>
-            <div className="absolute bottom-20 right-20 w-96 h-96 bg-sky-600 rounded-full mix-blend-multiply filter blur-3xl animate-float animation-delay-6000"></div>
+            <div className="absolute top-0 -left-4 w-96 h-96 bg-blue-600 rounded-full mix-blend-multiply filter blur-3xl"></div>
+            <div className="absolute top-0 -right-4 w-96 h-96 bg-cyan-600 rounded-full mix-blend-multiply filter blur-3xl"></div>
+            <div className="absolute -bottom-8 left-20 w-96 h-96 bg-indigo-600 rounded-full mix-blend-multiply filter blur-3xl"></div>
+            <div className="absolute bottom-20 right-20 w-96 h-96 bg-sky-600 rounded-full mix-blend-multiply filter blur-3xl"></div>
           </div>
 
           {/* Floating particles */}
@@ -640,9 +624,8 @@ export default async function Home() {
         <div className="max-w-7xl mx-auto relative z-10">
           {/* Section Header */}
           <div className="text-center mb-20 lg:mb-24">
-            <div className="inline-flex items-center px-6 py-3 rounded-full bg-gradient-to-r from-blue-600/10 to-cyan-600/10 border border-blue-500/30 backdrop-blur-sm mb-8 animate-scale-in shadow-lg shadow-blue-500/10">
+            <div className="inline-flex items-center px-6 py-3 rounded-full bg-gradient-to-r from-blue-600/10 to-cyan-600/10 border border-blue-500/30 backdrop-blur-sm mb-8 shadow-lg shadow-blue-500/10">
               <span className="relative flex h-3 w-3 mr-3">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-3 w-3 bg-gradient-to-r from-blue-400 to-cyan-400"></span>
               </span>
               <span className="text-sm font-semibold text-white tracking-wide">
@@ -661,7 +644,7 @@ export default async function Home() {
           </div>
 
           {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up animation-delay-700">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/contact"
               className="group relative inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-2xl hover:from-blue-500 hover:to-cyan-500 transition-all duration-500 font-semibold text-base shadow-2xl shadow-blue-600/30 hover:shadow-blue-500/40 hover:scale-[1.02] transform-gpu overflow-hidden"
