@@ -113,7 +113,7 @@ export const metadata: Metadata = {
   manifest: "/site.webmanifest",
   category: "portfolio",
   verification: {
-    google: "your-google-site-verification-code", // Replace with actual verification code from Google Search Console
+    google: "googlebf61d5da6cf3d8be",
   },
 };
 

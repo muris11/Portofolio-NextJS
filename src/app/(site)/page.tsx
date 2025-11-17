@@ -87,7 +87,8 @@ export const metadata: Metadata = {
 };
 
 // Enable ISR with 5 minute revalidation for better performance
-export const revalidate = 300; // 5 minutes
+// Note: Profile data is now dynamic to ensure updates are reflected immediately
+// export const revalidate = 300; // 5 minutes
 
 export default async function Home() {
   const profile = await getProfile();
@@ -103,10 +104,10 @@ export default async function Home() {
 
         {/* Animated mesh gradient */}
         <div className="absolute inset-0 opacity-30">
-          <div className="absolute top-0 -left-4 w-96 h-96 bg-blue-600 rounded-full mix-blend-multiply filter blur-3xl animate-blob"></div>
-          <div className="absolute top-0 -right-4 w-96 h-96 bg-cyan-600 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-2000"></div>
-          <div className="absolute -bottom-8 left-20 w-96 h-96 bg-indigo-600 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-4000"></div>
-          <div className="absolute bottom-20 right-20 w-96 h-96 bg-sky-600 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-6000"></div>
+          <div className="absolute top-0 -left-4 w-96 h-96 bg-blue-600 rounded-full mix-blend-multiply filter blur-3xl animate-float"></div>
+          <div className="absolute top-0 -right-4 w-96 h-96 bg-cyan-600 rounded-full mix-blend-multiply filter blur-3xl animate-float animation-delay-2000"></div>
+          <div className="absolute -bottom-8 left-20 w-96 h-96 bg-indigo-600 rounded-full mix-blend-multiply filter blur-3xl animate-float animation-delay-4000"></div>
+          <div className="absolute bottom-20 right-20 w-96 h-96 bg-sky-600 rounded-full mix-blend-multiply filter blur-3xl animate-float animation-delay-6000"></div>
         </div>
 
         {/* Floating particles */}
@@ -127,16 +128,16 @@ export default async function Home() {
 
         {/* Code-inspired geometric patterns */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-20">
-          <div className="absolute top-20 left-10 text-blue-500/30 font-mono text-2xl animate-spin-slow select-none">
+          <div className="absolute top-20 left-10 text-blue-500/30 font-mono text-2xl select-none">
             {"{ }"}
           </div>
-          <div className="absolute top-40 right-20 text-cyan-500/30 font-mono text-xl animate-spin-reverse select-none">
+          <div className="absolute top-40 right-20 text-cyan-500/30 font-mono text-xl select-none">
             {"< >"}
           </div>
-          <div className="absolute bottom-32 left-1/4 text-indigo-500/30 font-mono text-lg animate-spin-slow animation-delay-3000 select-none">
+          <div className="absolute bottom-32 left-1/4 text-indigo-500/30 font-mono text-lg select-none">
             {"( )"}
           </div>
-          <div className="absolute bottom-20 right-1/3 text-sky-500/30 font-mono text-xl animate-spin-reverse animation-delay-5000 select-none">
+          <div className="absolute bottom-20 right-1/3 text-sky-500/30 font-mono text-xl select-none">
             {"[ ]"}
           </div>
           <div className="absolute top-1/3 left-1/3 text-blue-500/20 font-mono text-sm animate-pulse select-none">
@@ -313,10 +314,10 @@ export default async function Home() {
 
           {/* Decorative elements */}
           <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-20">
-            <div className="absolute top-20 left-10 w-24 h-24 border border-blue-500/30 rotate-30 animate-spin-slow"></div>
-            <div className="absolute top-40 right-20 w-20 h-20 border border-cyan-500/30 -rotate-15 animate-spin-reverse"></div>
-            <div className="absolute bottom-32 left-1/4 w-28 h-28 border border-indigo-500/30 rotate-45 animate-spin-slow animation-delay-2000"></div>
-            <div className="absolute bottom-20 right-1/3 w-22 h-22 border border-sky-500/30 -rotate-30 animate-spin-reverse animation-delay-3000"></div>
+            <div className="absolute top-20 left-10 w-24 h-24 border border-blue-500/30 rotate-30"></div>
+            <div className="absolute top-40 right-20 w-20 h-20 border border-cyan-500/30 -rotate-15"></div>
+            <div className="absolute bottom-32 left-1/4 w-28 h-28 border border-indigo-500/30 rotate-45"></div>
+            <div className="absolute bottom-20 right-1/3 w-22 h-22 border border-sky-500/30 -rotate-30"></div>
           </div>
 
           <div className="max-w-7xl mx-auto relative z-10">
@@ -583,10 +584,10 @@ export default async function Home() {
 
           {/* Animated mesh gradient */}
           <div className="absolute inset-0 opacity-30">
-            <div className="absolute top-0 -left-4 w-96 h-96 bg-blue-600 rounded-full mix-blend-multiply filter blur-3xl animate-blob"></div>
-            <div className="absolute top-0 -right-4 w-96 h-96 bg-cyan-600 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-2000"></div>
-            <div className="absolute -bottom-8 left-20 w-96 h-96 bg-indigo-600 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-4000"></div>
-            <div className="absolute bottom-20 right-20 w-96 h-96 bg-sky-600 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-6000"></div>
+            <div className="absolute top-0 -left-4 w-96 h-96 bg-blue-600 rounded-full mix-blend-multiply filter blur-3xl animate-float"></div>
+            <div className="absolute top-0 -right-4 w-96 h-96 bg-cyan-600 rounded-full mix-blend-multiply filter blur-3xl animate-float animation-delay-2000"></div>
+            <div className="absolute -bottom-8 left-20 w-96 h-96 bg-indigo-600 rounded-full mix-blend-multiply filter blur-3xl animate-float animation-delay-4000"></div>
+            <div className="absolute bottom-20 right-20 w-96 h-96 bg-sky-600 rounded-full mix-blend-multiply filter blur-3xl animate-float animation-delay-6000"></div>
           </div>
 
           {/* Floating particles */}
@@ -607,16 +608,16 @@ export default async function Home() {
 
           {/* Code-inspired geometric patterns */}
           <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-20">
-            <div className="absolute top-20 left-10 text-blue-500/30 font-mono text-2xl animate-spin-slow select-none">
+            <div className="absolute top-20 left-10 text-blue-500/30 font-mono text-2xl select-none">
               {"{ }"}
             </div>
-            <div className="absolute top-40 right-20 text-cyan-500/30 font-mono text-xl animate-spin-reverse select-none">
+            <div className="absolute top-40 right-20 text-cyan-500/30 font-mono text-xl select-none">
               {"< >"}
             </div>
-            <div className="absolute bottom-32 left-1/4 text-indigo-500/30 font-mono text-lg animate-spin-slow animation-delay-3000 select-none">
+            <div className="absolute bottom-32 left-1/4 text-indigo-500/30 font-mono text-lg select-none">
               {"( )"}
             </div>
-            <div className="absolute bottom-20 right-1/3 text-sky-500/30 font-mono text-xl animate-spin-reverse animation-delay-5000 select-none">
+            <div className="absolute bottom-20 right-1/3 text-sky-500/30 font-mono text-xl select-none">
               {"[ ]"}
             </div>
             <div className="absolute top-1/3 left-1/3 text-blue-500/20 font-mono text-sm animate-pulse select-none">

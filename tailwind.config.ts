@@ -71,12 +71,8 @@ const config: Config = {
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        blob: "blob 7s infinite",
         "fade-in-up": "fade-in-up 0.6s ease-out forwards",
         float: "float 6s ease-in-out infinite",
-        glow: "glow 2s ease-in-out infinite alternate",
-        "spin-slow": "spin-slow 8s linear infinite",
-        "spin-reverse": "spin-reverse 8s linear infinite",
         "slide-in-left": "slide-in-left 0.8s ease-out forwards",
         "slide-in-right": "slide-in-right 0.8s ease-out forwards",
         "scale-in": "scale-in 0.5s ease-out forwards",

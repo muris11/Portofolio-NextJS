@@ -1,9 +1,6 @@
 import { db } from "@/lib/db";
 import { Github, Linkedin, Mail, MapPin, Phone } from "lucide-react";
-import dynamic from "next/dynamic";
 import Link from "next/link";
-
-const FooterParticles = dynamic(() => import("@/components/FooterParticles"));
 
 async function getProfile() {
   try {
@@ -54,95 +51,16 @@ export default async function Footer() {
 
   return (
     <footer className="relative overflow-hidden bg-slate-900 border-t border-slate-800">
-      {/* Animated Background with Programming Language Logos */}
-      <div className="absolute inset-0 -z-10">
-        {/* Primary gradient background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-blue-950/30 to-slate-900"></div>
+      {/* Primary gradient background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-blue-950/30 to-slate-900"></div>
 
-        {/* Floating programming language logos */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-20">
-          {/* JavaScript */}
-          <div className="absolute top-20 left-10 animate-float-slow">
-            <div className="w-12 h-12 bg-yellow-400 rounded-lg flex items-center justify-center text-black font-bold text-lg shadow-lg">
-              JS
-            </div>
-          </div>
-
-          {/* TypeScript */}
-          <div className="absolute top-32 right-20 animate-float-reverse animation-delay-1000">
-            <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-sm shadow-lg">
-              TS
-            </div>
-          </div>
-
-          {/* React */}
-          <div className="absolute bottom-32 left-1/4 animate-float-slow animation-delay-2000">
-            <div className="w-12 h-12 bg-cyan-400 rounded-lg flex items-center justify-center text-black font-bold text-sm shadow-lg">
-              ⚛️
-            </div>
-          </div>
-
-          {/* Next.js */}
-          <div className="absolute bottom-20 right-1/3 animate-float-reverse animation-delay-3000">
-            <div className="w-12 h-12 bg-black rounded-lg flex items-center justify-center text-white font-bold text-xs shadow-lg border border-gray-600">
-              ▲
-            </div>
-          </div>
-
-          {/* Node.js */}
-          <div className="absolute top-1/2 left-1/6 animate-float-slow animation-delay-4000">
-            <div className="w-12 h-12 bg-green-600 rounded-lg flex items-center justify-center text-white font-bold text-sm shadow-lg">
-              Node
-            </div>
-          </div>
-
-          {/* Python */}
-          <div className="absolute top-3/4 right-1/4 animate-float-reverse animation-delay-5000">
-            <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-yellow-500 rounded-lg flex items-center justify-center text-white font-bold text-sm shadow-lg">
-              Py
-            </div>
-          </div>
-
-          {/* HTML */}
-          <div className="absolute top-1/4 left-3/4 animate-float-slow animation-delay-6000">
-            <div className="w-12 h-12 bg-orange-500 rounded-lg flex items-center justify-center text-white font-bold text-sm shadow-lg">
-              HTML
-            </div>
-          </div>
-
-          {/* CSS */}
-          <div className="absolute bottom-1/4 left-1/2 animate-float-reverse animation-delay-7000">
-            <div className="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center text-white font-bold text-sm shadow-lg">
-              CSS
-            </div>
-          </div>
-
-          {/* Git */}
-          <div className="absolute top-3/4 left-1/3 animate-float-slow animation-delay-8000">
-            <div className="w-12 h-12 bg-orange-600 rounded-lg flex items-center justify-center text-white font-bold text-sm shadow-lg">
-              Git
-            </div>
-          </div>
-
-          {/* Database */}
-          <div className="absolute bottom-1/2 right-1/6 animate-float-reverse animation-delay-9000">
-            <div className="w-12 h-12 bg-green-700 rounded-lg flex items-center justify-center text-white font-bold text-xs shadow-lg">
-              DB
-            </div>
-          </div>
-        </div>
-
-        {/* Floating particles */}
-        <FooterParticles />
-
-        {/* Subtle grid overlay */}
-        <div
-          className="absolute inset-0 opacity-[0.03]"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3E%3C/g%3E%3C/svg%3E")`,
-          }}
-        ></div>
-      </div>
+      {/* Subtle grid overlay */}
+      <div
+        className="absolute inset-0 opacity-[0.03]"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3E%3C/g%3E%3C/svg%3E")`,
+        }}
+      ></div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">

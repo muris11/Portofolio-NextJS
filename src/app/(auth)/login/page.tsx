@@ -60,24 +60,24 @@ export default function LoginPage() {
 
         {/* Animated mesh gradient */}
         <div className="absolute inset-0 opacity-20">
-          <div className="absolute top-0 -left-4 w-96 h-96 bg-blue-600 rounded-full mix-blend-multiply filter blur-3xl animate-blob"></div>
-          <div className="absolute top-0 -right-4 w-96 h-96 bg-cyan-600 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-2000"></div>
-          <div className="absolute -bottom-8 left-20 w-96 h-96 bg-indigo-600 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-4000"></div>
-          <div className="absolute bottom-20 right-20 w-96 h-96 bg-sky-600 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-6000"></div>
+          <div className="absolute top-0 -left-4 w-96 h-96 bg-blue-600 rounded-full mix-blend-multiply filter blur-3xl animate-float"></div>
+          <div className="absolute top-0 -right-4 w-96 h-96 bg-cyan-600 rounded-full mix-blend-multiply filter blur-3xl animate-float animation-delay-2000"></div>
+          <div className="absolute -bottom-8 left-20 w-96 h-96 bg-indigo-600 rounded-full mix-blend-multiply filter blur-3xl animate-float animation-delay-4000"></div>
+          <div className="absolute bottom-20 right-20 w-96 h-96 bg-sky-600 rounded-full mix-blend-multiply filter blur-3xl animate-float animation-delay-6000"></div>
         </div>
 
         {/* Code-inspired geometric patterns */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-10">
-          <div className="absolute top-20 left-10 text-blue-500/20 font-mono text-2xl animate-spin-slow select-none">
+          <div className="absolute top-20 left-10 text-blue-500/20 font-mono text-2xl select-none">
             {"{ }"}
           </div>
-          <div className="absolute top-40 right-20 text-cyan-500/20 font-mono text-xl animate-spin-reverse select-none">
+          <div className="absolute top-40 right-20 text-cyan-500/20 font-mono text-xl select-none">
             {"< >"}
           </div>
-          <div className="absolute bottom-32 left-1/4 text-indigo-500/20 font-mono text-lg animate-spin-slow animation-delay-3000 select-none">
+          <div className="absolute bottom-32 left-1/4 text-indigo-500/20 font-mono text-lg select-none">
             {"( )"}
           </div>
-          <div className="absolute bottom-20 right-1/3 text-sky-500/20 font-mono text-xl animate-spin-reverse animation-delay-5000 select-none">
+          <div className="absolute bottom-20 right-1/3 text-sky-500/20 font-mono text-xl select-none">
             {"[ ]"}
           </div>
         </div>

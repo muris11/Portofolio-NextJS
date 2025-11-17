@@ -5,12 +5,13 @@ import "../globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "Portfolio - Website Portofolio Pribadi",
-    template: "%s | Portfolio",
+    default: "Rifqy.Dev - Fullstack Developer Portfolio",
+    template: "%s | Rifqy.Dev",
   },
   description:
-    "Website portofolio pribadi yang menampilkan proyek, pengalaman, dan kemampuan saya sebagai Fullstack Developer.",
+    "Professional portfolio of Rifqy, a skilled Fullstack Developer specializing in modern web technologies including Next.js, TypeScript, React, and Node.js.",
   keywords: [
+    "Rifqy.Dev",
     "portfolio",
     "developer",
     "web",
@@ -21,9 +22,9 @@ export const metadata: Metadata = {
     "react",
     "typescript",
   ],
-  authors: [{ name: "Portfolio Owner" }],
-  creator: "Portfolio Owner",
-  publisher: "Portfolio",
+  authors: [{ name: "Rifqy Saputra" }],
+  creator: "Rifqy Saputra",
+  publisher: "Rifqy.Dev",
   formatDetection: {
     email: false,
     address: false,
@@ -37,28 +38,28 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: "website",
-    locale: "id_ID",
+    locale: "en_US",
     url: "/",
-    title: "Portfolio - Website Portofolio Pribadi",
+    title: "Rifqy.Dev - Fullstack Developer Portfolio",
     description:
-      "Website portofolio pribadi yang menampilkan proyek, pengalaman, dan kemampuan saya sebagai Fullstack Developer.",
-    siteName: "Portfolio",
+      "Professional portfolio showcasing modern web development projects, skills, and experience in fullstack development.",
+    siteName: "Rifqy.Dev",
     images: [
       {
-        url: "/og-image.jpg",
+        url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Portfolio - Fullstack Developer",
+        alt: "Rifqy.Dev - Fullstack Developer Portfolio",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Portfolio - Website Portofolio Pribadi",
+    title: "Rifqy.Dev - Fullstack Developer Portfolio",
     description:
-      "Website portofolio pribadi yang menampilkan proyek, pengalaman, dan kemampuan saya sebagai Fullstack Developer.",
-    images: ["/og-image.jpg"],
-    creator: "@portfolio_owner",
+      "Professional portfolio showcasing modern web development projects and skills.",
+    images: ["/og-image.png"],
+    creator: "@rifqydev",
   },
   robots: {
     index: true,
