@@ -7,7 +7,7 @@ interface TestResult {
   test: string;
   status: "PASS" | "FAIL" | "SKIP";
   message: string;
-  details?: any;
+  details?: unknown;
   duration?: number;
 }
 

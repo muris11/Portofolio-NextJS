@@ -3,28 +3,65 @@ import { NextResponse } from "next/server";
 
 export default function middleware(request: NextRequest) {
   const url = request.nextUrl;
-  console.log("MIDDLEWARE IS RUNNING!", url.pathname);
 
-  // Handle admin access
-  if (url.pathname === "/admin") {
-    // Check if user has admin session cookie
+  // Bypass protection for public API routes
+  const publicApiRoutes = ["/api/health", "/api/contact"];
+
+  // Check if current path is a public route
+  const isPublicRoute = publicApiRoutes.some((route) =>
+    url.pathname.startsWith(route)
+  );
+
+  // Handle admin page access
+  if (
+    url.pathname.startsWith("/admin") &&
+    !url.pathname.startsWith("/api/admin")
+  ) {
     const sessionCookie = request.cookies.get("admin_session");
 
     if (
       !sessionCookie ||
       sessionCookie.value !== process.env.ADMIN_SESSION_TOKEN
     ) {
-      console.log("No valid session, redirecting to login");
       return NextResponse.redirect(new URL("/login", request.url));
     }
-
-    console.log("Valid session found, allowing access to admin");
   }
 
-  // Add security headers
+  // Handle admin API routes - require authentication
+  if (url.pathname.startsWith("/api/admin") && !isPublicRoute) {
+    // Skip auth check for auth endpoint itself and test endpoint
+    if (
+      url.pathname === "/api/admin/auth" ||
+      url.pathname === "/api/admin/test" ||
+      url.pathname === "/api/admin/test/info"
+    ) {
+      const response = NextResponse.next();
+      response.headers.set("X-Frame-Options", "DENY");
+      response.headers.set("X-Content-Type-Options", "nosniff");
+      response.headers.set(
+        "Referrer-Policy",
+        "strict-origin-when-cross-origin"
+      );
+      return response;
+    }
+
+    // Check for valid admin session
+    const sessionCookie = request.cookies.get("admin_session");
+
+    if (
+      !sessionCookie ||
+      sessionCookie.value !== process.env.ADMIN_SESSION_TOKEN
+    ) {
+      return NextResponse.json(
+        { error: "Unauthorized - Invalid or missing session" },
+        { status: 401 }
+      );
+    }
+  }
+
+  // Add security headers for all admin routes
   const response = NextResponse.next();
 
-  // Add security headers for admin routes
   if (
     url.pathname.startsWith("/admin") ||
     url.pathname.startsWith("/api/admin")
@@ -32,11 +69,12 @@ export default function middleware(request: NextRequest) {
     response.headers.set("X-Frame-Options", "DENY");
     response.headers.set("X-Content-Type-Options", "nosniff");
     response.headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
+    response.headers.set("X-XSS-Protection", "1; mode=block");
   }
 
   return response;
 }
 
 export const config = {
-  matcher: "/admin",
+  matcher: ["/admin/:path*", "/api/admin/:path*"],
 };
