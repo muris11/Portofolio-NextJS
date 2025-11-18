@@ -147,6 +147,10 @@ export function EducationSection({
                                 width={48}
                                 height={48}
                                 className="w-full h-full object-cover rounded-xl"
+                                unoptimized={
+                                  edu.logoUrl?.includes("vercel-storage.com") ||
+                                  edu.logoUrl?.includes("blob.vercel")
+                                }
                               />
                             ) : (
                               <GraduationCap className="h-6 w-6 text-white" />
@@ -241,6 +245,10 @@ export function EducationSection({
                           width={48}
                           height={48}
                           className="w-full h-full object-cover rounded-xl"
+                          unoptimized={
+                            edu.logoUrl?.includes("vercel-storage.com") ||
+                            edu.logoUrl?.includes("blob.vercel")
+                          }
                         />
                       ) : (
                         <GraduationCap className="h-6 w-6 text-white" />

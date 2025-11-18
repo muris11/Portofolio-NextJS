@@ -147,6 +147,10 @@ export function ExperienceSection({
                                 width={48}
                                 height={48}
                                 className="w-full h-full object-cover rounded-xl"
+                                unoptimized={
+                                  exp.logoUrl?.includes("vercel-storage.com") ||
+                                  exp.logoUrl?.includes("blob.vercel")
+                                }
                               />
                             ) : (
                               <Briefcase className="h-6 w-6 text-white" />

@@ -1,6 +1,6 @@
 import { Upload, X } from "lucide-react";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 
 interface ImageUploadProps {
   value?: string;
@@ -20,20 +20,9 @@ export function ImageUpload({
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Update preview when value prop changes
-  useEffect(() => {
+  React.useEffect(() => {
     setPreview(value || null);
   }, [value]);
-
-  // Cleanup effect
-  useEffect(() => {
-    const fileInput = fileInputRef.current;
-    return () => {
-      // Cleanup file input on unmount
-      if (fileInput) {
-        fileInput.value = "";
-      }
-    };
-  }, []);
 
   const handleFileSelect = async (
     event: React.ChangeEvent<HTMLInputElement>
@@ -44,20 +33,12 @@ export function ImageUpload({
     // Validate file type
     if (!file.type.startsWith("image/")) {
       alert("Please select an image file");
-      // Reset file input
-      if (fileInputRef.current) {
-        fileInputRef.current.value = "";
-      }
       return;
     }
 
     // Validate file size (max 5MB)
     if (file.size > 5 * 1024 * 1024) {
       alert("File size must be less than 5MB");
-      // Reset file input
-      if (fileInputRef.current) {
-        fileInputRef.current.value = "";
-      }
       return;
     }
 
@@ -73,7 +54,8 @@ export function ImageUpload({
       });
 
       if (!response.ok) {
-        throw new Error("Upload failed");
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Upload failed");
       }
 
       const data = await response.json();
@@ -82,35 +64,30 @@ export function ImageUpload({
     } catch (error) {
       console.error("Upload error:", error);
       alert(
-        `Failed to upload image. Please try again. ${
-          error instanceof Error ? error.message : ""
+        `Failed to upload image: ${
+          error instanceof Error ? error.message : "Unknown error"
         }`
       );
     } finally {
       setIsUploading(false);
-      // Always reset file input after upload attempt
+      // Reset file input after upload
       if (fileInputRef.current) {
         fileInputRef.current.value = "";
       }
     }
   };
 
+  const handleButtonClick = () => {
+    if (isUploading) return;
+    fileInputRef.current?.click();
+  };
+
   const handleRemove = () => {
     setPreview(null);
     onChange("");
-    // Reset file input
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
-  };
-
-  const handleButtonClick = () => {
-    if (isUploading || !fileInputRef.current) return;
-
-    // Small delay to prevent rapid clicking
-    setTimeout(() => {
-      fileInputRef.current?.click();
-    }, 10);
   };
 
   return (
@@ -146,7 +123,6 @@ export function ImageUpload({
         {/* Upload Button */}
         <div>
           <input
-            key={isUploading ? "uploading" : "ready"}
             ref={fileInputRef}
             type="file"
             accept="image/*"
