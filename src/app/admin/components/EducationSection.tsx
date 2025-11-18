@@ -1,9 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { GraduationCap, Plus } from "lucide-react";
+import Image from "next/image";
 import { useState } from "react";
 import type { Education } from "../hooks/useAdminData";
 import { EducationModal } from "./EducationModal";
-import Image from "next/image";
 
 interface EducationSectionProps {
   education: Education[];

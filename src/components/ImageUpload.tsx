@@ -1,6 +1,6 @@
 import { Upload, X } from "lucide-react";
 import Image from "next/image";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface ImageUploadProps {
   value?: string;
@@ -19,6 +19,22 @@ export function ImageUpload({
   const [preview, setPreview] = useState<string | null>(value || null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  // Update preview when value prop changes
+  useEffect(() => {
+    setPreview(value || null);
+  }, [value]);
+
+  // Cleanup effect
+  useEffect(() => {
+    const fileInput = fileInputRef.current;
+    return () => {
+      // Cleanup file input on unmount
+      if (fileInput) {
+        fileInput.value = "";
+      }
+    };
+  }, []);
+
   const handleFileSelect = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -28,12 +44,20 @@ export function ImageUpload({
     // Validate file type
     if (!file.type.startsWith("image/")) {
       alert("Please select an image file");
+      // Reset file input
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
       return;
     }
 
     // Validate file size (max 5MB)
     if (file.size > 5 * 1024 * 1024) {
       alert("File size must be less than 5MB");
+      // Reset file input
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
       return;
     }
 
@@ -64,15 +88,29 @@ export function ImageUpload({
       );
     } finally {
       setIsUploading(false);
+      // Always reset file input after upload attempt
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
     }
   };
 
   const handleRemove = () => {
     setPreview(null);
     onChange("");
+    // Reset file input
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
+  };
+
+  const handleButtonClick = () => {
+    if (isUploading || !fileInputRef.current) return;
+
+    // Small delay to prevent rapid clicking
+    setTimeout(() => {
+      fileInputRef.current?.click();
+    }, 10);
   };
 
   return (
@@ -108,6 +146,7 @@ export function ImageUpload({
         {/* Upload Button */}
         <div>
           <input
+            key={isUploading ? "uploading" : "ready"}
             ref={fileInputRef}
             type="file"
             accept="image/*"
@@ -117,7 +156,7 @@ export function ImageUpload({
           />
           <button
             type="button"
-            onClick={() => fileInputRef.current?.click()}
+            onClick={handleButtonClick}
             disabled={isUploading}
             className="flex items-center space-x-2 px-4 py-2 bg-gray-700 hover:bg-gray-600 disabled:bg-gray-800 disabled:cursor-not-allowed text-white rounded-lg transition-colors"
           >

@@ -1,9 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { Briefcase, Plus } from "lucide-react";
+import Image from "next/image";
 import { useState } from "react";
 import type { Experience } from "../hooks/useAdminData";
 import { ExperienceModal } from "./ExperienceModal";
-import Image from "next/image";
 
 interface ExperienceSectionProps {
   experience: Experience[];
