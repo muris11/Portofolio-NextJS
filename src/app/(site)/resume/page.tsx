@@ -35,6 +35,7 @@ async function getExperience() {
     const experience = await db.experience.findMany({
       orderBy: { startDate: "desc" },
     });
+    // Convert null to undefined for optional fields
     return experience.map((exp) => ({
       ...exp,
       logoUrl: exp.logoUrl || undefined,

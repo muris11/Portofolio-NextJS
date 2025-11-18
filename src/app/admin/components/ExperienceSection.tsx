@@ -3,6 +3,7 @@ import { Briefcase, Plus } from "lucide-react";
 import { useState } from "react";
 import type { Experience } from "../hooks/useAdminData";
 import { ExperienceModal } from "./ExperienceModal";
+import Image from "next/image";
 
 interface ExperienceSectionProps {
   experience: Experience[];
@@ -138,8 +139,18 @@ export function ExperienceSection({
                     >
                       <td className="px-6 py-5">
                         <div className="flex items-center space-x-4">
-                          <div className="w-12 h-12 bg-gradient-to-br from-amber-500 to-orange-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-                            <Briefcase className="h-6 w-6 text-white" />
+                          <div className="w-12 h-12 bg-gradient-to-br from-amber-500 to-orange-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300 overflow-hidden">
+                            {exp.logoUrl ? (
+                              <Image
+                                src={exp.logoUrl}
+                                alt={`${exp.company} logo`}
+                                width={48}
+                                height={48}
+                                className="w-full h-full object-cover rounded-xl"
+                              />
+                            ) : (
+                              <Briefcase className="h-6 w-6 text-white" />
+                            )}
                           </div>
                           <div className="min-w-0 flex-1">
                             <div className="text-sm font-bold text-gray-900 dark:text-white truncate group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">

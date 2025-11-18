@@ -3,6 +3,7 @@ import { GraduationCap, Plus } from "lucide-react";
 import { useState } from "react";
 import type { Education } from "../hooks/useAdminData";
 import { EducationModal } from "./EducationModal";
+import Image from "next/image";
 
 interface EducationSectionProps {
   education: Education[];
@@ -138,8 +139,18 @@ export function EducationSection({
                     >
                       <td className="px-6 py-5">
                         <div className="flex items-center space-x-4">
-                          <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-teal-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-                            <GraduationCap className="h-6 w-6 text-white" />
+                          <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-teal-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300 overflow-hidden">
+                            {edu.logoUrl ? (
+                              <Image
+                                src={edu.logoUrl}
+                                alt={`${edu.institution} logo`}
+                                width={48}
+                                height={48}
+                                className="w-full h-full object-cover rounded-xl"
+                              />
+                            ) : (
+                              <GraduationCap className="h-6 w-6 text-white" />
+                            )}
                           </div>
                           <div className="min-w-0 flex-1">
                             <div className="text-sm font-bold text-gray-900 dark:text-white truncate group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">
@@ -223,7 +234,17 @@ export function EducationSection({
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex items-center space-x-3">
                     <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-teal-600 rounded-xl flex items-center justify-center shadow-lg">
-                      <GraduationCap className="h-6 w-6 text-white" />
+                      {edu.logoUrl ? (
+                        <Image
+                          src={edu.logoUrl}
+                          alt={`${edu.institution} logo`}
+                          width={48}
+                          height={48}
+                          className="w-full h-full object-cover rounded-xl"
+                        />
+                      ) : (
+                        <GraduationCap className="h-6 w-6 text-white" />
+                      )}
                     </div>
                     <div>
                       <h3 className="font-bold text-gray-900 dark:text-white text-lg">

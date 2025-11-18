@@ -1,6 +1,6 @@
 "use client";
 
-import { Calendar, GraduationCap } from "lucide-react";
+import { Briefcase, GraduationCap } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 
@@ -20,7 +20,7 @@ interface TimelineItemProps {
 }
 
 export default function TimelineItem({ item, type }: TimelineItemProps) {
-  const Icon = type === "education" ? GraduationCap : Calendar;
+  const Icon = type === "education" ? GraduationCap : Briefcase;
   const [imageError, setImageError] = useState(false);
 
   return (
