@@ -40,6 +40,7 @@ export default function TimelineItem({ item, type }: TimelineItemProps) {
               height={80}
               className="w-full h-full object-cover rounded-2xl"
               onError={() => setImageError(true)}
+              unoptimized={item.logoUrl?.includes('vercel-storage.com') || item.logoUrl?.includes('blob.vercel')}
             />
           ) : (
             <Icon className="h-8 w-8 sm:h-9 sm:w-9 lg:h-10 lg:w-10 text-white" />
