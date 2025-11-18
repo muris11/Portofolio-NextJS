@@ -32,7 +32,7 @@ export function ImageUpload({
     if (!file) return;
 
     await processFile(file);
-    
+
     // Clear file input
     event.target.value = "";
   };
@@ -56,13 +56,22 @@ export function ImageUpload({
       const formData = new FormData();
       formData.append("file", file);
 
+      // Add timeout for fetch request
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
+
       const response = await fetch("/api/admin/upload", {
         method: "POST",
         body: formData,
+        signal: controller.signal,
       });
 
+      clearTimeout(timeoutId);
+
       if (!response.ok) {
-        const errorData = await response.json();
+        const errorData = await response.json().catch(() => ({
+          error: "Upload failed",
+        }));
         throw new Error(errorData.error || "Upload failed");
       }
 
@@ -71,11 +80,15 @@ export function ImageUpload({
       onChange(data.url);
     } catch (error) {
       console.error("Upload error:", error);
-      alert(
-        `Gagal upload gambar: ${
-          error instanceof Error ? error.message : "Unknown error"
-        }`
-      );
+      if (error instanceof Error) {
+        if (error.name === "AbortError") {
+          alert("Upload timeout. File terlalu besar atau koneksi lambat.");
+        } else {
+          alert(`Gagal upload gambar: ${error.message}`);
+        }
+      } else {
+        alert("Gagal upload gambar. Silakan coba lagi.");
+      }
     } finally {
       setIsUploading(false);
     }
@@ -85,8 +98,18 @@ export function ImageUpload({
     e.preventDefault();
     e.stopPropagation();
     if (isUploading) return;
-    
-    fileInputRef.current?.click();
+
+    // Delay to prevent browser blocking
+    setTimeout(() => {
+      if (fileInputRef.current) {
+        try {
+          fileInputRef.current.click();
+        } catch (error) {
+          console.error("Error opening file picker:", error);
+          alert("Gagal membuka file picker. Silakan gunakan drag & drop.");
+        }
+      }
+    }, 0);
   };
 
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
@@ -139,8 +162,12 @@ export function ImageUpload({
         onDrop={handleDrop}
         className={`
           border-2 border-dashed rounded-lg p-4 transition-all
-          ${isDragging ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20' : 'border-gray-600 hover:border-gray-500'}
-          ${isUploading ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
+          ${
+            isDragging
+              ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20"
+              : "border-gray-600 hover:border-gray-500"
+          }
+          ${isUploading ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}
         `}
       >
         <div className="flex items-center space-x-4">
@@ -174,16 +201,22 @@ export function ImageUpload({
               onChange={handleFileSelect}
               className="hidden"
               disabled={isUploading}
+              aria-label="Upload image file"
             />
             <button
               type="button"
               onClick={handleButtonClick}
               disabled={isUploading}
               className="w-full flex items-center justify-center space-x-2 px-4 py-2 bg-gray-700 hover:bg-gray-600 disabled:bg-gray-800 disabled:cursor-not-allowed text-white rounded-lg transition-colors"
+              aria-label={placeholder}
             >
               <Upload className="w-4 h-4" />
               <span>{isUploading ? "Uploading..." : placeholder}</span>
             </button>
+            {/* Hint for better UX */}
+            <p className="text-xs text-gray-600 dark:text-gray-500 mt-1 text-center">
+              💡 Tip: Drag & drop lebih cepat!
+            </p>
           </div>
         </div>
 

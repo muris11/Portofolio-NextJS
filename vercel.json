@@ -1,5 +1,8 @@
 {
   "functions": {
+    "src/app/api/admin/upload/*.ts": {
+      "maxDuration": 30
+    },
     "src/app/api/**/*.ts": {
       "maxDuration": 10
     }
@@ -22,6 +25,15 @@
         {
           "key": "Cache-Control",
           "value": "no-store, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/api/admin/upload",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store"
         }
       ]
     }
