@@ -64,6 +64,12 @@ const nextConfig: NextConfig = {
         port: "",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "via.placeholder.com",
+        port: "",
+        pathname: "/**",
+      },
     ],
     // Optimize images for better performance
     formats: ["image/webp", "image/avif"],
