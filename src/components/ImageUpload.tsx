@@ -1,6 +1,6 @@
-import { Upload, X } from 'lucide-react';
-import Image from 'next/image';
-import { useRef, useState } from 'react';
+import { Upload, X } from "lucide-react";
+import Image from "next/image";
+import { useRef, useState } from "react";
 
 interface ImageUploadProps {
   value?: string;
@@ -9,24 +9,31 @@ interface ImageUploadProps {
   placeholder?: string;
 }
 
-export function ImageUpload({ value, onChange, label = "Logo", placeholder = "Upload logo" }: ImageUploadProps) {
+export function ImageUpload({
+  value,
+  onChange,
+  label = "Logo",
+  placeholder = "Upload logo",
+}: ImageUploadProps) {
   const [isUploading, setIsUploading] = useState(false);
   const [preview, setPreview] = useState<string | null>(value || null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleFileSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileSelect = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
     // Validate file type
-    if (!file.type.startsWith('image/')) {
-      alert('Please select an image file');
+    if (!file.type.startsWith("image/")) {
+      alert("Please select an image file");
       return;
     }
 
     // Validate file size (max 5MB)
     if (file.size > 5 * 1024 * 1024) {
-      alert('File size must be less than 5MB');
+      alert("File size must be less than 5MB");
       return;
     }
 
@@ -34,23 +41,23 @@ export function ImageUpload({ value, onChange, label = "Logo", placeholder = "Up
 
     try {
       const formData = new FormData();
-      formData.append('file', file);
+      formData.append("file", file);
 
-      const response = await fetch('/api/admin/upload', {
-        method: 'POST',
+      const response = await fetch("/api/admin/upload", {
+        method: "POST",
         body: formData,
       });
 
       if (!response.ok) {
-        throw new Error('Upload failed');
+        throw new Error("Upload failed");
       }
 
       const data = await response.json();
       setPreview(data.url);
       onChange(data.url);
     } catch (error) {
-      console.error('Upload error:', error);
-      alert('Failed to upload image. Please try again.');
+      console.error("Upload error:", error);
+      alert("Failed to upload image. Please try again.");
     } finally {
       setIsUploading(false);
     }
@@ -58,9 +65,9 @@ export function ImageUpload({ value, onChange, label = "Logo", placeholder = "Up
 
   const handleRemove = () => {
     setPreview(null);
-    onChange('');
+    onChange("");
     if (fileInputRef.current) {
-      fileInputRef.current.value = '';
+      fileInputRef.current.value = "";
     }
   };
 
@@ -111,7 +118,7 @@ export function ImageUpload({ value, onChange, label = "Logo", placeholder = "Up
             className="flex items-center space-x-2 px-4 py-2 bg-gray-700 hover:bg-gray-600 disabled:bg-gray-800 disabled:cursor-not-allowed text-white rounded-lg transition-colors"
           >
             <Upload className="w-4 h-4" />
-            <span>{isUploading ? 'Uploading...' : placeholder}</span>
+            <span>{isUploading ? "Uploading..." : placeholder}</span>
           </button>
         </div>
       </div>

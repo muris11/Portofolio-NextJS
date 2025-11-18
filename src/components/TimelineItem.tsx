@@ -1,4 +1,8 @@
+"use client";
+
 import { Calendar, GraduationCap } from "lucide-react";
+import Image from "next/image";
+import { useState } from "react";
 
 interface TimelineItemProps {
   item: {
@@ -10,19 +14,36 @@ interface TimelineItemProps {
     startDate: string;
     endDate: string;
     description?: string;
+    logoUrl?: string;
   };
   type: "education" | "experience";
 }
 
 export default function TimelineItem({ item, type }: TimelineItemProps) {
   const Icon = type === "education" ? GraduationCap : Calendar;
+  const [imageError, setImageError] = useState(false);
 
   return (
     <div className="relative flex items-start space-x-6 mb-8">
       {/* Timeline Line */}
       <div className="flex flex-col items-center">
-        <div className="w-14 h-14 bg-gradient-to-r from-primary to-cyan-500 rounded-2xl flex items-center justify-center shadow-lg">
-          <Icon className="h-7 w-7 text-white" />
+        <div className="w-14 h-14 bg-gradient-to-r from-primary to-cyan-500 rounded-2xl flex items-center justify-center shadow-lg overflow-hidden">
+          {item.logoUrl && !imageError ? (
+            <Image
+              src={item.logoUrl}
+              alt={
+                type === "education"
+                  ? item.institution || "Institution logo"
+                  : item.company || "Company logo"
+              }
+              width={56}
+              height={56}
+              className="w-full h-full object-cover rounded-2xl"
+              onError={() => setImageError(true)}
+            />
+          ) : (
+            <Icon className="h-7 w-7 text-white" />
+          )}
         </div>
         <div className="w-0.5 h-full bg-gradient-to-b from-primary/50 to-transparent mt-4"></div>
       </div>

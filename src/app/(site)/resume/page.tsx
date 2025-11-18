@@ -22,6 +22,7 @@ async function getEducation() {
     return education.map((edu) => ({
       ...edu,
       description: edu.description || undefined,
+      logoUrl: edu.logoUrl || undefined,
     }));
   } catch (error) {
     console.error("Error fetching education:", error);
@@ -34,7 +35,10 @@ async function getExperience() {
     const experience = await db.experience.findMany({
       orderBy: { startDate: "desc" },
     });
-    return experience;
+    return experience.map((exp) => ({
+      ...exp,
+      logoUrl: exp.logoUrl || undefined,
+    }));
   } catch (error) {
     console.error("Error fetching experience:", error);
     return [];

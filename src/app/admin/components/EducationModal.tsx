@@ -1,6 +1,6 @@
+import { ImageUpload } from "@/components/ImageUpload";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ImageUpload } from "@/components/ImageUpload";
 import { useEffect, useState } from "react";
 import type { Education } from "../hooks/useAdminData";
 
