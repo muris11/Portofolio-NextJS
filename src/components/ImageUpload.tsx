@@ -33,12 +33,14 @@ export function ImageUpload({
     // Validate file type
     if (!file.type.startsWith("image/")) {
       alert("Please select an image file");
+      event.target.value = "";
       return;
     }
 
     // Validate file size (max 5MB)
     if (file.size > 5 * 1024 * 1024) {
       alert("File size must be less than 5MB");
+      event.target.value = "";
       return;
     }
 
@@ -61,6 +63,9 @@ export function ImageUpload({
       const data = await response.json();
       setPreview(data.url);
       onChange(data.url);
+      
+      // Clear file input after successful upload
+      event.target.value = "";
     } catch (error) {
       console.error("Upload error:", error);
       alert(
@@ -68,18 +73,22 @@ export function ImageUpload({
           error instanceof Error ? error.message : "Unknown error"
         }`
       );
+      // Clear file input on error
+      event.target.value = "";
     } finally {
       setIsUploading(false);
-      // Reset file input after upload
-      if (fileInputRef.current) {
-        fileInputRef.current.value = "";
-      }
     }
   };
 
-  const handleButtonClick = () => {
+  const handleButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
     if (isUploading) return;
-    fileInputRef.current?.click();
+    
+    // Use requestAnimationFrame to avoid blocking the main thread
+    requestAnimationFrame(() => {
+      fileInputRef.current?.click();
+    });
   };
 
   const handleRemove = () => {
@@ -125,10 +134,14 @@ export function ImageUpload({
           <input
             ref={fileInputRef}
             type="file"
-            accept="image/*"
+            accept="image/jpeg,image/png,image/gif,image/webp"
             onChange={handleFileSelect}
             className="hidden"
             disabled={isUploading}
+            onClick={(e) => {
+              // Reset value on click to allow re-selecting the same file
+              e.currentTarget.value = '';
+            }}
           />
           <button
             type="button"
