@@ -17,6 +17,7 @@ export function ImageUpload({
 }: ImageUploadProps) {
   const [isUploading, setIsUploading] = useState(false);
   const [preview, setPreview] = useState<string | null>(value || null);
+  const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Update preview when value prop changes
@@ -30,17 +31,22 @@ export function ImageUpload({
     const file = event.target.files?.[0];
     if (!file) return;
 
+    await processFile(file);
+    
+    // Clear file input
+    event.target.value = "";
+  };
+
+  const processFile = async (file: File) => {
     // Validate file type
     if (!file.type.startsWith("image/")) {
-      alert("Please select an image file");
-      event.target.value = "";
+      alert("Hanya file gambar yang diperbolehkan");
       return;
     }
 
     // Validate file size (max 5MB)
     if (file.size > 5 * 1024 * 1024) {
-      alert("File size must be less than 5MB");
-      event.target.value = "";
+      alert("Ukuran file maksimal 5MB");
       return;
     }
 
@@ -63,18 +69,13 @@ export function ImageUpload({
       const data = await response.json();
       setPreview(data.url);
       onChange(data.url);
-      
-      // Clear file input after successful upload
-      event.target.value = "";
     } catch (error) {
       console.error("Upload error:", error);
       alert(
-        `Failed to upload image: ${
+        `Gagal upload gambar: ${
           error instanceof Error ? error.message : "Unknown error"
         }`
       );
-      // Clear file input on error
-      event.target.value = "";
     } finally {
       setIsUploading(false);
     }
@@ -85,13 +86,37 @@ export function ImageUpload({
     e.stopPropagation();
     if (isUploading) return;
     
-    // Use requestAnimationFrame to avoid blocking the main thread
-    requestAnimationFrame(() => {
-      fileInputRef.current?.click();
-    });
+    fileInputRef.current?.click();
   };
 
-  const handleRemove = () => {
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+  };
+
+  const handleDrop = async (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+
+    if (isUploading) return;
+
+    const files = e.dataTransfer.files;
+    if (files && files[0]) {
+      await processFile(files[0]);
+    }
+  };
+
+  const handleRemove = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
     setPreview(null);
     onChange("");
     if (fileInputRef.current) {
@@ -107,58 +132,74 @@ export function ImageUpload({
         </label>
       )}
 
-      <div className="flex items-center space-x-4">
-        {/* Preview */}
-        {preview && (
-          <div className="relative">
-            <Image
-              src={preview}
-              alt="Logo preview"
-              width={64}
-              height={64}
-              className="w-16 h-16 object-contain rounded-lg border border-gray-600"
+      {/* Drag & Drop Area */}
+      <div
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
+        className={`
+          border-2 border-dashed rounded-lg p-4 transition-all
+          ${isDragging ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20' : 'border-gray-600 hover:border-gray-500'}
+          ${isUploading ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
+        `}
+      >
+        <div className="flex items-center space-x-4">
+          {/* Preview */}
+          {preview && (
+            <div className="relative flex-shrink-0">
+              <Image
+                src={preview}
+                alt="Logo preview"
+                width={64}
+                height={64}
+                className="w-16 h-16 object-contain rounded-lg border border-gray-600"
+              />
+              <button
+                type="button"
+                onClick={handleRemove}
+                className="absolute -top-2 -right-2 bg-red-600 hover:bg-red-700 text-white rounded-full p-1 text-xs"
+                title="Remove logo"
+              >
+                <X className="w-3 h-3" />
+              </button>
+            </div>
+          )}
+
+          {/* Upload Button */}
+          <div className="flex-1">
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/jpeg,image/png,image/gif,image/webp"
+              onChange={handleFileSelect}
+              className="hidden"
+              disabled={isUploading}
             />
             <button
               type="button"
-              onClick={handleRemove}
-              className="absolute -top-2 -right-2 bg-red-600 hover:bg-red-700 text-white rounded-full p-1 text-xs"
-              title="Remove logo"
+              onClick={handleButtonClick}
+              disabled={isUploading}
+              className="w-full flex items-center justify-center space-x-2 px-4 py-2 bg-gray-700 hover:bg-gray-600 disabled:bg-gray-800 disabled:cursor-not-allowed text-white rounded-lg transition-colors"
             >
-              <X className="w-3 h-3" />
+              <Upload className="w-4 h-4" />
+              <span>{isUploading ? "Uploading..." : placeholder}</span>
             </button>
           </div>
-        )}
-
-        {/* Upload Button */}
-        <div>
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept="image/jpeg,image/png,image/gif,image/webp"
-            onChange={handleFileSelect}
-            className="hidden"
-            disabled={isUploading}
-            onClick={(e) => {
-              // Reset value on click to allow re-selecting the same file
-              e.currentTarget.value = '';
-            }}
-          />
-          <button
-            type="button"
-            onClick={handleButtonClick}
-            disabled={isUploading}
-            className="flex items-center space-x-2 px-4 py-2 bg-gray-700 hover:bg-gray-600 disabled:bg-gray-800 disabled:cursor-not-allowed text-white rounded-lg transition-colors"
-          >
-            <Upload className="w-4 h-4" />
-            <span>{isUploading ? "Uploading..." : placeholder}</span>
-          </button>
         </div>
-      </div>
 
-      {/* Helper text */}
-      <p className="text-xs text-gray-500">
-        Max file size: 5MB. Supported formats: JPG, PNG, GIF, WebP
-      </p>
+        {/* Helper text */}
+        <p className="text-xs text-gray-500 mt-2 text-center">
+          {isDragging ? (
+            <span className="text-blue-600 dark:text-blue-400 font-medium">
+              Drop gambar di sini
+            </span>
+          ) : (
+            <span>
+              Drag & drop atau klik untuk upload. Max 5MB (JPG, PNG, GIF, WebP)
+            </span>
+          )}
+        </p>
+      </div>
     </div>
   );
 }
