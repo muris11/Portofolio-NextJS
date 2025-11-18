@@ -27,7 +27,7 @@ export default function TimelineItem({ item, type }: TimelineItemProps) {
     <div className="relative flex items-start space-x-6 mb-8">
       {/* Timeline Line */}
       <div className="flex flex-col items-center">
-        <div className="w-16 h-16 sm:w-18 sm:h-18 lg:w-20 lg:h-20 bg-gradient-to-r from-primary to-cyan-500 rounded-2xl flex items-center justify-center shadow-lg overflow-hidden">
+        <div className="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 bg-gradient-to-r from-primary to-cyan-500 rounded-2xl flex items-center justify-center shadow-lg overflow-hidden">
           {item.logoUrl && !imageError ? (
             <Image
               src={item.logoUrl}
