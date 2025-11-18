@@ -177,13 +177,13 @@ export default async function ProjectsPage() {
                 </p>
               </div>
 
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10">
+              <div className="grid grid-cols-1 gap-8 lg:gap-10">
                 {regularProjects.map((project, index) => (
                   <div
                     key={project.id}
                     className="animate-in fade-in slide-in-from-bottom-4 duration-700 ease-out"
                     style={{
-                      animationDelay: `${index * 150}ms`,
+                      animationDelay: `${index * 200}ms`,
                       animationFillMode: "both",
                     }}
                   >
