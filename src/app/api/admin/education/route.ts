@@ -20,7 +20,8 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { institution, degree, startDate, endDate, description } = body;
+    const { institution, degree, startDate, endDate, description, logoUrl } =
+      body;
 
     // Validasi input
     if (!institution || !degree || !startDate || !endDate) {
@@ -37,6 +38,7 @@ export async function POST(request: NextRequest) {
         startDate,
         endDate,
         description: description || null,
+        logoUrl: logoUrl || null,
       },
     });
 
@@ -58,7 +60,15 @@ export async function POST(request: NextRequest) {
 export async function PUT(request: NextRequest) {
   try {
     const body = await request.json();
-    const { id, institution, degree, startDate, endDate, description } = body;
+    const {
+      id,
+      institution,
+      degree,
+      startDate,
+      endDate,
+      description,
+      logoUrl,
+    } = body;
 
     if (!id) {
       return NextResponse.json(
@@ -75,6 +85,7 @@ export async function PUT(request: NextRequest) {
         startDate,
         endDate,
         description: description || null,
+        logoUrl: logoUrl || null,
       },
     });
 

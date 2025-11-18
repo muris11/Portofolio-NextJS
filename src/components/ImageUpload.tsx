@@ -57,7 +57,11 @@ export function ImageUpload({
       onChange(data.url);
     } catch (error) {
       console.error("Upload error:", error);
-      alert("Failed to upload image. Please try again.");
+      alert(
+        `Failed to upload image. Please try again. ${
+          error instanceof Error ? error.message : ""
+        }`
+      );
     } finally {
       setIsUploading(false);
     }
