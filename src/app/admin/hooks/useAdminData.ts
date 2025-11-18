@@ -35,6 +35,7 @@ export interface Education {
   startDate: string;
   endDate: string;
   description?: string;
+  logoUrl?: string;
 }
 
 export interface Experience {
@@ -44,6 +45,7 @@ export interface Experience {
   description: string;
   startDate: string;
   endDate: string;
+  logoUrl?: string;
 }
 
 export interface ContactMessage {

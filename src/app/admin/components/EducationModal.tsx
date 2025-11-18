@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { ImageUpload } from "@/components/ImageUpload";
 import { useEffect, useState } from "react";
 import type { Education } from "../hooks/useAdminData";
 
@@ -22,6 +23,7 @@ export function EducationModal({
     startDate: "",
     endDate: "",
     description: "",
+    logoUrl: "",
   });
   const [isLoading, setIsLoading] = useState(false);
 
@@ -33,6 +35,7 @@ export function EducationModal({
         startDate: _education.startDate,
         endDate: _education.endDate,
         description: _education.description || "",
+        logoUrl: _education.logoUrl || "",
       });
     } else {
       setFormData({
@@ -41,6 +44,7 @@ export function EducationModal({
         startDate: "",
         endDate: "",
         description: "",
+        logoUrl: "",
       });
     }
   }, [_education, isOpen]);
@@ -139,6 +143,13 @@ export function EducationModal({
               rows={3}
             />
           </div>
+
+          <ImageUpload
+            value={formData.logoUrl}
+            onChange={(url) => handleChange("logoUrl", url)}
+            label="Logo Institusi"
+            placeholder="Upload logo universitas/sekolah"
+          />
 
           <div className="flex justify-end space-x-3 pt-4">
             <Button

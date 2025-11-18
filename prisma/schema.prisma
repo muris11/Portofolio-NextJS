@@ -45,6 +45,7 @@ model Education {
   startDate   String   // cth: "2018"
   endDate     String   // cth: "2022" atau "Sekarang"
   description String?  // Deskripsi tambahan
+  logoUrl     String?  // URL logo sekolah/universitas
 }
 
 // Riwayat Pekerjaan
@@ -55,6 +56,7 @@ model Experience {
   description String
   startDate   String   // cth: "Jan 2023"
   endDate     String   // cth: "Mar 2023" atau "Sekarang"
+  logoUrl     String?  // URL logo perusahaan
 }
 
 // Data personal untuk halaman About

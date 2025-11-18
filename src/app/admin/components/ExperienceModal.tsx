@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { ImageUpload } from "@/components/ImageUpload";
 import { useEffect, useState } from "react";
 import type { Experience } from "../hooks/useAdminData";
 
@@ -22,6 +23,7 @@ export function ExperienceModal({
     startDate: "",
     endDate: "",
     description: "",
+    logoUrl: "",
   });
   const [isLoading, setIsLoading] = useState(false);
 
@@ -33,6 +35,7 @@ export function ExperienceModal({
         startDate: _experience.startDate,
         endDate: _experience.endDate,
         description: _experience.description,
+        logoUrl: _experience.logoUrl || "",
       });
     } else {
       setFormData({
@@ -41,6 +44,7 @@ export function ExperienceModal({
         startDate: "",
         endDate: "",
         description: "",
+        logoUrl: "",
       });
     }
   }, [_experience, isOpen]);
@@ -140,6 +144,13 @@ export function ExperienceModal({
               required
             />
           </div>
+
+          <ImageUpload
+            value={formData.logoUrl}
+            onChange={(url) => handleChange("logoUrl", url)}
+            label="Logo Perusahaan"
+            placeholder="Upload logo perusahaan"
+          />
 
           <div className="flex justify-end space-x-3 pt-4">
             <Button
