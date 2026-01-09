@@ -1,4 +1,4 @@
-import ProjectCard from "@/components/ProjectCard";
+import ProjectsGrid from "@/app/(site)/projects/ProjectsGrid";
 import SkillIcon from "@/components/SkillIcon";
 import StructuredData, {
     generatePersonStructuredData,
@@ -253,13 +253,7 @@ export default async function Home() {
               </h2>
             </div>
 
-            <div className="grid grid-cols-2 gap-3 sm:gap-6 lg:gap-12">
-              {featuredProjects.map((project) => (
-                <div key={project.id} className="h-full">
-                  <ProjectCard project={project} />
-                </div>
-              ))}
-            </div>
+            <ProjectsGrid projects={featuredProjects} />
 
             <div className="text-center mt-16">
               <Link
