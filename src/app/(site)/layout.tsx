@@ -86,7 +86,7 @@ export default function SiteLayout({
   return (
     <>
       <Navbar />
-      <main className="pt-16">{children}</main>
+      <main className="pt-[var(--header-height)]">{children}</main>
       <Footer />
     </>
   );

@@ -56,58 +56,56 @@ export function ConfirmDialog({
 
   const variantStyles = {
     danger: {
-      icon: "text-red-500",
-      button: "bg-red-600 hover:bg-red-700 focus:ring-red-500",
-      border: "border-red-200 dark:border-red-800",
-      bg: "bg-red-50 dark:bg-red-900/20",
+      icon: "text-black",
+      button: "bg-red-500 hover:bg-red-400 text-black",
+      border: "border-black",
+      bg: "bg-red-100",
     },
     warning: {
-      icon: "text-yellow-500",
-      button: "bg-yellow-600 hover:bg-yellow-700 focus:ring-yellow-500",
-      border: "border-yellow-200 dark:border-yellow-800",
-      bg: "bg-yellow-50 dark:bg-yellow-900/20",
+      icon: "text-black",
+      button: "bg-yellow-400 hover:bg-yellow-300 text-black",
+      border: "border-black",
+      bg: "bg-yellow-100",
     },
     info: {
-      icon: "text-blue-500",
-      button: "bg-blue-600 hover:bg-blue-700 focus:ring-blue-500",
-      border: "border-blue-200 dark:border-blue-800",
-      bg: "bg-blue-50 dark:bg-blue-900/20",
+      icon: "text-black",
+      button: "bg-blue-400 hover:bg-blue-300 text-black",
+      border: "border-black",
+      bg: "bg-blue-100",
     },
   };
 
   const styles = variantStyles[variant];
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black bg-opacity-50">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
       <div
-        className={`w-full max-w-md bg-white dark:bg-gray-800 rounded-2xl border ${styles.border} shadow-2xl transform transition-all`}
+        className={`w-full max-w-md bg-white border-4 border-black shadow-neo-lg transform transition-all`}
         role="dialog"
         aria-modal="true"
         aria-labelledby="confirm-title"
         aria-describedby="confirm-message"
       >
         {/* Header */}
-        <div className={`p-6 ${styles.bg} rounded-t-2xl`}>
+        <div className={`p-6 ${styles.bg} border-b-4 border-black`}>
           <div className="flex items-center space-x-4">
-            <div
-              className={`p-3 rounded-full bg-white dark:bg-gray-700 shadow-lg`}
-            >
+            <div className={`p-3 border-2 border-black bg-white shadow-neo-sm`}>
               <AlertTriangle className={`h-6 w-6 ${styles.icon}`} />
             </div>
             <div className="flex-1">
               <h3
                 id="confirm-title"
-                className="text-lg font-semibold text-gray-900 dark:text-white"
+                className="text-xl font-black uppercase text-black"
               >
                 {title}
               </h3>
             </div>
             <button
               onClick={onCancel}
-              className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+              className="p-2 border-2 border-transparent hover:border-black hover:bg-white hover:shadow-neo transition-all active:translate-x-[2px] active:translate-y-[2px] active:shadow-none"
               aria-label="Close dialog"
             >
-              <X className="h-5 w-5 text-gray-500 dark:text-gray-400" />
+              <X className="h-6 w-6 text-black" />
             </button>
           </div>
         </div>
@@ -116,29 +114,29 @@ export function ConfirmDialog({
         <div className="p-6">
           <p
             id="confirm-message"
-            className="text-gray-600 dark:text-gray-300 leading-relaxed"
+            className="text-black font-medium text-lg leading-relaxed"
           >
             {message}
           </p>
         </div>
 
         {/* Actions */}
-        <div className="px-6 pb-6 flex space-x-3 justify-end">
+        <div className="px-6 pb-6 flex space-x-4 justify-end">
           <button
             id="confirm-cancel"
             onClick={onCancel}
             disabled={isLoading}
-            className="px-4 py-2 text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="px-6 py-3 font-bold uppercase border-4 border-black bg-white hover:bg-gray-100 shadow-neo active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {cancelButtonText}
           </button>
           <button
             onClick={onConfirm}
             disabled={isLoading}
-            className={`px-4 py-2 text-white ${styles.button} rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2`}
+            className={`px-6 py-3 font-bold uppercase border-4 border-black shadow-neo active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2 ${styles.button}`}
           >
             {isLoading && (
-              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+              <div className="w-4 h-4 border-2 border-black border-t-transparent rounded-full animate-spin"></div>
             )}
             <span>{confirmButtonText}</span>
           </button>

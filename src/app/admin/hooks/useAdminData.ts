@@ -310,13 +310,23 @@ export function useAdminData() {
     return false;
   };
 
-  const handleSaveSkill = async (skillData: Partial<Skill>) => {
+  const handleSaveSkill = async (skillData: Partial<Skill> | FormData) => {
     try {
-      const response = await fetch("/api/admin/skills", {
-        method: skillData.id ? "PUT" : "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(skillData),
-      });
+      let response: Response;
+
+      if (skillData instanceof FormData) {
+        const hasId = skillData.has("id");
+        response = await fetch("/api/admin/skills", {
+          method: hasId ? "PUT" : "POST",
+          body: skillData,
+        });
+      } else {
+        response = await fetch("/api/admin/skills", {
+          method: skillData.id ? "PUT" : "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(skillData),
+        });
+      }
 
       if (response.ok) {
         await fetchSkills();
@@ -341,13 +351,25 @@ export function useAdminData() {
     return false;
   };
 
-  const handleSaveEducation = async (educationData: Partial<Education>) => {
+  const handleSaveEducation = async (
+    educationData: Partial<Education> | FormData
+  ) => {
     try {
-      const response = await fetch("/api/admin/education", {
-        method: educationData.id ? "PUT" : "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(educationData),
-      });
+      let response: Response;
+
+      if (educationData instanceof FormData) {
+        const hasId = educationData.has("id");
+        response = await fetch("/api/admin/education", {
+          method: hasId ? "PUT" : "POST",
+          body: educationData,
+        });
+      } else {
+        response = await fetch("/api/admin/education", {
+          method: educationData.id ? "PUT" : "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(educationData),
+        });
+      }
 
       if (response.ok) {
         await fetchEducation();
@@ -372,13 +394,25 @@ export function useAdminData() {
     return false;
   };
 
-  const handleSaveExperience = async (experienceData: Partial<Experience>) => {
+  const handleSaveExperience = async (
+    experienceData: Partial<Experience> | FormData
+  ) => {
     try {
-      const response = await fetch("/api/admin/experience", {
-        method: experienceData.id ? "PUT" : "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(experienceData),
-      });
+      let response: Response;
+
+      if (experienceData instanceof FormData) {
+        const hasId = experienceData.has("id");
+        response = await fetch("/api/admin/experience", {
+          method: hasId ? "PUT" : "POST",
+          body: experienceData,
+        });
+      } else {
+        response = await fetch("/api/admin/experience", {
+          method: experienceData.id ? "PUT" : "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(experienceData),
+        });
+      }
 
       if (response.ok) {
         await fetchExperience();

@@ -1,14 +1,14 @@
 "use client";
 import {
-  Briefcase,
-  Code,
-  GraduationCap,
-  LayoutDashboard,
-  Mail,
-  Menu,
-  User,
-  Users,
-  X,
+    Briefcase,
+    Code,
+    GraduationCap,
+    LayoutDashboard,
+    Mail,
+    Menu,
+    User,
+    Users,
+    X,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { DashboardSection } from "./components/DashboardSection";
@@ -80,20 +80,22 @@ export default function AdminPage() {
     return (
       <div className="flex items-center justify-center py-20">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600 dark:text-gray-400">Loading...</p>
+          <div className="animate-spin h-12 w-12 border-4 border-black border-t-transparent rounded-full mx-auto"></div>
+          <p className="mt-4 text-black font-bold uppercase tracking-wide">
+            Loading...
+          </p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="bg-gradient-to-br from-gray-50 via-white to-gray-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-900">
-      <div className="flex h-[calc(100vh-8rem)]">
+    <div className="bg-neo-canvas h-full flex flex-col">
+      <div className="flex flex-1 overflow-hidden">
         {/* Mobile sidebar overlay */}
         {sidebarOpen && (
           <div
-            className="fixed inset-0 z-40 bg-black bg-opacity-50 lg:hidden"
+            className="fixed inset-0 z-40 bg-black/50 lg:hidden"
             onClick={() => setSidebarOpen(false)}
             aria-hidden="true"
           />
@@ -101,7 +103,7 @@ export default function AdminPage() {
 
         {/* Sidebar */}
         <div
-          className={`fixed top-16 lg:top-18 left-0 z-[60] w-72 h-[calc(100vh-6rem)] lg:h-[calc(100vh-8.5rem)] bg-white dark:bg-gray-900 shadow-2xl border-r border-gray-200 dark:border-gray-800 flex flex-col transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 ${
+          className={`fixed inset-y-0 left-0 z-[60] w-72 bg-white border-r-4 border-black flex flex-col transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:h-full lg:z-auto ${
             sidebarOpen ? "translate-x-0" : "-translate-x-full"
           }`}
           id="admin-sidebar"
@@ -109,27 +111,27 @@ export default function AdminPage() {
           aria-label="Admin panel sidebar"
         >
           {/* Header */}
-          <div className="p-6 border-b border-gray-200 dark:border-gray-800">
+          <div className="p-6 border-b-4 border-black bg-neo-secondary flex-none">
             <div className="flex items-center justify-between lg:justify-center">
               <div className="flex items-center space-x-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg">
-                  <LayoutDashboard className="h-7 w-7 text-white" />
+                <div className="w-12 h-12 bg-white border-4 border-black flex items-center justify-center shadow-neo">
+                  <LayoutDashboard className="h-6 w-6 text-black" />
                 </div>
                 <div className="hidden lg:block">
-                  <h1 className="text-xl font-bold text-gray-900 dark:text-white">
+                  <h1 className="text-xl font-black uppercase tracking-tighter">
                     Admin Panel
                   </h1>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
-                    Rifqy.Dev Management
+                  <p className="text-xs font-bold uppercase tracking-wide">
+                    Management
                   </p>
                 </div>
               </div>
               <button
                 onClick={() => setSidebarOpen(false)}
-                className="lg:hidden p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                className="lg:hidden p-2 border-2 border-black bg-white hover:bg-red-500 hover:text-white transition-colors"
                 aria-label="Close navigation menu"
               >
-                <X className="h-6 w-6 text-gray-500 dark:text-gray-400" />
+                <X className="h-6 w-6" />
               </button>
             </div>
           </div>
@@ -140,7 +142,7 @@ export default function AdminPage() {
             role="navigation"
             aria-label="Admin panel navigation"
           >
-            <div className="space-y-2">
+            <div className="space-y-3">
               {[
                 { id: "overview", label: "Overview", icon: LayoutDashboard },
                 { id: "projects", label: "Projects", icon: Code },
@@ -159,35 +161,18 @@ export default function AdminPage() {
                       setActiveTab(item.id);
                       setSidebarOpen(false);
                     }}
-                    className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 group ${
+                    className={`w-full flex items-center space-x-3 px-4 py-3 border-4 border-black transition-all duration-200 group ${
                       isActive
-                        ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-500/25"
-                        : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white"
+                        ? "bg-neo-accent shadow-neo translate-x-[-2px] translate-y-[-2px]"
+                        : "bg-white hover:bg-neo-secondary hover:shadow-neo hover:translate-x-[-2px] hover:translate-y-[-2px]"
                     }`}
                     aria-current={isActive ? "page" : undefined}
                     aria-label={`Navigate to ${item.label} section`}
                   >
-                    <div
-                      className={`p-1 rounded-lg transition-colors ${
-                        isActive
-                          ? "bg-white/20"
-                          : "bg-gray-100 dark:bg-gray-800 group-hover:bg-gray-200 dark:group-hover:bg-gray-700"
-                      }`}
-                    >
-                      <Icon
-                        className={`h-5 w-5 ${
-                          isActive
-                            ? "text-white"
-                            : "text-gray-600 dark:text-gray-400"
-                        }`}
-                      />
-                    </div>
-                    <span className="font-medium text-left flex-1">
+                    <Icon className="h-5 w-5 text-black" />
+                    <span className="font-bold uppercase tracking-wide flex-1 text-left text-black">
                       {item.label}
                     </span>
-                    {isActive && (
-                      <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
-                    )}
                   </button>
                 );
               })}
@@ -197,28 +182,28 @@ export default function AdminPage() {
 
         {/* Main Content */}
         <div
-          className="flex-1 overflow-auto"
+          className="flex-1 overflow-y-auto bg-neo-canvas"
           role="main"
           aria-label="Admin panel content"
         >
           {/* Mobile header */}
-          <div className="lg:hidden bg-white dark:bg-gray-800 border-b border-gray-200/50 dark:border-gray-700/50 px-4 py-3 flex items-center justify-between">
+          <div className="lg:hidden bg-white border-b-4 border-black px-4 py-3 flex items-center justify-between sticky top-0 z-30">
             <button
               onClick={() => setSidebarOpen(true)}
-              className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+              className="p-2 border-2 border-black bg-white shadow-neo active:shadow-none transition-all"
               aria-label="Open navigation menu"
               aria-expanded={sidebarOpen}
               aria-controls="admin-sidebar"
             >
-              <Menu className="h-5 w-5 text-gray-600 dark:text-gray-400" />
+              <Menu className="h-5 w-5 text-black" />
             </button>
-            <h1 className="text-lg font-semibold text-gray-900 dark:text-white">
-              {activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}
+            <h1 className="text-lg font-black uppercase tracking-tighter">
+              {activeTab}
             </h1>
             <div className="w-9" /> {/* Spacer for centering */}
           </div>
 
-          <div className="p-8">
+          <div className="p-8 pb-20">
             {/* Content based on active tab */}
             {activeTab === "overview" && (
               <DashboardSection

@@ -50,17 +50,16 @@ export default async function Footer() {
   ];
 
   return (
-    <footer className="bg-slate-900 border-t border-slate-800">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+    <footer className="bg-neo-secondary border-t-4 border-black text-black">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Brand & About */}
-          <div className="lg:col-span-2">
-            <h3 className="text-2xl font-bold text-white mb-4">
+          <div className="lg:col-span-2 space-y-6">
+            <h3 className="text-4xl font-black uppercase tracking-tighter">
               {profile?.fullName || "Rifqy.Dev"}
             </h3>
-            <p className="text-gray-400 leading-relaxed mb-6 max-w-md">
-              {profile?.bio ||
-                "A passionate developer creating innovative solutions and beautiful user experiences. Let's build something amazing together."}
+            <p className="text-lg font-medium leading-relaxed max-w-md border-l-4 border-black pl-4">
+              The official portfolio website of Muhammad Rifqy Saputra.
             </p>
             <div className="flex space-x-4">
               {socialLinks.map((social) => {
@@ -69,12 +68,12 @@ export default async function Footer() {
                   <Link
                     key={social.label}
                     href={social.href}
-                    className="text-gray-400"
+                    className="p-3 border-4 border-black bg-white shadow-neo hover:-translate-y-1 hover:shadow-neo-lg transition-all"
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={social.label}
                   >
-                    <Icon className="h-5 w-5" />
+                    <Icon className="h-6 w-6" />
                   </Link>
                 );
               })}
@@ -83,13 +82,16 @@ export default async function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-lg font-semibold text-white mb-4">
+            <h4 className="text-xl font-black uppercase tracking-widest mb-6 border-b-4 border-black inline-block">
               Navigation
             </h4>
             <ul className="space-y-3">
               {navigationLinks.map((link) => (
                 <li key={link.name}>
-                  <Link href={link.href} className="text-gray-400 text-sm">
+                  <Link
+                    href={link.href}
+                    className="text-lg font-bold hover:underline decoration-4 underline-offset-4"
+                  >
                     {link.name}
                   </Link>
                 </li>
@@ -99,11 +101,13 @@ export default async function Footer() {
 
           {/* Services */}
           <div>
-            <h4 className="text-lg font-semibold text-white mb-4">Services</h4>
+            <h4 className="text-xl font-black uppercase tracking-widest mb-6 border-b-4 border-black inline-block">
+              Services
+            </h4>
             <ul className="space-y-3">
               {services.map((service) => (
                 <li key={service}>
-                  <span className="text-gray-400 text-sm">{service}</span>
+                  <span className="text-lg font-bold">{service}</span>
                 </li>
               ))}
             </ul>
@@ -111,32 +115,38 @@ export default async function Footer() {
         </div>
 
         {/* Contact Info */}
-        <div className="border-t border-slate-800 mt-8 pt-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div className="border-t-4 border-black mt-12 pt-12">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
             {profile?.email && (
-              <div className="flex items-center space-x-3 text-gray-400">
-                <Mail className="h-4 w-4" />
-                <span className="text-sm">{profile.email}</span>
+              <div className="flex items-center space-x-3 font-bold">
+                <div className="p-2 border-2 border-black bg-white">
+                  <Mail className="h-5 w-5" />
+                </div>
+                <span>{profile.email}</span>
               </div>
             )}
             {profile?.phone && (
-              <div className="flex items-center space-x-3 text-gray-400">
-                <Phone className="h-4 w-4" />
-                <span className="text-sm">{profile.phone}</span>
+              <div className="flex items-center space-x-3 font-bold">
+                <div className="p-2 border-2 border-black bg-white">
+                  <Phone className="h-5 w-5" />
+                </div>
+                <span>{profile.phone}</span>
               </div>
             )}
             {profile?.location && (
-              <div className="flex items-center space-x-3 text-gray-400">
-                <MapPin className="h-4 w-4" />
-                <span className="text-sm">{profile.location}</span>
+              <div className="flex items-center space-x-3 font-bold">
+                <div className="p-2 border-2 border-black bg-white">
+                  <MapPin className="h-5 w-5" />
+                </div>
+                <span>{profile.location}</span>
               </div>
             )}
           </div>
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-center items-center">
-          <p className="text-gray-400 text-sm mb-4 md:mb-0 text-center">
+        <div className="border-t-4 border-black pt-8 flex flex-col md:flex-row justify-center items-center">
+          <p className="font-bold text-center uppercase tracking-wide">
             © {currentYear} {profile?.fullName || "Rifqy.Dev"}. All rights
             reserved.
           </p>

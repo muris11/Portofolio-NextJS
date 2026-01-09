@@ -1,3 +1,4 @@
+import { AdminSectionSkeleton } from "@/components/skeletons";
 import { User } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -6,10 +7,15 @@ import type { Profile } from "../hooks/useAdminData";
 interface ProfileSectionProps {
   profile: Profile | null;
   onSave: (_data: FormData | Partial<Profile>) => Promise<boolean>;
+  isLoading?: boolean;
 }
 
-export function ProfileSection({ profile, onSave }: ProfileSectionProps) {
-  const [isLoading, setIsLoading] = useState(false);
+export function ProfileSection({
+  profile,
+  onSave,
+  isLoading = false,
+}: ProfileSectionProps) {
+  const [isSaving, setIsSaving] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(
     profile?.profileImage || null
@@ -33,7 +39,7 @@ export function ProfileSection({ profile, onSave }: ProfileSectionProps) {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsLoading(true);
+    setIsSaving(true);
 
     const formData = new FormData(e.currentTarget);
 
@@ -85,321 +91,322 @@ export function ProfileSection({ profile, onSave }: ProfileSectionProps) {
       await onSave(data);
     }
 
-    setIsLoading(false);
+    setIsSaving(false);
   };
 
   return (
-    <div className="space-y-4 animate-in fade-in-50 duration-500">
-      {/* Header Section */}
-      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 p-6 bg-gradient-to-br from-green-50 via-white to-emerald-50 dark:from-green-950/20 dark:via-gray-900 dark:to-emerald-950/20 rounded-2xl border border-green-100/50 dark:border-green-900/20">
-        <div className="space-y-2">
-          <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center shadow-lg">
-              <User className="h-5 w-5 text-white" />
-            </div>
-            <div>
-              <h2 className="text-2xl lg:text-3xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
-                Manage Profile
-              </h2>
-              <p className="text-gray-600 dark:text-gray-400 text-sm lg:text-base">
-                Update your personal information and contact details
-              </p>
-            </div>
-          </div>
-          <div className="flex items-center space-x-4 text-sm">
-            <div className="flex items-center space-x-2">
-              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-              <span className="text-gray-600 dark:text-gray-400">
-                Complete Profile
-              </span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
-              <span className="text-gray-600 dark:text-gray-400">
-                {profile?.githubUrl ||
-                profile?.linkedinUrl ||
-                profile?.instagramUrl
-                  ? "Social Media"
-                  : "Not Connected"}
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Profile Form */}
-      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200/50 dark:border-gray-700/50 p-8">
-        {profile ? (
-          <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Personal Information */}
-            <div className="space-y-6">
-              <div className="flex items-center space-x-3 pb-4 border-b border-gray-200 dark:border-gray-700">
-                <div className="w-8 h-8 bg-gradient-to-br from-green-500 to-emerald-600 rounded-lg flex items-center justify-center">
-                  <User className="h-4 w-4 text-white" />
+    <div className="space-y-8 animate-in fade-in-50 duration-500">
+      {isLoading ? (
+        <AdminSectionSkeleton />
+      ) : (
+        <>
+          {/* Header Section */}
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 p-6 bg-green-200 border-4 border-black shadow-neo">
+            <div className="space-y-2">
+              <div className="flex items-center space-x-3">
+                <div className="w-12 h-12 bg-white border-2 border-black flex items-center justify-center shadow-neo-sm">
+                  <User className="h-6 w-6 text-black" />
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                  Personal Information
-                </h3>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
-                    Full Name *
-                  </label>
-                  <input
-                    type="text"
-                    name="fullName"
-                    defaultValue={profile.fullName}
-                    required
-                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 dark:bg-gray-700 dark:text-white transition-all duration-200"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
-                    Title/Position *
-                  </label>
-                  <input
-                    type="text"
-                    name="title"
-                    defaultValue={profile.title}
-                    required
-                    placeholder="Full Stack Developer"
-                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 dark:bg-gray-700 dark:text-white transition-all duration-200"
-                  />
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
-                  Bio *
-                </label>
-                <textarea
-                  name="bio"
-                  defaultValue={profile.bio}
-                  required
-                  rows={4}
-                  placeholder="Brief description about yourself..."
-                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 dark:bg-gray-700 dark:text-white transition-all duration-200 resize-none"
-                />
-              </div>
-            </div>
-
-            {/* Contact Information */}
-            <div className="space-y-6">
-              <div className="flex items-center space-x-3 pb-4 border-b border-gray-200 dark:border-gray-700">
-                <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center">
-                  <svg
-                    className="h-4 w-4 text-white"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                    />
-                  </svg>
-                </div>
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                  Contact Information
-                </h3>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
-                    Email *
-                  </label>
-                  <input
-                    type="email"
-                    name="email"
-                    defaultValue={profile.email}
-                    required
-                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white transition-all duration-200"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
-                    Phone
-                  </label>
-                  <input
-                    type="tel"
-                    name="phone"
-                    defaultValue={profile.phone}
-                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white transition-all duration-200"
-                  />
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
-                  Location
-                </label>
-                <input
-                  type="text"
-                  name="location"
-                  defaultValue={profile.location}
-                  placeholder="Jakarta, Indonesia"
-                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white transition-all duration-200"
-                />
-              </div>
-            </div>
-
-            {/* Profile Image */}
-            <div className="space-y-6">
-              <div className="flex items-center space-x-3 pb-4 border-b border-gray-200 dark:border-gray-700">
-                <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-600 rounded-lg flex items-center justify-center">
-                  <svg
-                    className="h-4 w-4 text-white"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-                    />
-                  </svg>
-                </div>
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                  Profile Image
-                </h3>
-              </div>
-
-              <div className="space-y-4">
-                {/* Current Image Preview */}
-                {previewUrl && (
-                  <div className="flex items-center space-x-4 p-4 bg-gray-50 dark:bg-gray-800 rounded-xl">
-                    <Image
-                      src={previewUrl}
-                      alt="Profile preview"
-                      width={80}
-                      height={80}
-                      className="w-20 h-20 rounded-full object-cover border-2 border-gray-200 dark:border-gray-600 shadow-lg"
-                    />
-                    <div>
-                      <p className="text-sm font-medium text-gray-900 dark:text-white">
-                        Current profile image
-                      </p>
-                      {!selectedFile && (
-                        <p className="text-xs text-gray-600 dark:text-gray-400">
-                          Choose a new image to replace
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                )}
-
-                {/* File Input */}
-                <div className="space-y-2">
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleFileChange}
-                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-purple-500 focus:border-purple-500 dark:bg-gray-700 dark:text-white file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-purple-600 file:text-white hover:file:bg-purple-700 transition-all duration-200"
-                  />
-                  <p className="text-xs text-gray-600 dark:text-gray-400">
-                    Format: JPG, PNG, GIF. Maximum 5MB.
+                <div>
+                  <h2 className="text-3xl font-black uppercase tracking-tight">
+                    Manage Profile
+                  </h2>
+                  <p className="text-gray-700 font-medium text-sm lg:text-base">
+                    Update your personal information and contact details
                   </p>
                 </div>
               </div>
-            </div>
-
-            {/* Social Media Links */}
-            <div className="space-y-6">
-              <div className="flex items-center space-x-3 pb-4 border-b border-gray-200 dark:border-gray-700">
-                <div className="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center">
-                  <svg
-                    className="h-4 w-4 text-white"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
-                    />
-                  </svg>
+              <div className="flex items-center space-x-4 text-sm font-bold">
+                <div className="flex items-center space-x-2">
+                  <div className="w-3 h-3 bg-green-500 border-2 border-black rounded-full animate-pulse"></div>
+                  <span className="text-black uppercase">Complete Profile</span>
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                  Social Media
-                </h3>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="space-y-2">
-                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
-                    GitHub URL
-                  </label>
-                  <input
-                    type="url"
-                    name="githubUrl"
-                    defaultValue={profile.githubUrl}
-                    placeholder="https://github.com/username"
-                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white transition-all duration-200"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
-                    LinkedIn URL
-                  </label>
-                  <input
-                    type="url"
-                    name="linkedinUrl"
-                    defaultValue={profile.linkedinUrl}
-                    placeholder="https://linkedin.com/in/username"
-                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white transition-all duration-200"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
-                    Instagram URL
-                  </label>
-                  <input
-                    type="url"
-                    name="instagramUrl"
-                    defaultValue={profile.instagramUrl}
-                    placeholder="https://instagram.com/username"
-                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white transition-all duration-200"
-                  />
+                <div className="flex items-center space-x-2">
+                  <div className="w-3 h-3 bg-blue-500 border-2 border-black rounded-full"></div>
+                  <span className="text-black uppercase">
+                    {profile?.githubUrl ||
+                    profile?.linkedinUrl ||
+                    profile?.instagramUrl
+                      ? "Social Media"
+                      : "Not Connected"}
+                  </span>
                 </div>
               </div>
             </div>
-
-            {/* Submit Button */}
-            <div className="flex justify-end pt-6 border-t border-gray-200 dark:border-gray-700">
-              <button
-                type="submit"
-                disabled={isLoading}
-                className="group relative overflow-hidden bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white px-8 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
-              >
-                <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
-                <span className="relative z-10 font-medium">
-                  {isLoading ? "Saving..." : "Update Profile"}
-                </span>
-              </button>
-            </div>
-          </form>
-        ) : (
-          <div className="text-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto mb-4"></div>
-            <p className="text-gray-600 dark:text-gray-400">
-              Loading profile data...
-            </p>
           </div>
-        )}
-      </div>
+
+          {/* Profile Form */}
+          <div className="neo-card bg-white p-8 border-4 border-black shadow-neo">
+            {profile ? (
+              <form onSubmit={handleSubmit} className="space-y-8">
+                {/* Personal Information */}
+                <div className="space-y-6">
+                  <div className="flex items-center space-x-3 pb-4 border-b-4 border-black">
+                    <div className="w-10 h-10 bg-green-200 border-2 border-black flex items-center justify-center shadow-neo-sm">
+                      <User className="h-5 w-5 text-black" />
+                    </div>
+                    <h3 className="text-xl font-black uppercase">
+                      Personal Information
+                    </h3>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <label className="block text-sm font-bold uppercase">
+                        Full Name *
+                      </label>
+                      <input
+                        type="text"
+                        name="fullName"
+                        defaultValue={profile.fullName}
+                        required
+                        className="w-full px-4 py-3 border-4 border-black shadow-neo-sm focus:shadow-neo focus:outline-none transition-all font-medium"
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="block text-sm font-bold uppercase">
+                        Title/Position *
+                      </label>
+                      <input
+                        type="text"
+                        name="title"
+                        defaultValue={profile.title}
+                        required
+                        placeholder="Full Stack Developer"
+                        className="w-full px-4 py-3 border-4 border-black shadow-neo-sm focus:shadow-neo focus:outline-none transition-all font-medium"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="block text-sm font-bold uppercase">
+                      Bio *
+                    </label>
+                    <textarea
+                      name="bio"
+                      defaultValue={profile.bio}
+                      required
+                      rows={4}
+                      placeholder="Brief description about yourself..."
+                      className="w-full px-4 py-3 border-4 border-black shadow-neo-sm focus:shadow-neo focus:outline-none transition-all font-medium resize-none"
+                    />
+                  </div>
+                </div>
+
+                {/* Contact Information */}
+                <div className="space-y-6">
+                  <div className="flex items-center space-x-3 pb-4 border-b-4 border-black">
+                    <div className="w-10 h-10 bg-blue-200 border-2 border-black flex items-center justify-center shadow-neo-sm">
+                      <svg
+                        className="h-5 w-5 text-black"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                        />
+                      </svg>
+                    </div>
+                    <h3 className="text-xl font-black uppercase">
+                      Contact Information
+                    </h3>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <label className="block text-sm font-bold uppercase">
+                        Email *
+                      </label>
+                      <input
+                        type="email"
+                        name="email"
+                        defaultValue={profile.email}
+                        required
+                        className="w-full px-4 py-3 border-4 border-black shadow-neo-sm focus:shadow-neo focus:outline-none transition-all font-medium"
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="block text-sm font-bold uppercase">
+                        Phone
+                      </label>
+                      <input
+                        type="tel"
+                        name="phone"
+                        defaultValue={profile.phone}
+                        className="w-full px-4 py-3 border-4 border-black shadow-neo-sm focus:shadow-neo focus:outline-none transition-all font-medium"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="block text-sm font-bold uppercase">
+                      Location
+                    </label>
+                    <input
+                      type="text"
+                      name="location"
+                      defaultValue={profile.location}
+                      placeholder="Jakarta, Indonesia"
+                      className="w-full px-4 py-3 border-4 border-black shadow-neo-sm focus:shadow-neo focus:outline-none transition-all font-medium"
+                    />
+                  </div>
+                </div>
+
+                {/* Profile Image */}
+                <div className="space-y-6">
+                  <div className="flex items-center space-x-3 pb-4 border-b-4 border-black">
+                    <div className="w-10 h-10 bg-purple-200 border-2 border-black flex items-center justify-center shadow-neo-sm">
+                      <svg
+                        className="h-5 w-5 text-black"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                        />
+                      </svg>
+                    </div>
+                    <h3 className="text-xl font-black uppercase">
+                      Profile Image
+                    </h3>
+                  </div>
+
+                  <div className="space-y-4">
+                    {/* Current Image Preview */}
+                    {previewUrl && (
+                      <div className="flex items-center space-x-4 p-4 bg-gray-50 border-2 border-black border-dashed">
+                        <Image
+                          src={previewUrl}
+                          alt="Profile preview"
+                          width={80}
+                          height={80}
+                          className="w-20 h-20 object-cover border-4 border-black shadow-neo-sm"
+                        />
+                        <div>
+                          <p className="text-sm font-bold uppercase">
+                            Current profile image
+                          </p>
+                          {!selectedFile && (
+                            <p className="text-xs text-gray-600 font-medium">
+                              Choose a new image to replace
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* File Input */}
+                    <div className="space-y-2">
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleFileChange}
+                        className="w-full px-4 py-3 border-4 border-black shadow-neo-sm focus:shadow-neo focus:outline-none transition-all font-medium file:mr-4 file:py-2 file:px-4 file:border-2 file:border-black file:text-sm file:font-bold file:bg-purple-200 file:text-black hover:file:bg-purple-300"
+                      />
+                      <p className="text-xs text-gray-600 font-bold">
+                        Format: JPG, PNG, GIF. Maximum 5MB.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Social Media Links */}
+                <div className="space-y-6">
+                  <div className="flex items-center space-x-3 pb-4 border-b-4 border-black">
+                    <div className="w-10 h-10 bg-indigo-200 border-2 border-black flex items-center justify-center shadow-neo-sm">
+                      <svg
+                        className="h-5 w-5 text-black"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
+                        />
+                      </svg>
+                    </div>
+                    <h3 className="text-xl font-black uppercase">
+                      Social Media
+                    </h3>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div className="space-y-2">
+                      <label className="block text-sm font-bold uppercase">
+                        GitHub URL
+                      </label>
+                      <input
+                        type="url"
+                        name="githubUrl"
+                        defaultValue={profile.githubUrl}
+                        placeholder="https://github.com/username"
+                        className="w-full px-4 py-3 border-4 border-black shadow-neo-sm focus:shadow-neo focus:outline-none transition-all font-medium"
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="block text-sm font-bold uppercase">
+                        LinkedIn URL
+                      </label>
+                      <input
+                        type="url"
+                        name="linkedinUrl"
+                        defaultValue={profile.linkedinUrl}
+                        placeholder="https://linkedin.com/in/username"
+                        className="w-full px-4 py-3 border-4 border-black shadow-neo-sm focus:shadow-neo focus:outline-none transition-all font-medium"
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="block text-sm font-bold uppercase">
+                        Instagram URL
+                      </label>
+                      <input
+                        type="url"
+                        name="instagramUrl"
+                        defaultValue={profile.instagramUrl}
+                        placeholder="https://instagram.com/username"
+                        className="w-full px-4 py-3 border-4 border-black shadow-neo-sm focus:shadow-neo focus:outline-none transition-all font-medium"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Submit Button */}
+                <div className="flex justify-end pt-6 border-t-4 border-black">
+                  <button
+                    type="submit"
+                    disabled={isSaving}
+                    className="neo-btn bg-green-400 px-8 py-3 text-black font-bold uppercase disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {isSaving ? "Saving..." : "Update Profile"}
+                  </button>
+                </div>
+              </form>
+            ) : (
+              <div className="text-center py-12">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-4 border-black mx-auto mb-4"></div>
+                <p className="text-gray-600 font-bold uppercase">
+                  Loading profile data...
+                </p>
+              </div>
+            )}
+          </div>
+        </>
+      )}
     </div>
   );
 }

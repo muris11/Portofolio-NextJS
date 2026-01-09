@@ -2,7 +2,7 @@ import type { Config } from "tailwindcss";
 import tailwindcssAnimate from "tailwindcss-animate";
 
 const config: Config = {
-  darkMode: "class",
+  darkMode: ["class"],
   content: [
     "./components/**/*.{ts,tsx}",
     "./app/**/*.{ts,tsx}",
@@ -19,44 +19,64 @@ const config: Config = {
     },
     extend: {
       colors: {
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
+        border: "#000000", // Default border is black
+        input: "#000000", // Default input border is black
+        ring: "#000000", // Default ring is black
+        background: "#FFFDF5", // neo.canvas
+        foreground: "#000000", // neo.ink
         primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
+          DEFAULT: "#FF6B6B", // neo.accent (Red)
+          foreground: "#000000",
         },
         secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
+          DEFAULT: "#FFD93D", // neo.secondary (Yellow)
+          foreground: "#000000",
         },
         destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
+          DEFAULT: "#FF0000",
+          foreground: "#FFFFFF",
         },
         muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
+          DEFAULT: "#C4B5FD", // neo.muted (Violet)
+          foreground: "#000000",
         },
         accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
+          DEFAULT: "#FF6B6B",
+          foreground: "#000000",
         },
         popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
+          DEFAULT: "#FFFDF5",
+          foreground: "#000000",
         },
         card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
+          DEFAULT: "#FFFFFF",
+          foreground: "#000000",
+        },
+        // Custom Neo-brutalism palette
+        neo: {
+          canvas: "#FFFDF5",
+          ink: "#000000",
+          accent: "#FF6B6B",
+          secondary: "#FFD93D",
+          muted: "#C4B5FD",
+          white: "#FFFFFF",
         },
       },
       borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
+        lg: "0px",
+        md: "0px",
+        sm: "0px",
+        DEFAULT: "0px",
+      },
+      fontFamily: {
+        sans: ["Space Grotesk", "sans-serif"],
+      },
+      boxShadow: {
+        neo: "4px 4px 0px 0px #000000",
+        "neo-sm": "2px 2px 0px 0px #000000",
+        "neo-md": "8px 8px 0px 0px #000000",
+        "neo-lg": "12px 12px 0px 0px #000000",
+        "neo-xl": "16px 16px 0px 0px #000000",
       },
       keyframes: {
         "accordion-down": {
@@ -71,22 +91,6 @@ const config: Config = {
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        "fade-in-up": "fade-in-up 0.6s ease-out forwards",
-        float: "float 6s ease-in-out infinite",
-        "slide-in-left": "slide-in-left 0.8s ease-out forwards",
-        "slide-in-right": "slide-in-right 0.8s ease-out forwards",
-        "scale-in": "scale-in 0.5s ease-out forwards",
-        "bounce-in": "bounce-in 0.8s ease-out forwards",
-      },
-      animationDelay: {
-        300: "300ms",
-        500: "500ms",
-        700: "700ms",
-        2000: "2s",
-        3000: "3s",
-        4000: "4s",
-        5000: "5s",
-        6000: "6s",
       },
     },
   },

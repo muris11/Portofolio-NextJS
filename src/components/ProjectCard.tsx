@@ -1,3 +1,5 @@
+"use client";
+
 import { ExternalLink, Github } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -13,9 +15,10 @@ interface ProjectCardProps {
     githubUrl?: string;
     featured?: boolean;
   };
+  onClick?: () => void;
 }
 
-export default function ProjectCard({ project }: ProjectCardProps) {
+export default function ProjectCard({ project, onClick }: ProjectCardProps) {
   let techStack: string[] = [];
   try {
     techStack = JSON.parse(project.techStack || "[]");
@@ -31,16 +34,21 @@ export default function ProjectCard({ project }: ProjectCardProps) {
   const isPlaceholder = project.imageUrl?.includes("via.placeholder.com");
 
   return (
-    <div className="bg-white/5 hover:bg-white/10 rounded-3xl shadow-lg hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-700 ease-out overflow-hidden group border border-white/10 hover:border-white/30 hover:-translate-y-2 hover:scale-[1.02] backdrop-blur-sm">
+    <div
+      className={`neo-card flex flex-col h-full group ${
+        onClick ? "cursor-pointer hover:bg-gray-50 transition-colors" : ""
+      }`}
+      onClick={onClick}
+    >
       {/* Project Image - Full Size */}
-      <div className="relative h-64 sm:h-72 lg:h-80 xl:h-96 bg-gradient-to-br from-slate-800 to-slate-900 overflow-hidden">
+      <div className="relative h-32 sm:h-64 border-b-4 border-black overflow-hidden bg-neo-canvas">
         {project.imageUrl ? (
           isPlaceholder ? (
             <Image
               src={project.imageUrl}
               alt={project.title}
               fill
-              className="object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
+              className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
               loading="lazy"
             />
           ) : (
@@ -48,21 +56,21 @@ export default function ProjectCard({ project }: ProjectCardProps) {
               src={project.imageUrl}
               alt={project.title}
               fill
-              className="object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
+              className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
               loading="lazy"
               placeholder="blur"
               blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R+IRjWjBqO6O2mhP//Z"
             />
           )
         ) : (
-          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary/10 via-primary/20 to-primary/10">
+          <div className="w-full h-full flex items-center justify-center bg-neo-secondary">
             <div className="text-center">
-              <div className="w-16 h-16 bg-white/5 backdrop-blur-xl rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg border border-white/10">
-                <span className="text-primary text-2xl font-bold">
+              <div className="w-12 h-12 sm:w-16 sm:h-16 border-4 border-black bg-white flex items-center justify-center mx-auto mb-3 shadow-neo">
+                <span className="text-black text-xl sm:text-2xl font-black">
                   {project.title.charAt(0).toUpperCase()}
                 </span>
               </div>
-              <span className="text-gray-400 text-sm font-medium">
+              <span className="text-black text-xs sm:text-sm font-bold uppercase tracking-wide">
                 Project Preview
               </span>
             </div>
@@ -71,65 +79,68 @@ export default function ProjectCard({ project }: ProjectCardProps) {
 
         {/* Featured badge */}
         {project.featured && (
-          <div className="absolute top-4 left-4 bg-gradient-to-r from-yellow-400 to-orange-500 text-black px-3 py-1.5 rounded-full text-xs font-semibold shadow-lg backdrop-blur-sm border border-white/20">
+          <div className="absolute top-2 left-2 sm:top-4 sm:left-4 bg-neo-secondary text-black px-2 py-1 sm:px-3 sm:py-1 border-2 border-black shadow-neo-sm text-[10px] sm:text-xs font-black uppercase tracking-widest z-10">
             ⭐ Featured
           </div>
         )}
-
-        {/* Overlay with links */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 ease-out flex items-center justify-center">
-          <div className="flex space-x-4 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 ease-out delay-100">
-            {project.liveUrl && (
-              <Link
-                href={project.liveUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-white/5 backdrop-blur-xl text-white p-3.5 rounded-2xl hover:bg-white/10 hover:scale-110 transition-all duration-300 ease-out shadow-xl hover:shadow-2xl border border-white/10 hover:border-primary/50"
-                aria-label="View live project"
-              >
-                <ExternalLink className="h-5 w-5" />
-              </Link>
-            )}
-            {project.githubUrl && (
-              <Link
-                href={project.githubUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-white/5 backdrop-blur-xl text-white p-3.5 rounded-2xl hover:bg-white/10 hover:scale-110 transition-all duration-300 ease-out shadow-xl hover:shadow-2xl border border-white/10 hover:border-primary/50"
-                aria-label="View source code"
-              >
-                <Github className="h-5 w-5" />
-              </Link>
-            )}
-          </div>
-        </div>
       </div>
 
       {/* Project Content */}
-      <div className="p-5 sm:p-6 space-y-4">
-        <div className="space-y-2">
-          <h3 className="text-lg sm:text-xl font-bold bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent group-hover:text-primary transition-colors duration-300 ease-out leading-tight">
+      <div className="p-3 sm:p-6 flex flex-col flex-grow">
+        <div className="space-y-2 sm:space-y-3 mb-0 sm:mb-6 flex-grow">
+          <h3 className="text-sm sm:text-2xl font-black uppercase tracking-tight leading-tight sm:leading-none group-hover:underline decoration-4 underline-offset-4 line-clamp-2 sm:line-clamp-none">
             {project.title}
           </h3>
-          <p className="text-gray-300 leading-relaxed text-sm sm:text-base line-clamp-3">
+          {/* Description removed as per user request */}
+          {/* <p className="hidden sm:block text-black text-sm sm:text-base font-medium leading-relaxed line-clamp-2">
             {project.description}
-          </p>
+          </p> */}
         </div>
 
         {/* Tech Stack */}
-        <div className="flex flex-wrap gap-2 pt-2">
+        <div className="hidden sm:flex flex-wrap gap-2 mb-4 sm:mb-6">
           {techStack.slice(0, 4).map((tech: string, index: number) => (
             <span
               key={index}
-              className="px-3 py-1.5 bg-white/5 hover:bg-white/10 backdrop-blur-sm text-gray-300 text-xs sm:text-sm rounded-xl border border-white/10 hover:border-white/20 hover:text-white transition-all duration-300 ease-out font-medium"
+              className="px-2 py-1 bg-white border-2 border-black text-black text-[10px] sm:text-xs font-bold uppercase tracking-wide shadow-[2px_2px_0px_0px_#000]"
             >
               {tech}
             </span>
           ))}
           {techStack.length > 4 && (
-            <span className="px-3 py-1.5 bg-white/5 backdrop-blur-sm text-gray-300 text-xs sm:text-sm rounded-xl border border-white/10 font-medium">
-              +{techStack.length - 4} more
+            <span className="px-2 py-1 bg-white border-2 border-black text-black text-[10px] sm:text-xs font-bold uppercase tracking-wide shadow-[2px_2px_0px_0px_#000]">
+              +{techStack.length - 4}
             </span>
+          )}
+        </div>
+
+        {/* Links */}
+        <div className="hidden sm:flex gap-3 sm:gap-4 mt-auto pt-4 border-t-4 border-black">
+          {project.liveUrl && (
+            <Link
+              href={project.liveUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-1 neo-btn bg-neo-accent text-xs sm:text-sm py-2 px-2 sm:px-4"
+              aria-label="View live project"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <ExternalLink className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
+              Live Demo
+            </Link>
+          )}
+          {project.githubUrl && (
+            <Link
+              href={project.githubUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-1 neo-btn bg-white text-xs sm:text-sm py-2 px-2 sm:px-4"
+              aria-label="View source code"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <Github className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
+              Code
+            </Link>
           )}
         </div>
       </div>

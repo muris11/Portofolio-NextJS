@@ -170,7 +170,7 @@ export function ProjectModal({
       setError(
         error instanceof Error
           ? error.message
-          : "Terjadi kesalahan saat menyimpan proyek"
+          : "An error occurred while saving the project"
       );
       console.error("Project save error:", error);
     }
@@ -180,26 +180,25 @@ export function ProjectModal({
   const validateField = (name: string, value: string): string => {
     switch (name) {
       case "title":
-        if (!value.trim()) return "Judul diperlukan";
+        if (!value.trim()) return "Title is required";
         if (value.trim().length < 3)
-          return "Judul harus terdiri dari setidaknya 3 karakter";
+          return "Title must be at least 3 characters";
         if (value.trim().length > 100)
-          return "Judul harus kurang dari 100 karakter";
+          return "Title must be less than 100 characters";
         return "";
       case "description":
-        if (!value.trim()) return "Deskripsi diperlukan";
+        if (!value.trim()) return "Description is required";
         if (value.trim().length < 10)
-          return "Deskripsi harus terdiri dari setidaknya 10 karakter";
+          return "Description must be at least 10 characters";
         if (value.trim().length > 1000)
-          return "Deskripsi harus kurang dari 1000 karakter";
+          return "Description must be less than 1000 characters";
         return "";
       case "techStack":
-        if (!value.trim()) return "Setidaknya satu teknologi diperlukan";
+        if (!value.trim()) return "At least one technology is required";
         return "";
       case "liveUrl":
       case "githubUrl":
-        if (value && !validateUrl(value))
-          return "Silakan masukkan URL yang valid";
+        if (value && !validateUrl(value)) return "Please enter a valid URL";
         return "";
       default:
         return "";
@@ -229,23 +228,29 @@ export function ProjectModal({
 
   return (
     <div
-      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+      className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4"
       role="dialog"
       aria-modal="true"
       aria-labelledby="modal-title"
     >
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
-        <div className="p-6" ref={modalRef} tabIndex={-1}>
+      <div className="bg-white border-4 border-black shadow-neo w-full max-w-2xl max-h-[90vh] overflow-y-auto animate-in zoom-in-95 duration-200">
+        <div
+          className="p-6 border-b-4 border-black bg-purple-200"
+          ref={modalRef}
+          tabIndex={-1}
+        >
           <h3
             id="modal-title"
-            className="text-lg font-semibold text-gray-900 dark:text-white mb-4"
+            className="text-xl font-black text-black uppercase tracking-tight"
           >
             {project ? "Edit Project" : "Add New Project"}
           </h3>
+        </div>
 
+        <div className="p-6">
           {error && (
             <div
-              className="mb-4 p-3 text-sm text-red-700 bg-red-100 rounded-md"
+              className="mb-4 p-3 text-sm font-bold text-red-700 bg-red-100 border-2 border-red-500"
               role="alert"
               aria-live="polite"
             >
@@ -253,10 +258,10 @@ export function ProjectModal({
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Judul Proyek *
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="space-y-2">
+              <label className="block text-sm font-bold text-black uppercase">
+                Project Title *
               </label>
               <input
                 type="text"
@@ -265,18 +270,18 @@ export function ProjectModal({
                 required
                 onBlur={handleFieldBlur}
                 onChange={handleFieldChange}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white"
+                className="w-full px-4 py-3 bg-white border-4 border-black text-black font-bold focus:outline-none focus:shadow-neo transition-all placeholder:text-gray-400"
               />
               {validationErrors.title && (
-                <p className="mt-1 text-xs text-red-600 dark:text-red-400">
+                <p className="mt-1 text-xs font-bold text-red-600">
                   {validationErrors.title}
                 </p>
               )}
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Deskripsi *
+            <div className="space-y-2">
+              <label className="block text-sm font-bold text-black uppercase">
+                Description *
               </label>
               <textarea
                 name="description"
@@ -285,18 +290,18 @@ export function ProjectModal({
                 rows={3}
                 onBlur={handleFieldBlur}
                 onChange={handleFieldChange}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white"
+                className="w-full px-4 py-3 bg-white border-4 border-black text-black font-bold focus:outline-none focus:shadow-neo transition-all placeholder:text-gray-400 min-h-[100px]"
               />
               {validationErrors.description && (
-                <p className="mt-1 text-xs text-red-600 dark:text-red-400">
+                <p className="mt-1 text-xs font-bold text-red-600">
                   {validationErrors.description}
                 </p>
               )}
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Teknologi (pisahkan dengan koma) *
+            <div className="space-y-2">
+              <label className="block text-sm font-bold text-black uppercase">
+                Technologies (comma separated) *
               </label>
               <input
                 type="text"
@@ -316,21 +321,21 @@ export function ProjectModal({
                 placeholder="React, Next.js, TypeScript"
                 onBlur={handleFieldBlur}
                 onChange={handleFieldChange}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white"
+                className="w-full px-4 py-3 bg-white border-4 border-black text-black font-bold focus:outline-none focus:shadow-neo transition-all placeholder:text-gray-400"
               />
               {validationErrors.techStack && (
-                <p className="mt-1 text-xs text-red-600 dark:text-red-400">
+                <p className="mt-1 text-xs font-bold text-red-600">
                   {validationErrors.techStack}
                 </p>
               )}
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                  Gambar Proyek
+              <div className="space-y-2">
+                <label className="block text-sm font-bold text-black uppercase">
+                  Project Image
                 </label>
-                <div className="space-y-4">
+                <div className="border-4 border-black p-4 bg-gray-50 space-y-4">
                   {/* Current Image Preview */}
                   {previewUrl && (
                     <div className="flex items-center space-x-4">
@@ -339,15 +344,15 @@ export function ProjectModal({
                         alt="Project preview"
                         width={80}
                         height={80}
-                        className="w-20 h-20 rounded-lg object-cover border-2 border-gray-200 dark:border-gray-600"
+                        className="w-20 h-20 object-cover border-2 border-black"
                       />
                       <div>
-                        <p className="text-sm text-gray-600 dark:text-gray-400">
-                          Gambar saat ini
+                        <p className="text-sm font-bold text-black">
+                          Current Image
                         </p>
                         {!selectedFile && (
-                          <p className="text-xs text-gray-500 dark:text-gray-500">
-                            Pilih gambar baru untuk mengganti
+                          <p className="text-xs font-medium text-gray-500">
+                            Select new image to replace
                           </p>
                         )}
                       </div>
@@ -359,18 +364,18 @@ export function ProjectModal({
                     type="file"
                     accept="image/*"
                     onChange={handleFileChange}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-primary file:text-primary-foreground hover:file:bg-primary/90"
+                    className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:border-2 file:border-black file:text-sm file:font-bold file:bg-white file:text-black hover:file:bg-gray-100"
                   />
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
-                    Format: JPG, PNG, GIF. Maksimal 5MB.
+                  <p className="text-xs font-medium text-gray-500">
+                    Format: JPG, PNG, GIF. Max 5MB.
                   </p>
                 </div>
               </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <div className="space-y-2">
+                <label className="block text-sm font-bold text-black uppercase">
                   Live URL
                 </label>
                 <input
@@ -379,17 +384,17 @@ export function ProjectModal({
                   defaultValue={project?.liveUrl}
                   onBlur={handleFieldBlur}
                   onChange={handleFieldChange}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white"
+                  className="w-full px-4 py-3 bg-white border-4 border-black text-black font-bold focus:outline-none focus:shadow-neo transition-all placeholder:text-gray-400"
                 />
                 {validationErrors.liveUrl && (
-                  <p className="mt-1 text-xs text-red-600 dark:text-red-400">
+                  <p className="mt-1 text-xs font-bold text-red-600">
                     {validationErrors.liveUrl}
                   </p>
                 )}
               </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <div className="space-y-2">
+                <label className="block text-sm font-bold text-black uppercase">
                   GitHub URL
                 </label>
                 <input
@@ -398,10 +403,10 @@ export function ProjectModal({
                   defaultValue={project?.githubUrl}
                   onBlur={handleFieldBlur}
                   onChange={handleFieldChange}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white"
+                  className="w-full px-4 py-3 bg-white border-4 border-black text-black font-bold focus:outline-none focus:shadow-neo transition-all placeholder:text-gray-400"
                 />
                 {validationErrors.githubUrl && (
-                  <p className="mt-1 text-xs text-red-600 dark:text-red-400">
+                  <p className="mt-1 text-xs font-bold text-red-600">
                     {validationErrors.githubUrl}
                   </p>
                 )}
@@ -409,39 +414,41 @@ export function ProjectModal({
             </div>
 
             {/* Featured Project Checkbox */}
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-3 p-4 border-4 border-black bg-yellow-100">
               <input
                 type="checkbox"
                 name="featured"
                 id="featured"
                 defaultChecked={project?.featured || false}
-                className="h-4 w-4 text-primary focus:ring-primary border-gray-300 dark:border-gray-600 rounded"
+                className="h-5 w-5 text-black border-2 border-black rounded-none focus:ring-0"
               />
-              <label
-                htmlFor="featured"
-                className="text-sm font-medium text-gray-700 dark:text-gray-300"
-              >
-                Jadikan Featured Project
-              </label>
-              <span className="text-xs text-gray-500 dark:text-gray-400 ml-2">
-                (Akan ditampilkan di halaman utama)
-              </span>
+              <div>
+                <label
+                  htmlFor="featured"
+                  className="text-sm font-black text-black uppercase block"
+                >
+                  Make Featured Project
+                </label>
+                <span className="text-xs font-medium text-gray-600">
+                  (Will be displayed on the main page)
+                </span>
+              </div>
             </div>
 
-            <div className="flex justify-end space-x-3 pt-4">
+            <div className="flex justify-end space-x-4 pt-4 border-t-4 border-black">
               <button
                 type="button"
                 onClick={onClose}
-                className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 rounded-md hover:bg-gray-200 dark:hover:bg-gray-600"
+                className="px-6 py-3 bg-white border-2 border-black text-black font-black uppercase hover:bg-gray-100 hover:shadow-neo transition-all"
               >
-                Batal
+                Cancel
               </button>
               <button
                 type="submit"
                 disabled={isLoading}
-                className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-md hover:bg-primary/90 disabled:opacity-50"
+                className="px-6 py-3 bg-green-400 border-2 border-black text-black font-black uppercase hover:bg-green-500 hover:shadow-neo transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {isLoading ? "Menyimpan..." : project ? "Update" : "Simpan"}
+                {isLoading ? "Saving..." : project ? "Update" : "Save"}
               </button>
             </div>
           </form>

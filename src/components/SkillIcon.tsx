@@ -10,42 +10,42 @@ interface SkillIconProps {
 
 export default function SkillIcon({ skill }: SkillIconProps) {
   const getLevelColor = (level?: number) => {
-    if (!level) return "from-gray-400 to-gray-500";
-    if (level >= 80) return "from-green-400 to-green-500";
-    if (level >= 60) return "from-blue-400 to-blue-500";
-    if (level >= 40) return "from-yellow-400 to-yellow-500";
-    return "from-red-400 to-red-500";
+    if (!level) return "bg-gray-400";
+    if (level >= 80) return "bg-green-400";
+    if (level >= 60) return "bg-blue-400";
+    if (level >= 40) return "bg-yellow-400";
+    return "bg-red-400";
   };
 
   return (
-    <div className="flex flex-col items-center p-6 bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl shadow-2xl hover:shadow-primary/10 hover:border-primary/20 transition-all duration-500 group hover:-translate-y-1">
+    <div className="flex flex-col items-center p-4 bg-white border-4 border-black shadow-neo hover:shadow-neo-lg hover:-translate-y-1 transition-all duration-200 w-full">
       {/* Icon Placeholder */}
       <div
-        className={`w-16 h-16 bg-gradient-to-br ${getLevelColor(
+        className={`w-16 h-16 ${getLevelColor(
           skill.level
-        )} rounded-2xl flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-transform duration-300`}
+        )} border-4 border-black flex items-center justify-center mb-4 shadow-neo-sm group-hover:scale-110 transition-transform duration-200`}
       >
-        <span className="text-white font-bold text-xl">
-          {skill.name.charAt(0).toUpperCase()}
+        <span className="text-black font-black text-2xl uppercase">
+          {skill.name.charAt(0)}
         </span>
       </div>
 
-      <h4 className="text-sm font-semibold bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent text-center mb-2">
+      <h4 className="text-lg font-black uppercase text-center mb-1">
         {skill.name}
       </h4>
 
-      <p className="text-xs text-gray-400 text-center mb-3 capitalize">
+      <p className="text-xs font-bold uppercase bg-neo-secondary px-2 py-0.5 border-2 border-black mb-3">
         {skill.category}
       </p>
 
       {skill.level && (
         <div className="w-full">
-          <div className="flex justify-center items-center mb-1">
-            <span className="text-xs text-gray-400">{skill.level}%</span>
+          <div className="flex justify-end items-center mb-1 px-1">
+            <span className="text-xs font-bold">{skill.level}%</span>
           </div>
-          <div className="w-full bg-gray-700 rounded-full h-2">
+          <div className="w-full bg-white border-2 border-black h-4 p-0.5">
             <div
-              className="bg-gradient-to-r from-yellow-400 to-yellow-500 h-2 rounded-full transition-all duration-300"
+              className="bg-black h-full transition-all duration-300"
               style={{ width: `${skill.level}%` }}
             ></div>
           </div>

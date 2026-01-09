@@ -150,7 +150,7 @@ export function ImageUpload({
   return (
     <div className="space-y-2">
       {label && (
-        <label className="block text-sm font-medium text-gray-300">
+        <label className="block text-sm font-bold uppercase text-black">
           {label}
         </label>
       )}
@@ -161,11 +161,11 @@ export function ImageUpload({
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
         className={`
-          border-2 border-dashed rounded-lg p-4 transition-all
+          border-4 border-dashed p-6 transition-all bg-white
           ${
             isDragging
-              ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20"
-              : "border-gray-600 hover:border-gray-500"
+              ? "border-neo-accent bg-neo-secondary/20"
+              : "border-black hover:border-gray-700"
           }
           ${isUploading ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}
         `}
@@ -177,17 +177,17 @@ export function ImageUpload({
               <Image
                 src={preview}
                 alt="Logo preview"
-                width={64}
-                height={64}
-                className="w-16 h-16 object-contain rounded-lg border border-gray-600"
+                width={80}
+                height={80}
+                className="w-20 h-20 object-contain border-4 border-black bg-white"
               />
               <button
                 type="button"
                 onClick={handleRemove}
-                className="absolute -top-2 -right-2 bg-red-600 hover:bg-red-700 text-white rounded-full p-1 text-xs"
+                className="absolute -top-3 -right-3 bg-red-500 hover:bg-red-600 text-white border-2 border-black p-1 shadow-neo-sm active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all"
                 title="Remove logo"
               >
-                <X className="w-3 h-3" />
+                <X className="w-4 h-4" />
               </button>
             </div>
           )}
@@ -207,23 +207,23 @@ export function ImageUpload({
               type="button"
               onClick={handleButtonClick}
               disabled={isUploading}
-              className="w-full flex items-center justify-center space-x-2 px-4 py-2 bg-gray-700 hover:bg-gray-600 disabled:bg-gray-800 disabled:cursor-not-allowed text-white rounded-lg transition-colors"
+              className="w-full flex items-center justify-center space-x-2 px-4 py-3 bg-black hover:bg-gray-800 disabled:bg-gray-600 disabled:cursor-not-allowed text-white font-bold uppercase border-4 border-transparent hover:border-black/20 transition-all"
               aria-label={placeholder}
             >
-              <Upload className="w-4 h-4" />
+              <Upload className="w-5 h-5" />
               <span>{isUploading ? "Uploading..." : placeholder}</span>
             </button>
             {/* Hint for better UX */}
-            <p className="text-xs text-gray-600 dark:text-gray-500 mt-1 text-center">
+            <p className="text-xs font-bold text-black mt-2 text-center uppercase">
               💡 Tip: Drag & drop lebih cepat!
             </p>
           </div>
         </div>
 
         {/* Helper text */}
-        <p className="text-xs text-gray-500 mt-2 text-center">
+        <p className="text-xs font-medium text-gray-600 mt-3 text-center">
           {isDragging ? (
-            <span className="text-blue-600 dark:text-blue-400 font-medium">
+            <span className="text-neo-accent font-bold">
               Drop gambar di sini
             </span>
           ) : (

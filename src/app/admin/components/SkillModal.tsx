@@ -5,7 +5,7 @@ interface SkillModalProps {
   isOpen: boolean;
   onClose: () => void;
   skill: Skill | null;
-  onSave: (_data: Partial<Skill>) => Promise<boolean>;
+  onSave: (_data: Partial<Skill> | FormData) => Promise<boolean>;
 }
 
 export function SkillModal({
@@ -15,6 +15,7 @@ export function SkillModal({
   onSave,
 }: SkillModalProps) {
   const [isLoading, setIsLoading] = useState(false);
+  const [level, setLevel] = useState(skill?.level || 50);
 
   if (!isOpen) return null;
 
@@ -28,7 +29,7 @@ export function SkillModal({
       name: formData.get("name") as string,
       category: formData.get("category") as string,
       icon: formData.get("icon") as string,
-      level: parseInt(formData.get("level") as string) || 1,
+      level: parseInt(formData.get("level") as string) || 0,
     };
 
     const success = await onSave(data);
@@ -40,93 +41,126 @@ export function SkillModal({
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full mx-4">
-        <div className="p-6">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-            {skill ? "Edit Kemampuan" : "Tambah Kemampuan Baru"}
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+      <div className="bg-white border-4 border-black shadow-neo w-full max-w-md animate-in zoom-in-95 duration-200">
+        <div className="p-6 border-b-4 border-black bg-yellow-300">
+          <h3 className="text-xl font-black text-black uppercase tracking-tight">
+            {skill ? "Edit Skill" : "Add New Skill"}
           </h3>
+        </div>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Nama Kemampuan *
+        <div className="p-6">
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="space-y-2">
+              <label className="block text-sm font-bold text-black uppercase">
+                Skill Name *
               </label>
               <input
                 type="text"
                 name="name"
                 defaultValue={skill?.name}
                 required
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white"
+                className="w-full px-4 py-3 bg-white border-4 border-black text-black font-bold focus:outline-none focus:shadow-neo transition-all placeholder:text-gray-400"
+                placeholder="e.g. React, Node.js"
               />
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Kategori *
+            <div className="space-y-2">
+              <label className="block text-sm font-bold text-black uppercase">
+                Category *
               </label>
-              <select
-                name="category"
-                defaultValue={skill?.category}
-                required
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white"
-              >
-                <option value="">Pilih Kategori</option>
-                <option value="Frontend">Frontend</option>
-                <option value="Backend">Backend</option>
-                <option value="Database">Database</option>
-                <option value="Tools">Tools</option>
-                <option value="Mobile">Mobile</option>
-                <option value="Other">Other</option>
-              </select>
+              <div className="relative">
+                <select
+                  name="category"
+                  defaultValue={skill?.category}
+                  required
+                  className="w-full px-4 py-3 bg-white border-4 border-black text-black font-bold focus:outline-none focus:shadow-neo transition-all appearance-none"
+                >
+                  <option value="">Select Category</option>
+                  <option value="Frontend">Frontend</option>
+                  <option value="Backend">Backend</option>
+                  <option value="Database">Database</option>
+                  <option value="Tools">Tools</option>
+                  <option value="Mobile">Mobile</option>
+                  <option value="Other">Other</option>
+                </select>
+                <div className="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none border-l-4 border-black bg-gray-100">
+                  <svg
+                    className="w-4 h-4 text-black"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={3}
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
+                </div>
+              </div>
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Icon (nama icon dari react-icons/simple-icons)
+            <div className="space-y-2">
+              <label className="block text-sm font-bold text-black uppercase">
+                Icon (React Icons Name)
               </label>
               <input
                 type="text"
                 name="icon"
                 defaultValue={skill?.icon}
-                placeholder="SiReact, SiNodedotjs, dll"
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white"
+                placeholder="e.g. SiReact, SiNodedotjs"
+                className="w-full px-4 py-3 bg-white border-4 border-black text-black font-bold focus:outline-none focus:shadow-neo transition-all placeholder:text-gray-400"
               />
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Level Kemampuan (0-100) *
-              </label>
+            <div className="space-y-4">
+              <div className="flex justify-between items-center">
+                <label className="block text-sm font-bold text-black uppercase">
+                  Proficiency Level *
+                </label>
+                <span className="px-2 py-1 bg-black text-white text-xs font-bold">
+                  {level}%
+                </span>
+              </div>
               <input
                 type="range"
                 name="level"
                 min="0"
                 max="100"
-                defaultValue={skill?.level || 50}
-                className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer"
+                value={level}
+                onChange={(e) => setLevel(parseInt(e.target.value))}
+                className="w-full h-4 bg-gray-200 border-2 border-black rounded-full appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-6 [&::-webkit-slider-thumb]:h-6 [&::-webkit-slider-thumb]:bg-black [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-neo-sm"
               />
-              <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400 mt-1">
-                <span>Pemula (0)</span>
-                <span>Menengah (50)</span>
-                <span>Ahli (100)</span>
+              <div className="flex justify-between text-xs font-bold text-gray-500 uppercase">
+                <span>Beginner (0)</span>
+                <span>Intermediate (50)</span>
+                <span>Expert (100)</span>
               </div>
             </div>
 
-            <div className="flex justify-end space-x-3 pt-4">
+            <div className="flex justify-end space-x-4 pt-4 border-t-4 border-black">
               <button
                 type="button"
                 onClick={onClose}
-                className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 rounded-md hover:bg-gray-200 dark:hover:bg-gray-600"
+                className="px-6 py-3 bg-white border-2 border-black text-black font-black uppercase hover:bg-gray-100 hover:shadow-neo transition-all"
               >
-                Batal
+                Cancel
               </button>
               <button
                 type="submit"
                 disabled={isLoading}
-                className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-md hover:bg-primary/90 disabled:opacity-50"
+                className="px-6 py-3 bg-green-400 border-2 border-black text-black font-black uppercase hover:bg-green-500 hover:shadow-neo transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
               >
-                {isLoading ? "Menyimpan..." : skill ? "Update" : "Simpan"}
+                {isLoading ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-black border-t-transparent rounded-full animate-spin"></div>
+                    Saving...
+                  </>
+                ) : (
+                  <>{skill ? "Update Skill" : "Save Skill"}</>
+                )}
               </button>
             </div>
           </form>

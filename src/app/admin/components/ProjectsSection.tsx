@@ -50,9 +50,7 @@ export function ProjectsSection({
       const techs = JSON.parse(techStack);
       if (!Array.isArray(techs)) {
         return (
-          <span className="text-xs text-gray-500 dark:text-gray-400">
-            {techStack}
-          </span>
+          <span className="text-xs font-bold text-gray-600">{techStack}</span>
         );
       }
 
@@ -64,13 +62,13 @@ export function ProjectsSection({
           {displayedTechs.map((tech: string, index: number) => (
             <span
               key={index}
-              className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200"
+              className="inline-flex items-center px-2 py-1 border-2 border-black text-xs font-bold bg-blue-200 text-black shadow-neo-sm"
             >
               {tech}
             </span>
           ))}
           {remainingCount > 0 && (
-            <span className="text-xs text-gray-500 dark:text-gray-400 ml-1">
+            <span className="text-xs font-bold text-gray-600 ml-1">
               +{remainingCount} more
             </span>
           )}
@@ -79,9 +77,7 @@ export function ProjectsSection({
     } catch {
       // If JSON parsing fails, display as plain text
       return (
-        <span className="text-xs text-gray-500 dark:text-gray-400">
-          {techStack}
-        </span>
+        <span className="text-xs font-bold text-gray-600">{techStack}</span>
       );
     }
   };
@@ -104,31 +100,31 @@ export function ProjectsSection({
       ) : (
         <>
           {/* Header Section */}
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 p-6 bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-blue-950/20 dark:via-gray-900 dark:to-purple-950/20 rounded-2xl border border-blue-100/50 dark:border-blue-900/20">
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 p-6 bg-blue-200 border-4 border-black shadow-neo">
             <div className="space-y-2">
               <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
-                  <Code className="h-5 w-5 text-white" />
+                <div className="w-12 h-12 bg-white border-2 border-black flex items-center justify-center shadow-neo-sm">
+                  <Code className="h-6 w-6 text-black" />
                 </div>
                 <div>
-                  <h2 className="text-2xl lg:text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                  <h2 className="text-3xl font-black uppercase tracking-tight">
                     Manage Projects
                   </h2>
-                  <p className="text-gray-600 dark:text-gray-400 text-sm lg:text-base">
+                  <p className="text-gray-700 font-medium text-sm lg:text-base">
                     Add, edit, and delete your Rifqy.Dev projects
                   </p>
                 </div>
               </div>
-              <div className="flex items-center space-x-4 text-sm">
+              <div className="flex items-center space-x-4 text-sm font-bold">
                 <div className="flex items-center space-x-2">
-                  <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                  <span className="text-gray-600 dark:text-gray-400">
+                  <div className="w-3 h-3 bg-green-500 border-2 border-black rounded-full animate-pulse"></div>
+                  <span className="text-black uppercase">
                     {projects.length} Projects
                   </span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                  <span className="text-gray-600 dark:text-gray-400">
+                  <div className="w-3 h-3 bg-blue-500 border-2 border-black rounded-full"></div>
+                  <span className="text-black uppercase">
                     {projects.filter((p) => p.featured).length} Featured
                   </span>
                 </div>
@@ -137,99 +133,97 @@ export function ProjectsSection({
 
             <Button
               onClick={handleAdd}
-              className="group relative overflow-hidden bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+              className="neo-btn bg-white text-black flex items-center gap-2"
             >
-              <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
-              <Plus className="h-5 w-5 mr-2 relative z-10" />
-              <span className="relative z-10 font-medium">Add Project</span>
+              <Plus className="h-5 w-5" />
+              <span className="font-bold uppercase">Add Project</span>
             </Button>
           </div>
 
           {/* Projects Grid/List */}
           {projects.length === 0 ? (
-            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200/50 dark:border-gray-700/50 p-12 text-center">
+            <div className="neo-card bg-white p-12 text-center border-4 border-black shadow-neo">
               <div className="relative">
-                <div className="w-24 h-24 bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900/30 dark:to-purple-900/30 rounded-2xl flex items-center justify-center mx-auto mb-6 transform rotate-3 hover:rotate-0 transition-transform duration-300">
-                  <Code className="h-12 w-12 text-blue-600 dark:text-blue-400" />
+                <div className="w-24 h-24 bg-blue-200 border-4 border-black flex items-center justify-center mx-auto mb-6 shadow-neo transform rotate-3 hover:rotate-0 transition-transform duration-300">
+                  <Code className="h-12 w-12 text-black" />
                 </div>
-                <div className="absolute -top-2 -right-2 w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center animate-bounce">
-                  <Plus className="h-4 w-4 text-yellow-800" />
+                <div className="absolute -top-2 -right-2 w-8 h-8 bg-yellow-400 border-2 border-black flex items-center justify-center animate-bounce shadow-neo-sm">
+                  <Plus className="h-4 w-4 text-black" />
                 </div>
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">
+              <h3 className="text-xl font-black uppercase mb-3">
                 No projects yet
               </h3>
-              <p className="text-gray-600 dark:text-gray-400 mb-8 max-w-md mx-auto">
+              <p className="text-gray-600 font-medium mb-8 max-w-md mx-auto">
                 Start building your Rifqy.Dev by adding your first project.
                 Showcase your best work!
               </p>
               <Button
                 onClick={handleAdd}
-                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                className="neo-btn bg-blue-400 text-black flex items-center gap-2 mx-auto"
               >
-                <Plus className="h-5 w-5 mr-2" />
-                <span className="font-medium">Add First Project</span>
+                <Plus className="h-5 w-5" />
+                <span className="font-bold uppercase">Add First Project</span>
               </Button>
             </div>
           ) : (
             <div className="space-y-6">
               {/* Desktop Table View */}
-              <div className="hidden lg:block bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200/50 dark:border-gray-700/50 overflow-hidden">
+              <div className="hidden lg:block bg-white border-4 border-black shadow-neo overflow-hidden">
                 <div className="overflow-x-auto">
                   <table className="w-full">
-                    <thead className="bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700">
+                    <thead className="bg-gray-100 border-b-4 border-black">
                       <tr>
-                        <th className="px-6 py-5 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                        <th className="px-6 py-5 text-left text-xs font-black text-black uppercase tracking-wider border-r-2 border-black">
                           Project
                         </th>
-                        <th className="px-6 py-5 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
-                          Teknologi
+                        <th className="px-6 py-5 text-left text-xs font-black text-black uppercase tracking-wider border-r-2 border-black">
+                          Technologies
                         </th>
-                        <th className="px-6 py-5 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                        <th className="px-6 py-5 text-left text-xs font-black text-black uppercase tracking-wider border-r-2 border-black">
                           Status
                         </th>
-                        <th className="px-6 py-5 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
-                          Aksi
+                        <th className="px-6 py-5 text-left text-xs font-black text-black uppercase tracking-wider">
+                          Actions
                         </th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-                      {projects.map((project, index) => (
+                    <tbody className="divide-y-2 divide-black">
+                      {projects.map((project) => (
                         <tr
                           key={project.id}
-                          className="hover:bg-blue-50/50 dark:hover:bg-blue-900/10 transition-all duration-200 group"
-                          style={{ animationDelay: `${index * 50}ms` }}
+                          className="hover:bg-blue-50 transition-colors duration-200"
                         >
-                          <td className="px-6 py-5">
+                          <td className="px-6 py-5 border-r-2 border-black">
                             <div className="flex items-center space-x-4">
-                              <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-                                <Code className="h-6 w-6 text-white" />
+                              <div className="w-12 h-12 bg-blue-200 border-2 border-black flex items-center justify-center shadow-neo-sm">
+                                <Code className="h-6 w-6 text-black" />
                               </div>
                               <div className="min-w-0 flex-1">
-                                <div className="text-sm font-bold text-gray-900 dark:text-white truncate group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                                <div className="text-sm font-black text-black uppercase truncate">
                                   {project.title}
                                 </div>
-                                <div className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
+                                <div className="text-sm text-gray-600 font-medium line-clamp-2">
                                   {truncateDescription(project.description)}
                                 </div>
                               </div>
                             </div>
                           </td>
-                          <td className="px-6 py-5">
+                          <td className="px-6 py-5 border-r-2 border-black">
                             <div className="flex flex-wrap gap-2">
                               {renderTechStack(project.techStack)}
                             </div>
                           </td>
-                          <td className="px-6 py-5">
+                          <td className="px-6 py-5 border-r-2 border-black">
                             <span
-                              className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold ${
+                              className={`inline-flex items-center px-3 py-1 border-2 border-black text-xs font-bold uppercase shadow-neo-sm ${
                                 project.featured
-                                  ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300 shadow-lg shadow-green-500/20"
-                                  : "bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-300"
+                                  ? "bg-green-200 text-black"
+                                  : "bg-gray-200 text-black"
                               }`}
                             >
                               <div
-                                className={`w-2 h-2 rounded-full mr-2 ${
+                                className={`w-2 h-2 border border-black mr-2 ${
                                   project.featured
                                     ? "bg-green-500"
                                     : "bg-gray-400"
@@ -242,7 +236,7 @@ export function ProjectsSection({
                             <div className="flex items-center space-x-3">
                               <button
                                 onClick={() => handleEdit(project)}
-                                className="p-2 text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-all duration-200 transform hover:scale-110"
+                                className="p-2 bg-blue-200 border-2 border-black text-black hover:bg-blue-300 shadow-neo-sm hover:shadow-neo transition-all"
                                 title="Edit"
                               >
                                 <svg
@@ -261,8 +255,8 @@ export function ProjectsSection({
                               </button>
                               <button
                                 onClick={() => handleDelete(project.id)}
-                                className="p-2 text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-all duration-200 transform hover:scale-110"
-                                title="Hapus"
+                                className="p-2 bg-red-200 border-2 border-black text-black hover:bg-red-300 shadow-neo-sm hover:shadow-neo transition-all"
+                                title="Delete"
                               >
                                 <svg
                                   className="h-5 w-5"
@@ -289,26 +283,25 @@ export function ProjectsSection({
 
               {/* Mobile Card View */}
               <div className="lg:hidden space-y-4">
-                {projects.map((project, index) => (
+                {projects.map((project) => (
                   <div
                     key={project.id}
-                    className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200/50 dark:border-gray-700/50 p-6 hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02]"
-                    style={{ animationDelay: `${index * 100}ms` }}
+                    className="neo-card bg-white p-6 border-4 border-black shadow-neo"
                   >
                     <div className="flex items-start justify-between mb-4">
                       <div className="flex items-center space-x-3">
-                        <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
-                          <Code className="h-6 w-6 text-white" />
+                        <div className="w-12 h-12 bg-blue-200 border-2 border-black flex items-center justify-center shadow-neo-sm">
+                          <Code className="h-6 w-6 text-black" />
                         </div>
                         <div>
-                          <h3 className="font-bold text-gray-900 dark:text-white text-lg">
+                          <h3 className="font-black text-black text-lg uppercase">
                             {project.title}
                           </h3>
                           <span
-                            className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
+                            className={`inline-flex items-center px-2 py-1 border-2 border-black text-xs font-bold uppercase shadow-neo-sm mt-1 ${
                               project.featured
-                                ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300"
-                                : "bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-300"
+                                ? "bg-green-200 text-black"
+                                : "bg-gray-200 text-black"
                             }`}
                           >
                             {project.featured ? "Featured" : "Regular"}
@@ -318,7 +311,7 @@ export function ProjectsSection({
                       <div className="flex items-center space-x-2">
                         <button
                           onClick={() => handleEdit(project)}
-                          className="p-2 text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-all duration-200"
+                          className="p-2 bg-blue-200 border-2 border-black text-black hover:bg-blue-300 shadow-neo-sm transition-all"
                         >
                           <svg
                             className="h-4 w-4"
@@ -336,7 +329,7 @@ export function ProjectsSection({
                         </button>
                         <button
                           onClick={() => handleDelete(project.id)}
-                          className="p-2 text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-all duration-200"
+                          className="p-2 bg-red-200 border-2 border-black text-black hover:bg-red-300 shadow-neo-sm transition-all"
                         >
                           <svg
                             className="h-4 w-4"
@@ -357,7 +350,7 @@ export function ProjectsSection({
                     <div className="flex flex-wrap gap-2 mb-4">
                       {renderTechStack(project.techStack)}
                     </div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
+                    <div className="text-sm text-gray-600 font-medium line-clamp-2">
                       {truncateDescription(project.description)}
                     </div>
                   </div>

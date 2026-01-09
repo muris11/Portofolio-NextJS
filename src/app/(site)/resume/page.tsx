@@ -82,54 +82,20 @@ export default async function ResumePage() {
   const groupedSkills = groupSkillsByCategory(skills);
 
   return (
-    <div className="min-h-screen relative overflow-hidden bg-slate-950">
-      {/* Enhanced Animated Background - Consistent with Homepage */}
-      <div className="fixed inset-0 -z-10">
-        {/* Primary gradient background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-slate-950 via-blue-950 to-slate-950"></div>
-
-        {/* Animated mesh gradient */}
-        <div className="absolute inset-0 opacity-30">
-          <div className="absolute top-0 -left-4 w-96 h-96 bg-blue-600 rounded-full mix-blend-multiply filter blur-3xl animate-float"></div>
-          <div className="absolute top-0 -right-4 w-96 h-96 bg-cyan-600 rounded-full mix-blend-multiply filter blur-3xl animate-float animation-delay-2000"></div>
-          <div className="absolute -bottom-8 left-20 w-96 h-96 bg-indigo-600 rounded-full mix-blend-multiply filter blur-3xl"></div>
-          <div className="absolute bottom-20 right-20 w-96 h-96 bg-sky-600 rounded-full mix-blend-multiply filter blur-3xl"></div>
-        </div>
-
-        {/* Geometric patterns */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-20">
-          <div className="absolute top-20 left-10 w-40 h-40 border border-blue-500/20 rotate-45"></div>
-          <div className="absolute top-40 right-20 w-32 h-32 border border-cyan-500/20 rotate-12"></div>
-          <div className="absolute bottom-32 left-1/4 w-24 h-24 border border-indigo-500/20 rotate-30"></div>
-          <div className="absolute bottom-20 right-1/3 w-36 h-36 border border-sky-500/20 -rotate-45"></div>
-        </div>
-
-        {/* Grid overlay */}
-        <div
-          className="absolute inset-0 opacity-[0.15]"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2363b3ed' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='1.5'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-          }}
-        ></div>
-      </div>
-
+    <div className="min-h-screen bg-neo-canvas text-black overflow-x-hidden">
       {/* Header Section */}
-      <section className="relative pt-24 pb-16 px-4 sm:px-6 lg:px-8">
+      <section className="pt-32 pb-16 px-4 sm:px-6 lg:px-8 border-b-4 border-black bg-white">
         <div className="max-w-4xl mx-auto text-center">
-          <div className="inline-flex items-center px-6 py-3 rounded-full bg-gradient-to-r from-blue-600/10 to-cyan-600/10 border border-blue-500/30 backdrop-blur-sm mb-8 animate-scale-in shadow-lg shadow-blue-500/10">
-            <span className="relative flex h-3 w-3 mr-3">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-3 w-3 bg-gradient-to-r from-blue-400 to-cyan-400"></span>
-            </span>
-            <span className="text-sm font-semibold text-white tracking-wide">
+          <div className="inline-block bg-neo-secondary border-2 border-black px-4 py-1 shadow-neo-sm mb-6 transform rotate-2">
+            <span className="font-bold uppercase tracking-widest text-sm">
               Professional Journey
             </span>
           </div>
 
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-white via-blue-100 to-cyan-100 bg-clip-text text-transparent mb-6 animate-slide-in-left tracking-tight">
+          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black uppercase tracking-tighter mb-6">
             My Resume
           </h1>
-          <p className="text-lg sm:text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed animate-slide-in-right animation-delay-300 font-light">
+          <p className="text-xl font-medium max-w-2xl mx-auto border-l-4 border-black pl-6 text-left md:text-center md:border-l-0 md:pl-0">
             A comprehensive overview of my educational background, professional
             experience, and technical expertise.
           </p>
@@ -138,34 +104,26 @@ export default async function ResumePage() {
 
       {/* Education Section */}
       {education.length > 0 && (
-        <section className="pb-20 px-4 sm:px-6 lg:px-8">
+        <section className="py-20 px-4 sm:px-6 lg:px-8 border-b-4 border-black">
           <div className="max-w-7xl mx-auto">
-            <div className="mb-16 text-center animate-fade-in-up animation-delay-600">
-              <h2 className="text-3xl lg:text-4xl font-bold bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent mb-4">
+            <div className="mb-16 text-center">
+              <div className="inline-block bg-neo-accent border-2 border-black px-4 py-1 shadow-neo-sm mb-6 transform -rotate-1">
+                <span className="font-bold uppercase tracking-widest text-sm">
+                  Academic Background
+                </span>
+              </div>
+              <h2 className="text-3xl sm:text-5xl font-black uppercase tracking-tight mb-4">
                 Education
               </h2>
-              <p className="text-gray-300 max-w-2xl mx-auto leading-relaxed">
+              <p className="text-lg font-medium max-w-2xl mx-auto">
                 My academic journey in building a strong foundation of knowledge
                 and skills.
               </p>
             </div>
 
-            <div className="max-w-4xl mx-auto">
-              {education.map((item, index) => (
-                <div
-                  key={item.id}
-                  className="animate-fade-in-up"
-                  style={{ animationDelay: `${800 + index * 200}ms` }}
-                >
-                  <TimelineItem item={item} type="education" />
-                  {index === education.length - 1 && (
-                    <div className="flex flex-col items-center mt-8">
-                      <div className="w-12 h-12 bg-gradient-to-r from-primary to-cyan-500 rounded-2xl flex items-center justify-center shadow-lg animate-pulse">
-                        <span className="text-white font-bold text-lg">✓</span>
-                      </div>
-                    </div>
-                  )}
-                </div>
+            <div className="max-w-4xl mx-auto space-y-8">
+              {education.map((item) => (
+                <TimelineItem key={item.id} item={item} type="education" />
               ))}
             </div>
           </div>
@@ -174,34 +132,26 @@ export default async function ResumePage() {
 
       {/* Experience Section */}
       {experience.length > 0 && (
-        <section className="pb-20 px-4 sm:px-6 lg:px-8">
+        <section className="py-20 px-4 sm:px-6 lg:px-8 border-b-4 border-black bg-white">
           <div className="max-w-7xl mx-auto">
-            <div className="mb-16 text-center animate-fade-in-up animation-delay-800">
-              <h2 className="text-3xl lg:text-4xl font-bold bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent mb-4">
+            <div className="mb-16 text-center">
+              <div className="inline-block bg-neo-secondary border-2 border-black px-4 py-1 shadow-neo-sm mb-6 transform rotate-1">
+                <span className="font-bold uppercase tracking-widest text-sm">
+                  Career Path
+                </span>
+              </div>
+              <h2 className="text-3xl sm:text-5xl font-black uppercase tracking-tight mb-4">
                 Experience
               </h2>
-              <p className="text-gray-300 max-w-2xl mx-auto leading-relaxed">
+              <p className="text-lg font-medium max-w-2xl mx-auto">
                 My professional journey and contributions in the technology
                 industry.
               </p>
             </div>
 
-            <div className="max-w-4xl mx-auto">
-              {experience.map((item, index) => (
-                <div
-                  key={item.id}
-                  className="animate-fade-in-up"
-                  style={{ animationDelay: `${1000 + index * 200}ms` }}
-                >
-                  <TimelineItem item={item} type="experience" />
-                  {index === experience.length - 1 && (
-                    <div className="flex flex-col items-center mt-8">
-                      <div className="w-12 h-12 bg-gradient-to-r from-primary to-cyan-500 rounded-2xl flex items-center justify-center shadow-lg animate-pulse">
-                        <span className="text-white font-bold text-lg">✓</span>
-                      </div>
-                    </div>
-                  )}
-                </div>
+            <div className="max-w-4xl mx-auto space-y-8">
+              {experience.map((item) => (
+                <TimelineItem key={item.id} item={item} type="experience" />
               ))}
             </div>
           </div>
@@ -210,45 +160,38 @@ export default async function ResumePage() {
 
       {/* Skills Section */}
       {skills.length > 0 && (
-        <section className="pb-20 px-4 sm:px-6 lg:px-8">
+        <section className="py-20 px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
-            <div className="mb-16 text-center animate-fade-in-up animation-delay-1000">
-              <h2 className="text-3xl lg:text-4xl font-bold bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent mb-4">
+            <div className="mb-16 text-center">
+              <div className="inline-block bg-neo-accent border-2 border-black px-4 py-1 shadow-neo-sm mb-6 transform -rotate-2">
+                <span className="font-bold uppercase tracking-widest text-sm">
+                  Tech Stack
+                </span>
+              </div>
+              <h2 className="text-3xl sm:text-5xl font-black uppercase tracking-tight mb-4">
                 Technical Skills
               </h2>
-              <p className="text-gray-300 max-w-2xl mx-auto leading-relaxed">
+              <p className="text-lg font-medium max-w-2xl mx-auto">
                 Technologies and tools I master to develop digital solutions.
               </p>
             </div>
 
-            {Object.entries(groupedSkills).map(
-              ([category, categorySkills], categoryIndex) => (
-                <div
-                  key={category}
-                  className="mb-16 animate-fade-in-up"
-                  style={{ animationDelay: `${1200 + categoryIndex * 200}ms` }}
-                >
-                  <h3 className="text-xl lg:text-2xl font-semibold bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent mb-8 capitalize text-center">
-                    {category}
-                  </h3>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6 justify-items-center">
-                    {categorySkills.map((skill, skillIndex) => (
-                      <div
-                        key={skill.id}
-                        className="animate-fade-in-up"
-                        style={{
-                          animationDelay: `${
-                            1400 + categoryIndex * 200 + skillIndex * 100
-                          }ms`,
-                        }}
-                      >
-                        <SkillIcon skill={skill} />
-                      </div>
-                    ))}
+            <div className="space-y-16">
+              {Object.entries(groupedSkills).map(
+                ([category, categorySkills]) => (
+                  <div key={category} className="neo-card p-8 bg-white">
+                    <h3 className="text-2xl font-black uppercase border-b-4 border-black pb-4 mb-8 inline-block">
+                      {category}
+                    </h3>
+                    <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 sm:gap-8 justify-items-center">
+                      {categorySkills.map((skill) => (
+                        <SkillIcon key={skill.id} skill={skill} />
+                      ))}
+                    </div>
                   </div>
-                </div>
-              )
-            )}
+                )
+              )}
+            </div>
           </div>
         </section>
       )}
@@ -257,41 +200,18 @@ export default async function ResumePage() {
       {education.length === 0 &&
         experience.length === 0 &&
         skills.length === 0 && (
-          <section className="pb-20 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-4xl mx-auto text-center animate-fade-in-up animation-delay-600">
-              <div className="inline-flex items-center justify-center w-20 h-20 bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl mb-6 shadow-2xl">
-                <svg
-                  className="w-10 h-10 text-gray-400"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                  />
-                </svg>
+          <section className="py-20 px-4 sm:px-6 lg:px-8">
+            <div className="max-w-4xl mx-auto text-center neo-card p-12 bg-white">
+              <div className="inline-flex items-center justify-center w-20 h-20 bg-neo-secondary border-4 border-black mb-6 shadow-neo">
+                <span className="text-4xl font-black">!</span>
               </div>
-              <h3 className="text-xl font-semibold bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent mb-3">
+              <h3 className="text-2xl font-black uppercase mb-3">
                 Resume Coming Soon
               </h3>
-              <p className="text-gray-300 max-w-md mx-auto leading-relaxed">
+              <p className="font-medium max-w-md mx-auto">
                 Education, experience, and skills information will be added
                 soon.
               </p>
-              <div className="flex justify-center space-x-2 mt-6">
-                <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
-                <div
-                  className="w-2 h-2 bg-primary rounded-full animate-pulse"
-                  style={{ animationDelay: "0.2s" }}
-                ></div>
-                <div
-                  className="w-2 h-2 bg-primary rounded-full animate-pulse"
-                  style={{ animationDelay: "0.4s" }}
-                ></div>
-              </div>
             </div>
           </section>
         )}

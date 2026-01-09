@@ -3,11 +3,13 @@
 import { useProfile } from "@/hooks/useProfile";
 import { Github, Instagram, Linkedin, Menu, X } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const { profile } = useProfile();
+  const pathname = usePathname();
 
   const navItems = [
     { name: "Home", href: "/" },
@@ -64,16 +66,18 @@ export default function Navbar() {
   const displaySocialLinks =
     socialLinks.length > 0 ? socialLinks : fallbackSocialLinks;
 
+  const isActive = (path: string) => pathname === path;
+
   return (
     <>
-      <nav className="fixed top-0 w-full bg-slate-950/90 backdrop-blur-2xl border-b border-white/20 z-50 transition-all duration-500 shadow-2xl shadow-black/50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16 lg:h-20">
+      <nav className="fixed top-0 w-full bg-background border-b-4 border-black z-40 h-[var(--header-height)]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
+          <div className="flex justify-between items-center h-full">
             {/* Logo */}
             <div className="shrink-0">
               <Link
                 href="/"
-                className="text-xl lg:text-2xl font-bold bg-gradient-to-r from-white via-blue-100 to-cyan-200 bg-clip-text text-transparent transition-all duration-500 hover:scale-110 hover:from-blue-200 hover:to-cyan-300"
+                className="text-2xl font-black uppercase tracking-tighter border-4 border-black bg-neo-accent px-4 py-2 shadow-neo hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all"
               >
                 Rifqy.Dev
               </Link>
@@ -81,53 +85,53 @@ export default function Navbar() {
 
             {/* Desktop Menu */}
             <div className="hidden lg:flex items-center space-x-8">
-              <div className="flex space-x-6">
+              <div className="flex space-x-4">
                 {navItems.map((item) => (
                   <Link
                     key={item.name}
                     href={item.href}
-                    className="relative text-gray-300 hover:text-white px-5 py-3 rounded-2xl text-sm font-medium transition-all duration-500 group hover:bg-white/10 backdrop-blur-xl border border-transparent hover:border-white/20 overflow-hidden"
+                    className={`font-bold uppercase tracking-wide border-2 px-4 py-2 transition-all duration-200 ${
+                      isActive(item.href)
+                        ? "border-black bg-neo-secondary shadow-neo"
+                        : "border-transparent hover:border-black hover:bg-neo-secondary hover:shadow-neo"
+                    }`}
                   >
-                    <span className="relative z-10">{item.name}</span>
-                    <span className="absolute bottom-2 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-blue-400 to-cyan-400 transition-all duration-500 group-hover:w-3/4 rounded-full"></span>
-                    <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-cyan-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl"></div>
+                    {item.name}
                   </Link>
                 ))}
               </div>
             </div>
 
             {/* Mobile menu button */}
-            <div className="lg:hidden flex items-center space-x-2">
+            <div className="lg:hidden flex items-center">
               <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="relative inline-flex items-center justify-center p-3 rounded-2xl text-gray-300 hover:text-white hover:bg-white/10 backdrop-blur-xl focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary transition-all duration-300 touch-manipulation border border-white/20 hover:border-white/40 overflow-hidden group"
+                className="p-2 border-4 border-black bg-white shadow-neo active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all"
                 aria-label="Toggle menu"
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-cyan-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl"></div>
-                <div className="relative z-10">
-                  {isOpen ? (
-                    <X className="h-6 w-6" />
-                  ) : (
-                    <Menu className="h-6 w-6" />
-                  )}
-                </div>
+                {isOpen ? (
+                  <X className="h-8 w-8" />
+                ) : (
+                  <Menu className="h-8 w-8" />
+                )}
               </button>
             </div>
           </div>
         </div>
       </nav>
 
-      {/* Mobile Menu - Improved slide-in animation */}
+      {/* Mobile Menu */}
       <div
-        className={`fixed inset-0 z-50 lg:hidden transition-all duration-300 ${
+        className={`fixed inset-0 z-30 lg:hidden transition-all duration-300 ${
           isOpen
-            ? "opacity-100 pointer-events-auto"
-            : "opacity-0 pointer-events-none"
+            ? "pointer-events-auto"
+            : "pointer-events-none"
         }`}
+        style={{ top: "var(--header-height)", height: "calc(100vh - var(--header-height))" }}
       >
         {/* Backdrop */}
         <div
-          className={`fixed inset-0 bg-black/70 backdrop-blur-2xl transition-opacity duration-500 ${
+          className={`fixed inset-0 bg-black/50 transition-opacity duration-300 ${
             isOpen ? "opacity-100" : "opacity-0"
           }`}
           onClick={() => setIsOpen(false)}
@@ -135,66 +139,50 @@ export default function Navbar() {
 
         {/* Menu Panel */}
         <div
-          className={`fixed right-0 top-0 h-full w-80 max-w-[85vw] bg-slate-950/95 backdrop-blur-2xl border-l border-white/30 shadow-2xl transform transition-transform duration-500 ease-out ${
-            isOpen ? "translate-x-0" : "translate-x-full"
+          className={`absolute top-0 left-0 w-full bg-background border-b-4 border-black shadow-neo-xl transform transition-transform duration-300 ease-out ${
+            isOpen ? "translate-y-0" : "-translate-y-full"
           }`}
         >
-          <div className="flex flex-col h-full">
-            {/* Header */}
-            <div className="flex items-center justify-between p-6 border-b border-white/20">
-              <h2 className="text-lg font-semibold bg-gradient-to-r from-white via-blue-100 to-cyan-200 bg-clip-text text-transparent">
-                Navigation Menu
-              </h2>
-              <button
-                onClick={() => setIsOpen(false)}
-                className="relative p-3 rounded-2xl text-gray-300 hover:text-white hover:bg-white/10 transition-all duration-300 touch-manipulation border border-white/20 hover:border-white/40 group"
-                aria-label="Close menu"
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-red-600/10 to-pink-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl"></div>
-                <X className="h-5 w-5 relative z-10" />
-              </button>
+          <div className="flex flex-col pt-8 px-6 pb-8">
+            {/* Navigation Items */}
+            <div className="flex-1 space-y-4">
+              {navItems.map((item) => (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className={`block w-full text-center text-xl font-black uppercase tracking-widest border-4 border-black py-4 transition-all ${
+                    isActive(item.href)
+                      ? "bg-neo-secondary shadow-neo-lg -translate-y-1"
+                      : "bg-white shadow-neo hover:bg-neo-secondary hover:-translate-y-1 hover:shadow-neo-lg"
+                  }`}
+                  onClick={() => setIsOpen(false)}
+                >
+                  {item.name}
+                </Link>
+              ))}
             </div>
 
-            {/* Navigation Items */}
-            <div className="flex-1 overflow-y-auto p-6">
-              <div className="space-y-3">
-                {navItems.map((item, index) => (
-                  <Link
-                    key={item.name}
-                    href={item.href}
-                    className="relative block px-5 py-4 text-gray-300 hover:text-white hover:bg-white/10 rounded-2xl transition-all duration-500 font-medium touch-manipulation border border-transparent hover:border-white/20 overflow-hidden group"
-                    onClick={() => setIsOpen(false)}
-                    style={{ animationDelay: `${index * 50}ms` }}
-                  >
-                    <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-cyan-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl"></div>
-                    <span className="relative z-10">{item.name}</span>
-                  </Link>
-                ))}
-              </div>
-
-              {/* Social Links */}
-              <div className="mt-8 pt-8 border-t border-white/20">
-                <p className="text-sm font-medium bg-gradient-to-r from-white via-blue-100 to-cyan-200 bg-clip-text text-transparent mb-4">
-                  Connect With Me
-                </p>
-                <div className="flex space-x-4">
-                  {displaySocialLinks.map((social) => {
-                    const Icon = social.icon;
-                    return (
-                      <a
-                        key={social.label}
-                        href={social.href}
-                        className="relative text-gray-400 hover:text-white transition-all duration-300 p-4 rounded-2xl hover:bg-white/10 touch-manipulation border border-white/20 hover:border-primary/60 group"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label={social.label}
-                      >
-                        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-cyan-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl"></div>
-                        <Icon className="h-5 w-5 relative z-10" />
-                      </a>
-                    );
-                  })}
-                </div>
+            {/* Social Links */}
+            <div className="mt-8 pt-8 border-t-4 border-black">
+              <p className="text-sm font-bold uppercase tracking-widest mb-4 text-center">
+                Connect With Me
+              </p>
+              <div className="flex justify-center space-x-4">
+                {displaySocialLinks.map((social) => {
+                  const Icon = social.icon;
+                  return (
+                    <a
+                      key={social.label}
+                      href={social.href}
+                      className="p-3 border-4 border-black bg-neo-accent shadow-neo hover:-translate-y-1 hover:shadow-neo-lg transition-all"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={social.label}
+                    >
+                      <Icon className="h-6 w-6" />
+                    </a>
+                  );
+                })}
               </div>
             </div>
           </div>
